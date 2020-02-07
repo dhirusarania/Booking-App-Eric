@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-// error_reporting(0);
+error_reporting(0);
 
 session_start();
 
@@ -464,7 +464,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
 
 }else if (isset($_REQUEST['getAllServices']) && $_REQUEST['getAllServices'] == "getAllServices") {
 
-    // url : http://localhost/new/api.php?getAllServices=getAllServices
+    // url : http://localhost/booking/api.php?getAllServices=getAllServices
 
     $data = array();
 
@@ -488,7 +488,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     exit;
 } else if (isset($_REQUEST['getAllEmployees']) && $_REQUEST['getAllEmployees'] == "getAllEmployees") {
 
-    // url : http://localhost/new/api.php?getAllEmployees=getAllEmployees
+    // url : http://localhost/booking/api.php?getAllEmployees=getAllEmployees
 
     $data = array();
 
@@ -506,7 +506,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     exit;
 } else if (isset($_REQUEST['getServiceIDBasedEmployees']) && $_REQUEST['getServiceIDBasedEmployees'] == "getServiceIDBasedEmployees") {
 
-    // url : http://localhost/new/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
     // count_employees : SELECT count(id_employee), id_employee FROM `employee_services` GROUP BY id_employee
 
     $data = array();
@@ -543,11 +543,16 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     // $data = date('Y-m-d', strtotime($_REQUEST['date']));
 
     $newDate = $_REQUEST['date'];
+
+
+    $newDate = explode("-", $newDate);
+
+    $newDate = $newDate[0] . "-" . $newDate[2] . "-" . $newDate[1];
     
     // $date = str_replace('/', '-', $origDate );
     // $newDate = date("Y-m-d", strtotime($date));
 
-    // $data['ss'] = "SELECT id_appointment, appointment_date, id_employee, duration FROM booking_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59') union select id_appointment, appointment_date, id_employee, duration from booking_personal_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')";
+    $data['ss'] = "SELECT id_appointment, appointment_date, id_employee, duration FROM booking_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59') union select id_appointment, appointment_date, id_employee, duration from booking_personal_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')";
     $query = mysqli_query($con, "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')") or die(mysqli_error($con));
 
     $data['appointments'] = [];
@@ -654,7 +659,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
 
 } else if (isset($_REQUEST['getopentime']) && $_REQUEST['getopentime'] == "getopentime") {
 
-    // url : http://localhost/new/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
 
     $data = array();
 
@@ -672,7 +677,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     exit;
 } else if (isset($_REQUEST['getStoreopentime']) && $_REQUEST['getStoreopentime'] == "getStoreopentime") {
 
-    // url : http://localhost/new/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
 
 
     $data = array();
@@ -774,7 +779,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     exit;
 } else if (isset($_REQUEST['getTimeSlot']) && $_REQUEST['getTimeSlot'] == "getTimeSlot") {
 
-    // url : http://localhost/new/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
 
     $data = array();
     $data1 = array();
@@ -1381,7 +1386,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     exit;
 } else if (isset($_REQUEST['saveAppointment']) && $_REQUEST['saveAppointment'] == "saveAppointment") {
 
-    // url : http://localhost/new/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
 
 
     // INSERT INTO `booking_appointments` (`id_appointment`, `id_booking_diary`, `id_employee`, `id_customer`, `id_service`, `customer_name`, `service_name`, `appointment_date`, `duration`, `appointment_state`, `delete_reason`, `appointment_source`, `is_new_customer`, `is_requested`, `is_suggested`, `worker_lock`, `time_lock`, `experince_feedback`, `color`, `id_cabin`, `notes`, `state`, `created_at`, `created_from`, `modified_at`, `modified_from`) VALUES

@@ -362,7 +362,7 @@
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: '/new/api.php?getAllServices=getAllServices',
+        url: '/booking/api.php?getAllServices=getAllServices',
         data: $(this).serialize(),
         success: function(response) {
             console.log(response)
@@ -399,7 +399,7 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: '/new/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + $(this).data('id'),
+                url: '/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + $(this).data('id'),
                 data: $(this).serialize(),
                 success: function(response) {
                     console.log(response)

@@ -29,7 +29,7 @@
     <script>
         if (localStorage.getItem('random') == undefined || localStorage.getItem('random') == null) {
 
-            window.location.href = "/new/admin/index.html"
+            window.location.href = "/booking/admin/index.html"
 
         }
     </script>
@@ -218,6 +218,57 @@
                 z-index: 3000
             }
         }
+        
+        .switch-field {
+            display: flex;
+            margin-bottom: 36px;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        
+        .switch-field>div {
+            margin-right: 10px;
+        }
+        
+        .switch-field input {
+            position: absolute !important;
+            clip: rect(0, 0, 0, 0);
+            height: 1px;
+            width: 1px;
+            border: 0;
+            overflow: hidden;
+        }
+        
+        .switch-field label {
+            background-color: #e4e4e4;
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 14px;
+            line-height: 1;
+            text-align: center;
+            padding: 8px 16px;
+            margin-right: -1px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.1s ease-in-out;
+        }
+        
+        .switch-field label:hover {
+            cursor: pointer;
+        }
+        
+        .switch-field input:checked+label {
+            background-color: #a5dc86;
+            box-shadow: none;
+        }
+        
+        .switch-field label:first-of-type {
+            border-radius: 4px;
+        }
+        
+        .switch-field label:last-of-type {
+            border-radius: 4px;
+        }
+        /* This is just for CodePen. */
     </style>
 
 </head>
@@ -236,6 +287,9 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Appointments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Create Appointment</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Shortcuts</a>
@@ -266,6 +320,9 @@
                         <a href="#">Appointments</a>
                     </li>
                     <li>
+                        <a href="/booking/admin/createappointment.html">Create Appointment</a>
+                    </li>
+                    <li>
                         <a href="#">Shortcuts</a>
                     </li>
                     <li>
@@ -283,7 +340,7 @@
                     <form>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Select Date</label>
-                            <input v-on:change="getAppointments" type='text' readonly="readonly" class='datepicker-here form-control' v-model="date" data-date-format="mm-dd-yyyy" data-language='en' />
+                            <input v-on:change="getAppointments" type='text' readonly="readonly" class='datepicker-here form-control' v-model="date" data-date-format="dd/mm/yyyy" data-language='en' />
                         </div>
                     </form>
 
@@ -305,6 +362,72 @@
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Selected Appointment</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Customer Name</label>
+                                <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            </div>
+                            <!-- <div class="form-group">
+                                <label for="exampleInputPassword1">Change Date</label>
+                                <input type='text' readonly="readonly" class='changeapppointment form-control' v-model="selected_appointment_data['appointment_date']" data-timepicker="true" data-time-format='hh:ii aa' data-date-format="mm-dd-yyyy" data-language='en' />
+                            </div> -->
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+
+                                        <label for="exampleInputEmail1">Service</label>
+                                        <select class="form-control" id="sel1" v-model="selected_appointment_data['customer_name']">
+                                            <option v-for="p in all_services" :key="p.id">{{p.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Employees</label>
+                                        <select class="form-control" id="sel1" v-model="selected_appointment_data['customer_name']">
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option value="Golia Luisa">Golia Luisa</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Date</label>
+                                        <input v-on:change="getFreeApointments" type='text' readonly="readonly" class='datepicker-here1 form-control' v-model="update_date" data-date-format="dd/mm/yyyy" data-language='en' />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Appointment Time</label>
+                                        <div class="switch-field">
+                                            <div v-for="p in 10">
+                                                <input type="radio" id="radio-three" name="switch-two" value="yes" checked />
+                                                <label for="radio-three">One</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" v-on:click="deleteAppointment" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" v-on:click="updateAppointment" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="createAppointment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -360,6 +483,7 @@
         data: {
             date: "",
             send_date: "",
+            update_date: "",
             users: [],
             zoom: 1,
             appointments: [],
@@ -367,10 +491,15 @@
             calendar_end: "",
             selected_appointment: 0,
             selected_appointment_data: [],
+            all_services: [],
+            selected_service_id: 0,
+            all_employee_list: []
         },
         mounted() {
 
             var that = this
+
+            this.getAllServices()
 
 
             var dp1 = $(".changeapppointment")
@@ -388,7 +517,13 @@
                         console.log("fd");
                         console.log(fd);
 
-                        var dateObj = new Date(fd);
+                        var a = fd.split("/")
+
+                        var date = a[1] + "-" + a[0] + "-" + a[2]
+
+
+
+                        var dateObj = new Date(date);
 
                         var momentObj = moment(dateObj);
 
@@ -406,6 +541,37 @@
                 .data("datepicker");
 
 
+            var dp2 = $(".datepicker-here1")
+                .datepicker({
+                    autoClose: true,
+                    onSelect: function onSelect(fd, date) {
+                        console.log("fd");
+                        console.log(fd);
+
+                        var a = fd.split("/")
+
+                        // var date = a[1] + "-" + a[0] + "-" + a[2]
+
+
+
+                        // var dateObj = new Date(date);
+
+                        // var momentObj = moment(dateObj);
+
+                        that.update_date = fd
+
+                        // that.calendar_start = momentObj.add(0, 'days').format('DD-MM-YYYY')
+
+                        // var endDate = momentObj.add(1, 'days').format('DD-MM-YYYY')
+
+                        // that.calendar_end = endDate
+
+                        that.getFreeApointments()
+                    }
+                })
+                .data("datepicker");
+
+
             dp1.selectDate(new Date());
 
 
@@ -415,6 +581,99 @@
 
         },
         methods: {
+
+            getAllServices: function() {
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/api.php?getAllServices=getAllServices',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log(response)
+                        app.all_services = response
+
+                    },
+                    error: function(response) {
+                        alert(response.responseJSON.message);
+                    }
+                });
+
+
+
+            },
+            getServiceIDBasedEmployees: function() {
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + $(this).data('id'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log(response)
+                        app.all_employee_list = response
+
+
+                    }
+                });
+
+
+
+            },
+            getFreeApointments: function() {
+
+
+                console.log("hjhjhj")
+
+                var a = this.update_date.split("/")
+
+                var date = a[1] + "-" + a[0] + "-" + a[2]
+
+                var payload = new FormData()
+
+                var data = {
+                    emp_a: 1,
+                    durr: 45,
+                    id_service: 1
+                };
+
+                // payload.append('emp_a', 1)
+                // payload.append('durr', 45)
+                // payload.append('id_service', 1)
+
+                // payload.append('emp_a', emps.join(","))
+                // payload.append('durr', duration_array.join(","))
+                // payload.append('id_service', id_service.join(","))
+
+
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    dataType: "json",
+                    url: '/booking/api.php?getTimeSlot=getTimeSlot&selected_date=' + date,
+                    success: function(response) {
+                        console.log("new response")
+                        console.log(response)
+
+                        $('#exampleModalCenter').modal('hide')
+
+                        if (response.code == 200) {
+
+                            alert("Updated Successfully")
+                        }
+
+                        app.getAppointments()
+
+                    },
+                    error: function(response) {
+                        alert(response);
+                    }
+                });
+
+
+
+
+            },
             updateAppointment: function() {
 
 
@@ -430,7 +689,7 @@
                     type: "POST",
                     data: payload,
                     dataType: "json",
-                    url: '/new/api.php?updateAppointment=updateAppointment',
+                    url: '/booking/api.php?updateAppointment=updateAppointment',
                     success: function(response) {
                         console.log("new response")
                         console.log(response)
@@ -465,7 +724,7 @@
                     type: "POST",
                     data: payload,
                     dataType: "json",
-                    url: '/new/api.php?deleteAppointment=deleteAppointment',
+                    url: '/booking/api.php?deleteAppointment=deleteAppointment',
                     success: function(response) {
                         console.log("new response")
                         console.log(response)
@@ -522,6 +781,24 @@
                     locations: app.users,
                     events: app.appointments,
                     scrollWithYWheel: true,
+                    formatters: {
+                        date: function(date) {
+                            console.log("--date--")
+                            console.log(date)
+                            return $.fn.skedTape.format.date(date, 'l', '/');
+                        },
+                        // duration: function(start, end, opts) {
+                        //     return $.fn.skedTape.format.duration(start, end, {
+                        //         hrs: 'ч.',
+                        //         min: 'мин.'
+
+                        //     });
+
+                        // },
+
+
+                    }
+
                 });
 
                 $sked.on('event:click.skedtape', function(e) {
@@ -531,6 +808,12 @@
                     app.selected_appointment = e.detail.event.location
 
                     app.selected_appointment_data = app.appointments.filter(v => v.id_employee == e.detail.event.location)[0]
+
+                    var a = app.selected_appointment_data.appointment_date.split(" ")[0]
+
+                    a = a.split("-")[2] + "/" + a.split("-")[1] + "/" + a.split("-")[0]
+
+                    app.update_date = a
 
                     $('#exampleModalCenter').modal('show')
 
@@ -553,7 +836,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/new/api.php?getAppointmentList=getAppointmentList&date=' + this.send_date,
+                    url: '/booking/api.php?getAppointmentList=getAppointmentList&date=' + this.send_date,
                     data: $(this).serialize(),
                     success: function(response) {
                         console.log("new response")
@@ -592,8 +875,6 @@
 
     function today(i) {
 
-        console.log(i)
-
         var split = i.split(",")
 
         console.log(split[0], split[1], split[2], split[3], split[4])
@@ -606,8 +887,6 @@
     }
 
     function date(i) {
-
-        console.trace()
 
         var split = i.split("-")
 
@@ -638,4 +917,5 @@
         date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
         return date;
     }
+</script>
 </script>

@@ -301,7 +301,7 @@
 
                 axios({
                         method: 'POST',
-                        url: "/new/api.php?login=login",
+                        url: "/booking/api.php?login=login",
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         },
@@ -316,7 +316,7 @@
 
                             // this.$router.push('/admin')
 
-                            window.location.href = "/new/admin/dashboard.html"
+                            window.location.href = "/booking/admin/dashboard.html"
                         } else {
 
                             alert("Wrong Password")

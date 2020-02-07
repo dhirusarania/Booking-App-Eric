@@ -5,9 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/carousel.css" rel="stylesheet">
+
+    <link href="../css/framework.css" rel="stylesheet">
     <title>Document</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <style>
         p {
@@ -44,46 +49,258 @@
             margin: 10px;
             cursor: pointer;
         }
+        
+        .fa {
+            font-size: 16px;
+        }
+        
+        .sked-tape__event--low-gap {
+            background-color: #EC6A5E !important;
+            border: 1px solid #e32c1b !important;
+        }
+        
+        .faicon .fa {
+            font-size: 32px;
+            padding-top: 50px;
+        }
+        
+        .faicon b {
+            color: #949494
+        }
+        
+        .faicon a {
+            color: #337ab7
+        }
+        
+        .nav-item {
+            border-top: 3px solid transparent;
+        }
+        
+        .active {
+            border-top: 3px solid #1ab394 !important;
+        }
+        
+        .navbar-brand {
+            font-size: 40px;
+            font-family: 'Times, Times New Roman, Georgia, serif';
+        }
+        
+        .dashboard-header img {
+            width: 100%;
+        }
+        
+        .dashboard-header.row {
+            margin: 0 !important
+        }
+        
+        .header-padding {
+            margin-top: 95px;
+        }
+        
+        .datepicker-here {
+            width: 150px;
+        }
+        /*!
+     * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/)
+     * Copyright 2013-2016 Start Bootstrap
+     * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+     */
+        
+        body {
+            overflow-x: hidden;
+        }
+        /* Toggle Styles */
+        
+        #wrapper {
+            padding-left: 0;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+        
+        #wrapper.toggled {
+            padding-left: 250px;
+        }
+        
+        #sidebar-wrapper {
+            z-index: 1000;
+            position: fixed;
+            left: 250px;
+            width: 0;
+            height: 100%;
+            margin-left: -250px;
+            overflow-y: auto;
+            background: #000;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+        
+        #wrapper.toggled #sidebar-wrapper {
+            width: 250px;
+        }
+        
+        #page-content-wrapper {
+            width: 100%;
+            position: absolute;
+            padding: 110px 15px;
+        }
+        
+        #wrapper.toggled #page-content-wrapper {
+            position: absolute;
+            margin-right: -250px;
+        }
+        /* Sidebar Styles */
+        
+        .sidebar-nav {
+            position: absolute;
+            top: 0;
+            width: 250px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            text-indent: 20px;
+            line-height: 40px;
+        }
+        
+        .sidebar-nav li.active-nav {
+            background-color: white;
+        }
+        
+        .sidebar-nav li.active-nav a {
+            color: #000;
+        }
+        
+        .sidebar-nav li a {
+            display: block;
+            text-decoration: none;
+            color: #999999;
+        }
+        
+        .sidebar-nav li a:hover {
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .sidebar-nav li a:active,
+        .sidebar-nav li a:focus {
+            text-decoration: none;
+        }
+        
+        .sidebar-nav>.sidebar-brand {
+            height: 65px;
+            font-size: 18px;
+            line-height: 60px;
+        }
+        
+        .sidebar-nav>.sidebar-brand a {
+            color: #fff;
+        }
+        
+        .sidebar-nav>.sidebar-brand a:hover {
+            color: #fff;
+            background: none;
+        }
+        
+        .selected_services {
+            position: relative;
+        }
+        
+        @media(min-width:601px) {
+            #wrapper {
+                padding-left: 250px;
+            }
+            #wrapper.toggled {
+                padding-left: 0;
+            }
+            #sidebar-wrapper {
+                width: 250px;
+            }
+            #wrapper.toggled #sidebar-wrapper {
+                width: 0;
+            }
+            #page-content-wrapper {
+                padding: 20px;
+                position: relative;
+            }
+            #wrapper.toggled #page-content-wrapper {
+                position: relative;
+                margin-right: 0;
+            }
+            .datepickers-container {
+                z-index: 3000
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <header class="bg-black  fixed-top">
+    <header class="bg-black hide-on-med-and-up  fixed-top">
         <nav class="container navbar navbar-expand-md navbar-dark">
-            <a class="navbar-brand" href="#">Louis</a>
+            <a class="navbar-brand" href="#">Admin</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Appointments</a>
+                    </li>
+                    <li class="nav-itemactive">
+                        <a class="nav-link" href="#">Shortcuts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Prenota</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Chi siamo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Dove siamo</a>
+                        <a class="nav-link" href="#">Overview</a>
                     </li>
                 </ul>
-                <div id="htk" class="header_tk  ml-auto" style="float: right; color: #FFFFFF;">
-                    <h3>
-                        <i class="fa fa-phone ng-binding">&nbsp;&nbsp;123456789</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-envelope-o ng-binding">&nbsp;&nbsp;demo@gmail.com</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-map-marker ng-binding">&nbsp;&nbsp; - PIAZZA 10 -229 (MI)</i></h3>
-                </div>
 
             </div>
         </nav>
     </header>
 
 
-    <div class="" style="margin-top: 80px">
-        <div style="display: flex;justify-content: center;flex-wrap: wrap;" id="calendar">
 
-            <!-- <div class="date" style="display: flex;border:1px solid #cccccc; width: 80px;height:50px;padding: 5px;border-radius: 3px;margin:0 10px;cursor: pointer;">
+    <main role="main" id="create">
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="#">
+                            Admin Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">Appointments</a>
+                    </li>
+                    <li class="active-nav">
+                        <a href="/booking/admin/createappointment.html">Create Appointment</a>
+                    </li>
+                    <li>
+                        <a href="#">Shortcuts</a>
+                    </li>
+                    <li>
+                        <a href="#">Overview</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+
+                <div class="" style="margin-top: 80px">
+                    <div style="display: flex;justify-content: center;flex-wrap: wrap;" id="calendar">
+
+                        <!-- <div class="date" style="display: flex;border:1px solid #cccccc; width: 80px;height:50px;padding: 5px;border-radius: 3px;margin:0 10px;cursor: pointer;">
                 <p style="margin: auto;"> <i class="fa fa-calendar"
                        aria-hidden="true"></i> Mer. <br>
                     02 Gen.</p>
@@ -102,25 +319,29 @@
                 <p style="margin: auto;"> <i class="fa fa-calendar"
                        aria-hidden="true"></i> Mer. <br>
                     05 Gen.</p> -->
-        </div>
-    </div>
-    <div class="time-section" id="times" style="display: flex;flex-direction: column;align-items: center;">
-        <!-- <div class="time">
+                    </div>
+                </div>
+                <div class="time-section" id="times" style="display: flex;flex-direction: column;align-items: center;">
+                    <!-- <div class="time">
                     <i class="fa fa-clock-o" aria-hidden="true"></i> 14:15
             </div> -->
-    </div>
+                </div>
 
 
-    </div>
+            </div>
+
+        </div>
+
+    </main>
 
 </body>
 
 </html>
 
-<script src="js/jquery-3.4.1.min.js"></script>
-<script src="js/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="js/moment.min.js"></script>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="../js/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="../js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="../js/moment.min.js"></script>
 <script>
     var opening_time = []
     var selected_date = moment().format('YYYY-MM-DD')
@@ -588,7 +809,7 @@
             localStorage.setItem('m_emp', JSON.stringify(old_data))
             localStorage.setItem('app_time', b)
 
-            window.location.href = "/new/confirm.html"
+            window.location.href = "/booking/admin/adminconfirm.html"
 
 
         } else {
