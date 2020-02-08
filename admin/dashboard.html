@@ -240,7 +240,7 @@
         }
         
         .switch-field label {
-            background-color: #e4e4e4;
+            background-color: #ffffff;
             color: rgba(0, 0, 0, 0.6);
             font-size: 14px;
             line-height: 1;
@@ -386,29 +386,38 @@
                                     <div class="form-group">
 
                                         <label for="exampleInputEmail1">Service</label>
-                                        <select class="form-control" id="sel1" v-model="selected_appointment_data['customer_name']">
-                                            <option v-for="p in all_services" :key="p.id">{{p.name}}</option>
+                                        <select v-on:change="getServices" class="form-control" id="sel1" v-model="selected_appointment_data['id_service']">
+                                            <option v-for="p in all_services" :value="p.id_service" :key="p.id">{{p.name}}</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Employees</label>
-                                        <select class="form-control" id="sel1" v-model="selected_appointment_data['customer_name']">
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option value="Golia Luisa">Golia Luisa</option>
-                                            <option>4</option>
-                                        </select>
+                                        <select v-on:change="getFreeApointments" class="form-control" id="sel1" v-model="selected_appointment_data['id_employee']">
+                                            <option v-for="p in all_employee_list" :value="p.id_employee" :key="p.id">{{p.employee_first_name}} {{p.employee_last_name}}</option>
+                                        </select >
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Date</label>
                                         <input v-on:change="getFreeApointments" type='text' readonly="readonly" class='datepicker-here1 form-control' v-model="update_date" data-date-format="dd/mm/yyyy" data-language='en' />
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Appointment Time</label>
+                                    <div class="form-group" v-if="default_appointment_date == update_date">
+                                        <label for="exampleInputEmail1">Current Time</label>
                                         <div class="switch-field">
-                                            <div v-for="p in 10">
-                                                <input type="radio" id="radio-three" name="switch-two" value="yes" checked />
-                                                <label for="radio-three">One</label>
+                                            <div>
+                                                <input type="radio" id="radio-default" name="switch-two" value="yes" checked/>
+                                                <label for="radio-default">{{selected_appointment_time}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Available Appointment Time</label>
+                                        <div v-if="final_slot.length == 0">
+                                            <p>No Free Slots</p>
+                                        </div>
+                                        <div v-else class="switch-field">
+                                            <div v-for="(p, index) in final_slot" :key="p">
+                                                <input type="radio" :id="'radio-'+ index" name="switch-two" value="yes" />
+                                                <label :for="'radio-'+ index">{{p}}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -420,7 +429,7 @@
                     <div class="modal-footer">
                         <button type="button" v-on:click="deleteAppointment" class="btn btn-danger" data-dismiss="modal">Delete</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" v-on:click="updateAppointment" class="btn btn-primary">Save changes</button>
+                        <button type="button" v-on:click="updateAppointment" class="btn btn-primary">Update Appointment</button>
                     </div>
                 </div>
             </div>
@@ -493,14 +502,15 @@
             selected_appointment_data: [],
             all_services: [],
             selected_service_id: 0,
-            all_employee_list: []
+            all_employee_list: [],
+            final_slot: [],
+            selected_appointment_time: "",
+            default_appointment_date: "",
+            default_appointment_time: ""
         },
         mounted() {
 
             var that = this
-
-            this.getAllServices()
-
 
             var dp1 = $(".changeapppointment")
                 .datepicker({
@@ -509,6 +519,7 @@
                     minutesStep: 15
                 })
 
+            this.getAllServices()
 
             var dp1 = $(".datepicker-here")
                 .datepicker({
@@ -582,16 +593,17 @@
         },
         methods: {
 
-            getAllServices: function() {
+            getAllServices: function(id) {
 
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?getAllServices=getAllServices',
-                    data: $(this).serialize(),
+                    url: '/booking/api.php?getAllServicesAdmin=getAllServicesAdmin',
                     success: function(response) {
                         console.log(response)
                         app.all_services = response
+
+                        app.getServiceIDBasedEmployees(id)
 
                     },
                     error: function(response) {
@@ -602,21 +614,30 @@
 
 
             },
-            getServiceIDBasedEmployees: function() {
+            getServiceIDBasedEmployees: function(service) {
 
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + $(this).data('id'),
+                    url: '/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + service,
                     data: $(this).serialize(),
                     success: function(response) {
                         console.log(response)
                         app.all_employee_list = response
 
+                        app.getFreeApointments()
+
 
                     }
                 });
 
+
+
+            },
+            getServices: function() {
+
+
+                this.getServiceIDBasedEmployees(this.selected_appointment_data['id_service'])
 
 
             },
@@ -632,9 +653,9 @@
                 var payload = new FormData()
 
                 var data = {
-                    emp_a: 1,
-                    durr: 45,
-                    id_service: 1
+                    emp_a: this.selected_appointment_data['id_employee'],
+                    durr: this.all_services[this.selected_appointment_data['id_service']].worker_duration,
+                    id_service: this.selected_appointment_data['id_service']
                 };
 
                 // payload.append('emp_a', 1)
@@ -655,12 +676,7 @@
                         console.log("new response")
                         console.log(response)
 
-                        $('#exampleModalCenter').modal('hide')
-
-                        if (response.code == 200) {
-
-                            alert("Updated Successfully")
-                        }
+                        app.final_slot = response.final_slot
 
                         app.getAppointments()
 
@@ -810,10 +826,18 @@
                     app.selected_appointment_data = app.appointments.filter(v => v.id_employee == e.detail.event.location)[0]
 
                     var a = app.selected_appointment_data.appointment_date.split(" ")[0]
-
+                    
+                    app.default_appointment_date = app.selected_appointment_data.appointment_date.split(" ")[0]
+                    
                     a = a.split("-")[2] + "/" + a.split("-")[1] + "/" + a.split("-")[0]
+                    
+                    app.default_appointment_date = app.default_appointment_date.split("-")[2] + "/" + app.default_appointment_date.split("-")[1] + "/" + app.default_appointment_date.split("-")[0]
+                    
 
                     app.update_date = a
+
+                    app.selected_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
+                    app.default_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
 
                     $('#exampleModalCenter').modal('show')
 

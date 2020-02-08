@@ -462,6 +462,31 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
    exit;
 
 
+}else if (isset($_REQUEST['getAllServicesAdmin']) && $_REQUEST['getAllServicesAdmin'] == "getAllServicesAdmin") {
+
+
+
+    $data = array();
+
+    $query = mysqli_query($con, "SELECT * FROM services WHERE 1") or die(mysqli_error($con));
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+
+                $data[] = $row;
+            
+        }
+    }
+
+
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+
+
+
+
 }else if (isset($_REQUEST['getAllServices']) && $_REQUEST['getAllServices'] == "getAllServices") {
 
     // url : http://localhost/booking/api.php?getAllServices=getAllServices
@@ -478,9 +503,11 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
             } else
             if ($row['id_commodity_sector'] == 2) {
                 $data['estetica'][] = $row;
-            }
+            
         }
     }
+
+}
 
 
     $res = json_encode($data);
