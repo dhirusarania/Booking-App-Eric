@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        p {
+            font-size: 13px;
+        }
+        
+        .btn-primary {
+            color: black
+        }
+        
+        .time {
+            border: 1px solid gainsboro;
+            padding: 7px;
+            border-radius: 5px;
+            width: 100px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="bg-black  fixed-top">
+        <nav class="container navbar navbar-expand-md navbar-dark">
+            <a class="navbar-brand" href="#">Louis</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Prenota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Chi siamo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dove siamo</a>
+                    </li>
+                </ul>
+                <div id="htk" class="header_tk  ml-auto" style="float: right; color: #FFFFFF;">
+                    <h3>
+                        <i class="fa fa-phone ng-binding">&nbsp;&nbsp;123456789</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-envelope-o ng-binding">&nbsp;&nbsp;demo@gmail.com</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-map-marker ng-binding">&nbsp;&nbsp; - PIAZZA 10 -229 (MI)</i></h3>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="container" style="margin-top: 80px">
+
+        <div class="d-flex justify-content-around">
+            <form style="width:100%;text-align: center;">
+                <h4 class="center">Fill Up contact Form</h4>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Phone Number</label>
+                    <input type="text" class="form-control" id="phone" placeholder="Password">
+                </div>
+                <div class="form-group">
+
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div type="button" class="btn btn-primary" onclick="submit()">Confirm</div>
+            </form>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script>
+    if (localStorage.getItem('emp') == null) {
+
+        window.location.href = "/new/index.html"
+
+
+    }
+
+
+    function submit() {
+
+
+        console.log("sub")
+
+        var payload = new FormData()
+
+
+
+        var a = JSON.parse(localStorage.getItem('m_emp'))
+
+
+        console.log(a)
+
+        console.log(a)
+
+        var b = localStorage.getItem('app_date') + " " + localStorage.getItem('app_time')
+
+        console.log(b)
+
+        a[0]['app_time'] = b;
+
+        for (i = 1; i < a.length; i++) {
+
+
+            a[i]['app_time'] = moment(a[i - 1]['app_time'], 'YYYY-MM-DD HH:mm').add(a[i - 1]['worker_duration'], 'minutes').format('YYYY-MM-DD HH:mm')
+
+        }
+
+        console.log(a)
+
+        payload.append('emp', JSON.stringify(a))
+        payload.append('customer_name', $("#name").val())
+        payload.append('appointment_date', localStorage.getItem('app_date') + " " + localStorage.getItem('app_time'))
+        payload.append('notes', "Tel:" + $("#phone").val() + " Email: " + $("#email").val())
+        payload.append('service_name', localStorage.getItem('service_name'))
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: '/new/api.php?saveAppointment=saveAppointment',
+            "processData": false,
+            "mimeType": "multipart/form-data",
+            "contentType": false,
+            "data": payload,
+            success: function(response) {
+
+                console.log(response['status'])
+
+                if (response.status == 200) {
+
+                    alert("Successfully Added")
+                    window.location.href = "/new"
+
+                } else {
+
+                    alert("Error")
+                }
+
+
+
+
+
+            },
+            error: function() {
+
+
+
+            }
+
+        })
+
+    }
+</script>

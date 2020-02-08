@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="css/style.css" rel="stylesheet" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <style>
+        p {
+            font-size: 13px;
+        }
+        
+        .active {
+            background-color: #c5ff82;
+        }
+        
+        .time {
+            border: 1px solid gainsboro;
+            padding: 7px;
+            border-radius: 5px;
+            width: 100px;
+            margin: 10px 0;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .deactive {
+            background: #d0d0d0;
+            opacity: 0.7;
+        }
+        
+        .date {
+            display: flex;
+            user-select: none;
+            border: 1px solid #cccccc;
+            width: 80px;
+            height: 50px;
+            padding: 5px;
+            border-radius: 3px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="bg-black  fixed-top">
+        <nav class="container navbar navbar-expand-md navbar-dark">
+            <a class="navbar-brand" href="#">Louis</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Prenota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Chi siamo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dove siamo</a>
+                    </li>
+                </ul>
+                <div id="htk" class="header_tk  ml-auto" style="float: right; color: #FFFFFF;">
+                    <h3>
+                        <i class="fa fa-phone ng-binding">&nbsp;&nbsp;123456789</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-envelope-o ng-binding">&nbsp;&nbsp;demo@gmail.com</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-map-marker ng-binding">&nbsp;&nbsp; - PIAZZA 10 -229 (MI)</i></h3>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="" style="margin-top: 80px">
+        <div style="display: flex;justify-content: center;flex-wrap: wrap;" id="calendar">
+
+            <!-- <div class="date" style="display: flex;border:1px solid #cccccc; width: 80px;height:50px;padding: 5px;border-radius: 3px;margin:0 10px;cursor: pointer;">
+                <p style="margin: auto;"> <i class="fa fa-calendar"
+                       aria-hidden="true"></i> Mer. <br>
+                    02 Gen.</p>
+            </div>
+            <div class="date" style="display: flex;border:1px solid #cccccc; width: 80px;height:50px;padding: 5px;border-radius: 3px;margin:0 10px;cursor: pointer;">
+                <p style="margin: auto;"> <i class="fa fa-calendar"
+                       aria-hidden="true"></i> Mer. <br>
+                    03 Gen.</p>
+            </div>
+            <div class="date" style="display: flex;border:1px solid #cccccc; width: 80px;height:50px;padding: 5px;border-radius: 3px;margin:0 10px;cursor: pointer;">
+                <p style="margin: auto;"> <i class="fa fa-calendar"
+                       aria-hidden="true"></i> Mer. <br>
+                    04 Gen.</p>
+            </div>
+            <div class="date" style="display: flex;border:1px solid #cccccc; width: 80px;height:50px;padding: 5px;border-radius: 3px;margin:0 10px;cursor: pointer;">
+                <p style="margin: auto;"> <i class="fa fa-calendar"
+                       aria-hidden="true"></i> Mer. <br>
+                    05 Gen.</p> -->
+        </div>
+    </div>
+    <div class="time-section" id="times" style="display: flex;flex-direction: column;align-items: center;">
+        <!-- <div class="time">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> 14:15
+            </div> -->
+    </div>
+
+
+    </div>
+
+</body>
+
+</html>
+
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="js/moment.min.js"></script>
+<script>
+    var opening_time = []
+    var selected_date = moment().format('YYYY-MM-DD')
+    var modified_emp_list = []
+
+    if (localStorage.getItem('emp') == null) {
+
+        window.location.href = "/new/index.html"
+
+
+    }
+
+    var date_line = 0
+
+    console.log(moment().format('hh:mm'))
+
+    init()
+
+    function getTimeSlot(e) {
+        date_line = parseInt(e)
+        console.log(e)
+        console.log(moment().add(e, 'days').format('dddd'))
+
+        selected_date = moment().add(e, 'days').format('YYYY-MM-DD')
+
+
+        $('#times').empty()
+
+        $(".active").removeClass('active')
+        $("#date-" + e).addClass('active')
+
+        console.log(opening_time)
+
+        // console.log(opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_start_time"])
+
+        // var datee = moment().add(e, 'days').format('YYYY-MM-DD')
+
+        // var s = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_start_time"]
+        // var e = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_end_time"]
+
+        // var start_time_hour = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_start_time"].split(":")[0]
+        // var start_time_minute = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_start_time"].split(":")[1]
+
+        // var end_time_hour = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_end_time"].split(":")[0]
+        // var end_time_minute = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_end_time"].split(":")[1]
+
+        // var time_array = []
+
+        // console.log(e, s)
+        // console.log(moment(s, 'HH:mm:ss').add(900, 'seconds').format('hh:mm'))
+        // console.log(end_time_minute - start_time_minute)
+        console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+
+
+        console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+
+        var emps = []
+        var duration = 0
+        var duration_array = []
+
+        var id_service = []
+
+        var parsed = JSON.parse(localStorage.getItem('emp'))
+
+
+        var array = []
+
+        for (var i = 0; i < parsed.length; i++) {
+
+            emps.push(parsed[i].emp)
+            duration_array.push(parsed[i].worker_duration)
+            id_service.push(parsed[i].id_service)
+            duration = duration + parseInt(parsed[i].worker_duration)
+
+            var b = {}
+            b['emp_id'] = parsed[i].emp
+            b['duration'] = parseInt(parsed[i].worker_duration)
+
+
+            array.push(b)
+
+
+        }
+
+        // totalTaxes = array.reduce(function (sum, tax) {
+        //     return sum + array.duration;
+        // }, 0);
+
+        console.log(emps)
+            // console.log(totalTaxes)
+        console.log(duration_array.join(","))
+
+        // emps = emps.filter((v, i, a) => a.indexOf(v) === i);
+
+        var obj = parsed
+
+        var holder = {};
+        var obj2 = [];
+
+        obj.forEach(function(d) {
+            if (holder.hasOwnProperty(d.emp)) {
+                holder[d.emp] = holder[d.emp] + parseInt(d.worker_duration);
+            } else {
+                holder[d.emp] = parseInt(d.worker_duration);
+                obj2.push({
+                    emp: d.emp,
+                    duration: parseInt(d.worker_duration)
+                });
+            }
+        });
+
+        console.log(holder)
+
+
+        for (var prop in holder) {}
+
+        console.log(obj2);
+
+        var emps_array = []
+
+        var fruits = obj2;
+        var fk = fruits.keys();
+
+        for (x of fk) {
+            emps_array.push(fruits[x].duration)
+        }
+
+        var payload = new FormData()
+
+        // var d = [ { 'emp_id' : 12 , 'duration' : 120 } , { 'emp_id' : 8 , 'duration' : 30 } ]
+
+        payload.append('emp_a', emps.join(","))
+        payload.append('durr', duration_array.join(","))
+        payload.append('id_service', id_service.join(","))
+
+        $.ajax({
+            type: "POST",
+            "processData": false,
+            "mimeType": "multipart/form-data",
+            "contentType": false,
+            data: payload,
+            dataType: "json",
+            url: '/new/api.php?getTimeSlot=getTimeSlot&emp_id=' + 14 + "&selected_date=" + selected_date + "&total=" + duration,
+            success: function(response) {
+
+                console.log("response")
+                console.log(response)
+                console.log(response['emp_appointment_today'])
+
+                var busy = []
+
+                $('#times').empty()
+
+
+                var d1 = document.getElementById('times')
+
+                modified_emp_list = response.selected_info
+
+                if (date_line == 0) {
+
+                    response.final_slot = response.final_slot.filter(function(e) {
+                        return +e.replace(':', '') > moment().add(date_line, 'days').format('HH:mm').replace(':', '');
+                    });
+
+                }
+
+
+
+                if (response.source != "booking_personal_appointments") {
+                    if (response.diff != 0) {
+
+                        if (response.final_slot.length != 0) {
+
+
+                            for (var i = 0; i < response['final_slot'].length; i++) {
+
+
+                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + response['final_slot'][i] + '</div>');
+
+
+                            }
+
+                        } else {
+
+                            d1.insertAdjacentHTML('beforeend', ' <div class="time">No Free Slots Available for your choice</div>');
+
+
+
+                        }
+                    } else {
+
+
+                        d1.insertAdjacentHTML('beforeend', ' <div class="time">Store Closed</div>');
+
+                    }
+                } else {
+                    d1.insertAdjacentHTML('beforeend', ' <div class="time">One of the Employee Selected is not Available.</div>');
+                }
+
+                console.log(busy)
+
+
+                // for (var i = 0; i < (response['diff']) * 4; i++) {
+
+                //     if (!busy.includes(moment(s, 'HH:mm:ss').add(i * 900, 'seconds').format('HH:mm:ss'))) {
+                //         time_array.push(moment(s, 'HH:mm:ss').add(i * 900, 'seconds').format('HH:mm'))
+
+                //         var d1 = document.getElementById('times')
+
+                //         d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + datee + '","' + moment(s, 'HH:mm:ss').add(i * 900, 'seconds').format('HH:mm') + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + moment(s, 'HH:mm:ss').add(i * 900, 'seconds').format('HH:mm') + '</div>');
+
+                //     }
+
+
+                // }
+
+            }
+
+        })
+
+
+
+    }
+
+    // function getTimeSlot(e) {
+    //     console.log(e)
+    //     console.log(moment().add(e, 'days').format('dddd'))
+
+    //     selected_date = moment().add(e, 'days').format('YYYY-MM-DD')
+
+
+    //     $('#times').empty()
+
+    //     $(".active").removeClass('active')
+    //     $("#date-" + e).addClass('active')
+
+    //     console.log(opening_time)
+
+    //     // console.log(opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_start_time"])
+
+    //     // var datee = moment().add(e, 'days').format('YYYY-MM-DD')
+
+    //     // var s = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_start_time"]
+    //     // var e = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_end_time"]
+
+    //     // var start_time_hour = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_start_time"].split(":")[0]
+    //     // var start_time_minute = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_start_time"].split(":")[1]
+
+    //     // var end_time_hour = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_end_time"].split(":")[0]
+    //     // var end_time_minute = opening_time[moment().add(e, 'days').format('dddd').toLowerCase() + "_end_time"].split(":")[1]
+
+    //     // var time_array = []
+
+    //     // console.log(e, s)
+    //     // console.log(moment(s, 'HH:mm:ss').add(900, 'seconds').format('hh:mm'))
+    //     // console.log(end_time_minute - start_time_minute)
+    //     console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+
+
+    //     console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+
+    //     var emps = []
+    //     var duration = 0
+    //     var duration_array = []
+
+    //     var parsed = JSON.parse(localStorage.getItem('emp'))
+
+
+    //     var array = []
+
+    //     for (var i = 0; i < parsed.length; i++) {
+
+    //         emps.push(parsed[i].emp)
+    //         duration_array.push(parsed[i].worker_duration)
+    //         duration = duration + parseInt(parsed[i].worker_duration)
+
+    //         var b = {}
+    //         b['emp_id'] = parsed[i].emp
+    //         b['duration'] = parseInt(parsed[i].worker_duration)
+
+
+    //         array.push(b)
+
+
+    //     }
+
+    //     // totalTaxes = array.reduce(function (sum, tax) {
+    //     //     return sum + array.duration;
+    //     // }, 0);
+
+    //     console.log(emps)
+    //     // console.log(totalTaxes)
+    //     console.log(duration_array.join(","))
+
+    //     emps = emps.filter((v, i, a) => a.indexOf(v) === i);
+
+    //     var obj = parsed
+
+    //     var holder = {};
+
+    //     obj.forEach(function (d) {
+    //         if (holder.hasOwnProperty(d.emp)) {
+    //             holder[d.emp] = holder[d.emp] + parseInt(d.worker_duration);
+    //         } else {
+    //             holder[d.emp] = parseInt(d.worker_duration);
+    //         }
+    //     });
+
+    //     var obj2 = [];
+
+    //     for (var prop in holder) {
+    //         obj2.push({ emp: prop, duration: holder[prop] });
+    //     }
+
+    //     console.log(obj2);
+
+    //     var emps_array = []
+
+    //     var fruits = obj2;
+    //     var fk = fruits.keys();
+
+    //     for (x of fk) {
+    //         emps_array.push(fruits[x].duration)
+    //     }
+
+    //     var payload = new FormData()
+
+    //     // var d = [ { 'emp_id' : 12 , 'duration' : 120 } , { 'emp_id' : 8 , 'duration' : 30 } ]
+
+    //     payload.append('emp_a', emps.join(","))
+    //     payload.append('durr', emps_array.join(","))
+
+    //     $.ajax({
+    //         type: "POST",
+    //         "processData": false,
+    //         "mimeType": "multipart/form-data",
+    //         "contentType": false,
+    //         data: payload,
+    //         dataType: "json",
+    //         url: '/new/api.php?getopentime=getopentime&emp_id=' + 14 + "&selected_date=" + selected_date + "&total=" + duration,
+    //         success: function (response) {
+
+    //             console.log("response")
+    //             console.log(response)
+    //             console.log(response['emp_appointment_today'])
+
+    //             var busy = []
+
+    //             var d1 = document.getElementById('times')
+
+    //             if (response.diff != 0) {
+
+    //                 if (response.final_slot.length != 0) {
+
+
+    //                     for (var i = 0; i < response['final_slot'].length; i++) {
+
+
+    //                         d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(0, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + response['final_slot'][i] + '</div>');
+
+
+    //                     }
+
+    //                 } else {
+
+    //                     d1.insertAdjacentHTML('beforeend', ' <div class="time">No Free Slots Available for your choice</div>');
+
+
+    //                 }
+    //             } else {
+
+
+    //                 d1.insertAdjacentHTML('beforeend', ' <div class="time">Store Closed</div>');
+
+    //             }
+
+    //             console.log(busy)
+
+
+    //             // for (var i = 0; i < (response['diff']) * 4; i++) {
+
+    //             //     if (!busy.includes(moment(s, 'HH:mm:ss').add(i * 900, 'seconds').format('HH:mm:ss'))) {
+    //             //         time_array.push(moment(s, 'HH:mm:ss').add(i * 900, 'seconds').format('HH:mm'))
+
+    //             //         var d1 = document.getElementById('times')
+
+    //             //         d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + datee + '","' + moment(s, 'HH:mm:ss').add(i * 900, 'seconds').format('HH:mm') + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + moment(s, 'HH:mm:ss').add(i * 900, 'seconds').format('HH:mm') + '</div>');
+
+    //             //     }
+
+
+    //             // }
+
+    //         }
+
+    //     })
+
+
+
+    // }
+
+
+
+    function render_date(center_date) {
+
+        $("#calendar").empty()
+        var d1 = document.getElementById('calendar');
+        d1.insertAdjacentHTML('beforeend', '<div class="date" onclick="render_prev_date()"><p style="margin: auto;text-align:center"> <i class="fa fa-arrow-circle-left" aria-hidden="true"></i><br>Prec.</p></div>');
+
+        min_date = center_date - 3
+        max_date = center_date + 3
+
+        console.log(min_date, max_date)
+
+        for (var i = min_date; i <= max_date; i++) {
+
+            console.log(i)
+
+            if (i < 0) {
+
+                d1.insertAdjacentHTML('beforeend', '<div class="date deactive" id="date-' + i + '"><p style="margin: auto;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().add(i, 'days').format('MMM') + '<br>' + moment().add(i, 'days').format('DD') + ' ' + moment().add(i, 'days').format('ddd') + '</p></div>');
+
+            } else {
+
+                d1.insertAdjacentHTML('beforeend', '<div class="date" id="date-' + i + '" onclick=getTimeSlot("' + i + '")><p style="margin: auto;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().add(i, 'days').format('MMM') + '<br>' + moment().add(i, 'days').format('DD') + ' ' + moment().add(i, 'days').format('ddd') + '</p></div>');
+
+
+            }
+
+
+        }
+
+        d1.insertAdjacentHTML('beforeend', '<div class="date" onclick="render_next_date()"><p style="margin: auto;text-align:center;"> <i class="fa fa-arrow-circle-right" aria-hidden="true"></i><br>Succ.</p></div>');
+
+        $("#date-" + center_date).addClass('active')
+
+        getTimeSlot(center_date)
+
+    }
+
+
+
+
+    function setTime(a, b) {
+
+        console.log(a)
+        console.log(b)
+
+        var old_data = JSON.parse(localStorage.getItem('emp'))
+        var new_data = modified_emp_list
+
+        if (old_data.length == new_data.length) {
+
+            old_data.forEach(function(item, index) {
+                if (old_data[index].emp == 0) {
+                    console.log('sss')
+                    old_data[index].emp = new_data[index].id_employee
+                }
+            })
+
+
+
+
+            localStorage.setItem('app_date', a)
+            localStorage.setItem('m_emp', JSON.stringify(old_data))
+            localStorage.setItem('app_time', b)
+
+            window.location.href = "/new/confirm.html"
+
+
+        } else {
+            alert('database error')
+        }
+
+
+    }
+
+    function render_next_date() {
+
+        console.log("Next Date")
+
+        date_line += 1
+
+        render_date(date_line)
+    }
+
+    function render_prev_date() {
+
+        console.log("Next Date")
+
+        date_line -= 1
+
+        render_date(date_line)
+    }
+
+
+
+
+    function init() {
+
+        console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+
+        var emps = []
+        var duration = 0
+        var duration_array = []
+        var id_service = []
+
+        var parsed = JSON.parse(localStorage.getItem('emp'))
+
+
+        var array = []
+
+        for (var i = 0; i < parsed.length; i++) {
+
+            emps.push(parsed[i].emp)
+            duration_array.push(parsed[i].worker_duration)
+            id_service.push(parsed[i].id_service)
+            duration = duration + parseInt(parsed[i].worker_duration)
+
+            var b = {}
+            b['emp_id'] = parsed[i].emp
+            b['duration'] = parseInt(parsed[i].worker_duration)
+
+
+            array.push(b)
+
+
+        }
+
+        // totalTaxes = array.reduce(function (sum, tax) {
+        //     return sum + array.duration;
+        // }, 0);
+
+        console.log(emps)
+            // console.log(totalTaxes)
+        console.log(duration_array.join(","))
+
+        // emps = emps.filter((v, i, a) => a.indexOf(v) === i);
+
+        var obj = parsed
+
+        var holder = {};
+
+        obj.forEach(function(d) {
+            if (holder.hasOwnProperty(d.emp)) {
+                holder[d.emp] = holder[d.emp] + parseInt(d.worker_duration);
+            } else {
+                holder[d.emp] = parseInt(d.worker_duration);
+            }
+        });
+
+        var obj2 = [];
+
+        for (var prop in holder) {
+            obj2.push({
+                emp: prop,
+                duration: holder[prop]
+            });
+        }
+
+        console.log(obj2);
+
+        var emps_array = []
+
+        var fruits = obj2;
+        var fk = fruits.keys();
+
+        for (x of fk) {
+            emps_array.push(fruits[x].duration)
+        }
+
+        var payload = new FormData()
+
+        payload.append('emp_a', emps.join(","))
+        payload.append('durr', duration_array.join(","))
+        payload.append('id_service', id_service.join(","))
+
+        $.ajax({
+            type: "POST",
+            "processData": false,
+            "mimeType": "multipart/form-data",
+            "contentType": false,
+            data: payload,
+            dataType: "json",
+            url: '/new/api.php?getTimeSlot=getTimeSlot&selected_date=' + selected_date + "&total=" + duration,
+            success: function(response) {
+
+                console.log(response)
+
+                var d1 = document.getElementById('times')
+
+                modified_emp_list = response.selected_info
+
+
+                if (response.source != "booking_personal_appointments") {
+                    if (date_line == 0) {
+
+                        response.final_slot = response.final_slot.filter(function(e) {
+                            return +e.replace(':', '') > moment().add(date_line, 'days').format('HH:mm').replace(':', '');
+                        });
+
+                    }
+
+
+                    if (response.diff != 0) {
+
+                        if (response.final_slot.length != 0) {
+
+
+                            for (var i = 0; i < response['final_slot'].length; i++) {
+
+
+                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + response['final_slot'][i] + '</div>');
+
+
+                            }
+
+                        } else {
+
+                            d1.insertAdjacentHTML('beforeend', ' <div class="time">No Free Slots Available for your choice</div>');
+
+
+                        }
+                    } else {
+
+
+                        d1.insertAdjacentHTML('beforeend', ' <div class="time">Store Closed</div>');
+
+                    }
+                } else {
+                    d1.insertAdjacentHTML('beforeend', ' <div class="time">One of the Employee Selected is not Available.</div>');
+                }
+
+
+                opening_time = response['final_slot']
+
+                console.log(opening_time)
+
+                render_date(date_line)
+
+
+
+            }
+        });
+
+
+
+    }
+
+    // function init() {
+
+    //     console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+
+    //     var emps = []
+    //     var duration = 0
+    //     var duration_array = []
+
+    //     var parsed = JSON.parse(localStorage.getItem('emp'))
+
+
+    //     var array = []
+
+    //     for (var i = 0; i < parsed.length; i++) {
+
+    //         emps.push(parsed[i].emp)
+    //         duration_array.push(parsed[i].worker_duration)
+    //         duration = duration + parseInt(parsed[i].worker_duration)
+
+    //         var b = {}
+    //         b['emp_id'] = parsed[i].emp
+    //         b['duration'] = parseInt(parsed[i].worker_duration)
+
+
+    //         array.push(b)
+
+
+    //     }
+
+    //     // totalTaxes = array.reduce(function (sum, tax) {
+    //     //     return sum + array.duration;
+    //     // }, 0);
+
+    //     console.log(emps)
+    //     // console.log(totalTaxes)
+    //     console.log(duration_array.join(","))
+
+    //     emps = emps.filter((v, i, a) => a.indexOf(v) === i);
+
+    //     var obj = parsed
+
+    //     var holder = {};
+
+    //     obj.forEach(function (d) {
+    //         if (holder.hasOwnProperty(d.emp)) {
+    //             holder[d.emp] = holder[d.emp] + parseInt(d.worker_duration);
+    //         } else {
+    //             holder[d.emp] = parseInt(d.worker_duration);
+    //         }
+    //     });
+
+    //     var obj2 = [];
+
+    //     for (var prop in holder) {
+    //         obj2.push({ emp: prop, duration: holder[prop] });
+    //     }
+
+    //     console.log(obj2);
+
+    //     var emps_array = []
+
+    //     var fruits = obj2;
+    //     var fk = fruits.keys();
+
+    //     for (x of fk) {
+    //         emps_array.push(fruits[x].duration)
+    //     }
+
+    //     var payload = new FormData()
+
+    //     payload.append('emp_a', emps.join(","))
+    //     payload.append('durr', emps_array.join(","))
+
+    //     $.ajax({
+    //         type: "POST",
+    //         "processData": false,
+    //         "mimeType": "multipart/form-data",
+    //         "contentType": false,
+    //         data: payload,
+    //         dataType: "json",
+    //         url: '/new/api.php?getopentime=getopentime&selected_date=' + selected_date + "&total=" + duration,
+    //         success: function (response) {
+
+    //             console.log(response)
+
+    //             var d1 = document.getElementById('times')
+
+    //             if (response.diff != 0) {
+
+    //                 if (response.final_slot.length != 0) {
+
+
+    //                     for (var i = 0; i < response['final_slot'].length; i++) {
+
+
+    //                         d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(0, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + response['final_slot'][i] + '</div>');
+
+
+    //                     }
+
+    //                 } else {
+
+    //                     d1.insertAdjacentHTML('beforeend', ' <div class="time">No Free Slots Available for your choice</div>');
+
+
+    //                 }
+    //             } else {
+
+
+    //                 d1.insertAdjacentHTML('beforeend', ' <div class="time">Store Closed</div>');
+
+    //             }
+
+    //             opening_time = response['final_slot']
+
+    //             console.log(opening_time)
+
+    //             render_date(date_line)
+
+
+
+    //         }
+    //     });
+
+
+
+    // }
+</script>
+
+<script>
+</script>
