@@ -668,9 +668,9 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
 
     $data['code']  = "401";
 
-    $data['sss'] = "UPDATE booking_appointments set customer_name = '" . $_POST['customer_name'] . "' where id_appointment = '" . $_POST['id_appointment'] . "'" ;
+    $data['sss'] = "UPDATE booking_appointments set customer_name = '" . $_POST['customer_name'] . "', service_name = '" . $_POST['service_name'] . "', appointment_date = '" . $_POST['appointment_date'] . "', id_employee = '" . $_POST['id_employee'] . "', id_service = '" . $_POST['id_service'] . "' where id_appointment = '" . $_POST['id_appointment'] . "'" ;
 
-    $query = mysqli_query($con, "UPDATE booking_appointments set customer_name = '" . $_POST['customer_name'] . "' where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
+    $query = mysqli_query($con, "UPDATE booking_appointments set customer_name = '" . $_POST['customer_name'] . "', service_name = '" . $_POST['service_name'] . "', appointment_date = '" . $_POST['appointment_date'] . "', id_employee = '" . $_POST['id_employee'] . "', id_service = '" . $_POST['id_service'] . "' where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
 
     if ($query === TRUE) {
         $data['code']  = "200";

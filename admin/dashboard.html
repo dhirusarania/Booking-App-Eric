@@ -387,14 +387,18 @@
 
                                         <label for="exampleInputEmail1">Service</label>
                                         <select v-on:change="getServices" class="form-control" id="sel1" v-model="selected_appointment_data['id_service']">
-                                            <option v-for="p in all_services" :value="p.id_service" :key="p.id">{{p.name}}</option>
+                                            <option v-for="p in all_services"
+                                                    :value="p.id_service"
+                                                    :key="p.id">{{p.name}}</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Employees</label>
                                         <select v-on:change="getFreeApointments" class="form-control" id="sel1" v-model="selected_appointment_data['id_employee']">
-                                            <option v-for="p in all_employee_list" :value="p.id_employee" :key="p.id">{{p.employee_first_name}} {{p.employee_last_name}}</option>
-                                        </select >
+                                            <option v-for="p in all_employee_list"
+                                                    :value="p.id_employee"
+                                                    :key="p.id">{{p.employee_first_name}} {{p.employee_last_name}}</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Date</label>
@@ -404,7 +408,7 @@
                                         <label for="exampleInputEmail1">Current Time</label>
                                         <div class="switch-field">
                                             <div>
-                                                <input type="radio" id="radio-default" name="switch-two" value="yes" checked/>
+                                                <input type="radio" id="radio-default" name="switch-two" :value="selected_appointment_data['appointment_date']" checked />
                                                 <label for="radio-default">{{selected_appointment_time}}</label>
                                             </div>
                                         </div>
@@ -416,8 +420,10 @@
                                         </div>
                                         <div v-else class="switch-field">
                                             <div v-for="(p, index) in final_slot" :key="p">
-                                                <input type="radio" :id="'radio-'+ index" name="switch-two" value="yes" />
-                                                <label :for="'radio-'+ index">{{p}}</label>
+                                                <div v-if="p > current_time || default_appointment_date != update_date">
+                                                    <input type="radio" :id="'radio-'+ index" name="switch-two" :value="p" />
+                                                    <label :for="'radio-'+ index">{{p}}</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -450,6 +456,14 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Customer Name</label>
                                 <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Customer Email</label>
+                                <input type="text" v-model="selected_appointment_data['notes']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Customer Phone Number</label>
+                                <input type="text" v-model="selected_appointment_data['notes']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                             </div>
                             <!-- <div class="form-group">
                                 <label for="exampleInputPassword1">Change Date</label>
@@ -504,6 +518,7 @@
             selected_service_id: 0,
             all_employee_list: [],
             final_slot: [],
+            current_time: "",
             selected_appointment_time: "",
             default_appointment_date: "",
             default_appointment_time: ""
@@ -570,6 +585,13 @@
                         // var momentObj = moment(dateObj);
 
                         that.update_date = fd
+
+                        if (this.default_appointment_date == this.update_date) {
+
+                            that.current_time = moment().format('HH:mm')
+
+                        }
+
 
                         // that.calendar_start = momentObj.add(0, 'days').format('DD-MM-YYYY')
 
@@ -644,59 +666,86 @@
             getFreeApointments: function() {
 
 
-                console.log("hjhjhj")
-
-                var a = this.update_date.split("/")
-
-                var date = a[1] + "-" + a[0] + "-" + a[2]
-
-                var payload = new FormData()
-
-                var data = {
-                    emp_a: this.selected_appointment_data['id_employee'],
-                    durr: this.all_services[this.selected_appointment_data['id_service']].worker_duration,
-                    id_service: this.selected_appointment_data['id_service']
-                };
-
-                // payload.append('emp_a', 1)
-                // payload.append('durr', 45)
-                // payload.append('id_service', 1)
-
-                // payload.append('emp_a', emps.join(","))
-                // payload.append('durr', duration_array.join(","))
-                // payload.append('id_service', id_service.join(","))
+                console.log(this.selected_appointment_data.length)
 
 
-                $.ajax({
-                    type: "POST",
-                    data: data,
-                    dataType: "json",
-                    url: '/booking/api.php?getTimeSlot=getTimeSlot&selected_date=' + date,
-                    success: function(response) {
-                        console.log("new response")
-                        console.log(response)
-
-                        app.final_slot = response.final_slot
-
-                        app.getAppointments()
-
-                    },
-                    error: function(response) {
-                        alert(response);
-                    }
-                });
+                if (!jQuery.isEmptyObject(app.selected_appointment_data)) {
 
 
+                    console.log("hjhjhj")
+
+                    var a = this.update_date.split("/")
+
+                    var date = a[1] + "-" + a[0] + "-" + a[2]
+
+                    var payload = new FormData()
+
+                    var data = {
+                        emp_a: this.selected_appointment_data['id_employee'],
+                        durr: this.all_services[this.selected_appointment_data['id_service']].worker_duration,
+                        id_service: this.selected_appointment_data['id_service']
+                    };
+
+                    // payload.append('emp_a', 1)
+                    // payload.append('durr', 45)
+                    // payload.append('id_service', 1)
+
+                    // payload.append('emp_a', emps.join(","))
+                    // payload.append('durr', duration_array.join(","))
+                    // payload.append('id_service', id_service.join(","))
+
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        dataType: "json",
+                        url: '/booking/api.php?getTimeSlot=getTimeSlot&selected_date=' + date,
+                        success: function(response) {
+                            console.log("new response")
+                            console.log(response)
+
+                            app.final_slot = response.final_slot
+
+                            app.getAppointments()
+
+                        },
+                        error: function(response) {
+                            alert(response);
+                        }
+                    });
+
+                }
 
 
             },
             updateAppointment: function() {
 
+                var appointment_date = ""
+
+                if (this.default_appointment_date == this.update_date) {
+
+                    appointment_date = this.selected_appointment_data['appointment_date']
+
+                } else {
+
+                    var a = this.update_date.split("/")
+
+                    a = a[2] + "-" + a[1] + "-" + a[0]
+
+                    appointment_date = a + " " + $('input[name=switch-two]:checked').val() + ":00"
+                }
+
+                console.log(appointment_date)
+
 
 
                 var payload = {
                     id_appointment: app.selected_appointment_data['id_appointment'],
-                    customer_name: this.selected_appointment_data['customer_name']
+                    customer_name: app.selected_appointment_data['customer_name'],
+                    appointment_date: appointment_date,
+                    id_employee: app.selected_appointment_data['id_employee'],
+                    id_service: app.selected_appointment_data['id_service'],
+                    service_name: $("#sel1 option:selected").text(),
                 }
 
                 console.log(payload)
@@ -826,13 +875,13 @@
                     app.selected_appointment_data = app.appointments.filter(v => v.id_employee == e.detail.event.location)[0]
 
                     var a = app.selected_appointment_data.appointment_date.split(" ")[0]
-                    
+
                     app.default_appointment_date = app.selected_appointment_data.appointment_date.split(" ")[0]
-                    
+
                     a = a.split("-")[2] + "/" + a.split("-")[1] + "/" + a.split("-")[0]
-                    
+
                     app.default_appointment_date = app.default_appointment_date.split("-")[2] + "/" + app.default_appointment_date.split("-")[1] + "/" + app.default_appointment_date.split("-")[0]
-                    
+
 
                     app.update_date = a
 
