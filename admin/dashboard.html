@@ -346,10 +346,10 @@
                                 </li>
                                 <li v-for="p in all_filters">
                                     <form>
-                                        <div class="form-check" style="    display: flex;
+                                        <div class="form-check" style="display: flex;
                                         align-items: center;
                                         padding-left: 40px;">
-                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <input v-on:change="filter_update" type="checkbox" :value="p" class="form-check-input exampleCheck1" id="exampleCheck1">
                                             <label style="color:white" class="form-check-label" for="exampleCheck1">{{p}}</label>
                                         </div>
                                     </form>
@@ -556,6 +556,7 @@
             store_start: "",
             store_end: "",
             all_filters: "",
+            active_filters: []
         },
         mounted() {
 
@@ -658,6 +659,24 @@
                     error: function(response) {
                         alert(response.responseJSON.message);
                     }
+                });
+
+
+
+            },
+            filter_update: function(id) {
+
+                app.active_filters = []
+
+
+                $(".exampleCheck1").each(function(index) {
+
+                    if ($(this).prop('checked')) {
+                        console.log($(this).val());
+
+                        app.active_filters.push($(this).val())
+                    }
+
                 });
 
 
