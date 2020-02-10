@@ -13,7 +13,7 @@
     <link href="../css/framework.css" rel="stylesheet">
     <title>Document</title>
 
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         p {
             font-size: 13px;
@@ -251,9 +251,12 @@
             <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Appointments</a>
+                        <a class="nav-link" href="/booking/admin/dashboard.html">Appointments</a>
                     </li>
-                    <li class="nav-itemactive">
+                    <li class="nav-item">
+                        <a href="/booking/admin/createappointment.html">Create Appointments</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#">Shortcuts</a>
                     </li>
                     <li class="nav-item">
@@ -274,21 +277,21 @@
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
                     <li class="sidebar-brand">
-                        <a href="#">
+                        <a href="/booking/admin/dashboard.html">
                             Admin Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="#">Appointments</a>
+                        <a href="/booking/admin/dashboard.html">Appointments</a>
                     </li>
                     <li class="active-nav">
-                        <a href="/booking/admin/createappointment.html">Create Appointment</a>
+                        <a href="/booking/admin/createappointment.html">Create Appointments</a>
                     </li>
                     <li>
-                        <a href="#">Shortcuts</a>
+                        <a href=" # ">Shortcuts</a>
                     </li>
                     <li>
-                        <a href="#">Overview</a>
+                        <a href="# ">Overview</a>
                     </li>
                 </ul>
             </div>
@@ -339,8 +342,8 @@
 </html>
 
 <script src="../js/jquery-3.4.1.min.js"></script>
-<script src="../js/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="../js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
 <script src="../js/moment.min.js"></script>
 <script>
     var opening_time = []
