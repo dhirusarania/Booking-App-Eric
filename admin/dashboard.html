@@ -85,6 +85,10 @@
         .datepicker-here {
             width: 150px;
         }
+        
+        .clonned-time {
+            opacity: 0.4;
+        }
         /*!
  * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/)
  * Copyright 2013-2016 Start Bootstrap
@@ -306,6 +310,16 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Overview</a>
                         </li>
+
+                        <li v-for="p in all_filters">
+                            <form>
+                                <div class="form-check" style="display: flex;
+                                        align-items: center;">
+                                    <input v-on:change="filter_update1" type="checkbox" checked :value="p" class="form-check-input exampleCheck2" id="exampleCheck1">
+                                    <label style="color:white" class="form-check-label" for="exampleCheck1">{{p}}</label>
+                                </div>
+                            </form>
+                        </li>
                     </ul>
 
                 </div>
@@ -349,7 +363,7 @@
                                         <div class="form-check" style="display: flex;
                                         align-items: center;
                                         padding-left: 40px;">
-                                            <input v-on:change="filter_update" type="checkbox" :value="p" class="form-check-input exampleCheck1" id="exampleCheck1">
+                                            <input v-on:change="filter_update" type="checkbox" checked :value="p" class="form-check-input exampleCheck1" id="exampleCheck1">
                                             <label style="color:white" class="form-check-label" for="exampleCheck1">{{p}}</label>
                                         </div>
                                     </form>
@@ -556,7 +570,8 @@
             store_start: "",
             store_end: "",
             all_filters: "",
-            active_filters: []
+            active_filters: [],
+            current_moment: ""
         },
         mounted() {
 
@@ -565,37 +580,7 @@
             this.getAllServices()
             this.getAllAppointmentState()
 
-            var dp1 = $(".datepicker-here")
-                .datepicker({
-                    autoClose: true,
-                    onSelect: function onSelect(fd, date) {
-                        console.log("fd");
-                        console.log(fd);
 
-                        var a = fd.split("/")
-
-                        var date = a[1] + "-" + a[0] + "-" + a[2]
-
-
-
-                        var dateObj = new Date(date);
-
-                        var momentObj = moment(dateObj);
-
-                        that.date = fd
-
-                        // that.calendar_start = momentObj.add(0, 'days').format('DD-MM-YYYY')
-
-                        // var endDate = momentObj.add(1, 'days').format('DD-MM-YYYY')
-
-                        // that.calendar_end = endDate
-
-                        that.getAppointments(momentObj)
-                    }
-                })
-                .data("datepicker");
-
-            dp1.selectDate(new Date());
 
             var dp2 = $(".datepicker-here1")
                 .datepicker({
@@ -634,17 +619,12 @@
                 })
                 .data("datepicker");
 
-
-
-
-
-
-
-
         },
         methods: {
 
             getAllAppointmentState: function() {
+
+                var that = this
 
 
                 $.ajax({
@@ -654,6 +634,41 @@
                     success: function(response) {
                         console.log(response)
                         app.all_filters = response
+                        app.active_filters = response
+
+                        var dp1 = $(".datepicker-here")
+                            .datepicker({
+                                autoClose: true,
+                                onSelect: function onSelect(fd, date) {
+                                    console.log("fd");
+                                    console.log(fd);
+
+                                    var a = fd.split("/")
+
+                                    var date = a[1] + "-" + a[0] + "-" + a[2]
+
+
+
+                                    var dateObj = new Date(date);
+
+                                    var momentObj = moment(dateObj);
+
+                                    app.current_moment = momentObj
+
+                                    that.date = fd
+
+                                    // that.calendar_start = momentObj.add(0, 'days').format('DD-MM-YYYY')
+
+                                    // var endDate = momentObj.add(1, 'days').format('DD-MM-YYYY')
+
+                                    // that.calendar_end = endDate
+
+                                    that.getAppointments(momentObj)
+                                }
+                            })
+                            .data("datepicker");
+
+                        dp1.selectDate(new Date());
 
                     },
                     error: function(response) {
@@ -678,6 +693,31 @@
                     }
 
                 });
+
+
+                this.getAppointments(app.current_moment)
+
+
+
+            },
+
+            filter_update1: function(id) {
+
+                app.active_filters = []
+
+
+                $(".exampleCheck2").each(function(index) {
+
+                    if ($(this).prop('checked')) {
+                        console.log($(this).val());
+
+                        app.active_filters.push($(this).val())
+                    }
+
+                });
+
+
+                this.getAppointments(app.current_moment)
 
 
 
@@ -933,6 +973,9 @@
 
                 });
 
+                var a = $(".sked-tape__hours").eq(0).clone().addClass('clonned-time')
+                $('.sked-tape__event-row:nth-child(3n)').prepend(a)
+
                 $sked.on('event:click.skedtape', function(e) {
 
                     console.log(e)
@@ -965,57 +1008,68 @@
             getAppointments: function(momentObj1) {
 
 
+                console.log("getAppointment")
+
                 var that = this
 
-
-                var dateObj = new Date(this.date);
-
-                var momentObj = moment(dateObj);
-
-                this.send_date = momentObj.format('YYYY-MM-DD')
-
-
-                console.log("cleiedd")
-                $.ajax({
-                    type: "GET",
-                    dataType: "json",
-                    url: '/booking/api.php?getAppointmentList=getAppointmentList&date=' + this.send_date + '&filter=' + this.filter,
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        console.log("new response")
-                        console.log(response)
-                        app.users = response.users
-                        app.appointments = response.appointments
-                        app.store_start = response.store_open_time.start_time
-                        app.store_end = response.store_open_time.end_time
-
-                        that.calendar_start = momentObj1.add(0, 'days').format('DD-MM-YYYY') + " " + app.store_start.split(":")[0] + ":" + app.store_start.split(":")[1] + ":00"
-
-                        var endDate = momentObj1.add(0, 'days').format('DD-MM-YYYY') + " " + app.store_end.split(":")[0] + ":" + app.store_end.split(":")[1] + ":00"
-
-                        that.calendar_end = endDate
-
-                        for (var i = 0; i < app.appointments.length; i++) {
-
-                            app.appointments[i].start = today(app.appointments[i].start)
-                            app.appointments[i].end = today(app.appointments[i].end)
-
-                            console.log(app.appointments[i].start)
-                            console.log(app.appointments[i].end)
+                setTimeout(function() {
+                    console.log($(".exampleCheck1").length)
+                    $(".exampleCheck1").each(function(i) {
+                        console.log(i)
+                    })
 
 
+
+                    var dateObj = new Date(that.date);
+
+                    var momentObj = moment(dateObj);
+
+                    that.send_date = momentObj.format('YYYY-MM-DD')
+
+
+                    console.log("cleiedd")
+                    console.log(that.active_filters)
+                    $.ajax({
+                        type: "GET",
+                        dataType: "json",
+                        url: '/booking/api.php?getAppointmentList=getAppointmentList&date=' + that.send_date + '&filters=' + that.active_filters,
+                        success: function(response) {
+                            console.log("new response")
+                            console.log(response)
+                            app.users = response.users
+                            app.appointments = response.appointments
+                            app.store_start = response.store_open_time.start_time
+                            app.store_end = response.store_open_time.end_time
+
+                            that.calendar_start = momentObj1.add(0, 'days').format('DD-MM-YYYY') + " " + app.store_start.split(":")[0] + ":" + app.store_start.split(":")[1] + ":00"
+
+                            var endDate = momentObj1.add(0, 'days').format('DD-MM-YYYY') + " " + app.store_end.split(":")[0] + ":" + app.store_end.split(":")[1] + ":00"
+
+                            that.calendar_end = endDate
+
+                            for (var i = 0; i < app.appointments.length; i++) {
+
+                                app.appointments[i].start = today(app.appointments[i].start)
+                                app.appointments[i].end = today(app.appointments[i].end)
+
+                                console.log(app.appointments[i].start)
+                                console.log(app.appointments[i].end)
+
+
+                            }
+
+                            console.log(app.appointments)
+
+
+                            app.restartSchedule()
+
+                        },
+                        error: function(response) {
+                            alert(response);
                         }
+                    });
 
-                        console.log(app.appointments)
-
-
-                        app.restartSchedule()
-
-                    },
-                    error: function(response) {
-                        alert(response);
-                    }
-                });
+                }, 100);
             }
         }
     })

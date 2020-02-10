@@ -621,7 +621,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
 
     $data['sdsdsd'] =  "SELECT " . date("l", strtotime($_REQUEST['date'])) . "_start_time booking_diary_open_times where id_booking_diary = " . $_SERVER['id_booking_diary'];
 
-    $query = mysqli_query($con, "SELECT " . date("l", strtotime($_REQUEST['date'])) . "_start_time as start_time, " . date("l", strtotime($_REQUEST['date'])) . "_end_time as end_time from booking_diary_open_times where id_booking_diary = 1") or die(mysqli_error($con));
+    $query = mysqli_query($con, "SELECT " . date("l", strtotime($_REQUEST['date'])) . "_start_time as start_time, " . date("l", strtotime($_REQUEST['date'])) . "_end_time as end_time from booking_diary_open_times where id_booking_diary = 1 ") or die(mysqli_error($con));
 
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
@@ -638,8 +638,12 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     // $date = str_replace('/', '-', $origDate );
     // $newDate = date("Y-m-d", strtotime($date));
 
-    $data['ss'] = "SELECT id_appointment, appointment_date, id_employee, duration FROM booking_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59') union select id_appointment, appointment_date, id_employee, duration from booking_personal_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')";
-    $query = mysqli_query($con, "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')") or die(mysqli_error($con));
+    $data['getAppointmentList'] = "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" ;
+
+
+
+    $data['ss'] = "SELECT id_appointment, appointment_date, id_employee, duration FROM booking_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59') union select id_appointment, appointment_date, id_employee, duration from booking_personal_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59') and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" . ")";
+    $query = mysqli_query($con, "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" . ")") or die(mysqli_error($con));
 
     $data['appointments'] = [];
 
