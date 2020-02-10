@@ -239,7 +239,7 @@
             flex-wrap: wrap;
         }
         
-        .switch-field>div {
+        .switch-field>div>div {
             margin-right: 10px;
         }
         
@@ -386,8 +386,8 @@
                                 <input v-on:change="getAppointments" type='text' readonly="readonly" class='datepicker-here form-control' v-model="date" data-date-format="dd/mm/yyyy" data-language='en' />
                             </div>
 
-                            <button v-on:click="zoomin" style="    height: 40px;" class="btn ml-3" type="button">Zoom In</button>
-                            <button v-on:click="zoomout" style="    height: 40px;" class="btn ml-3" type="button">Zoom Out</button>
+                            <button v-on:click="zoomin" style="height: 40px;" class="btn ml-3" type="button">Zoom In</button>
+                            <button v-on:click="zoomout" style="height: 40px;" class="btn ml-3" type="button">Zoom Out</button>
 
                         </form>
 
@@ -579,12 +579,13 @@
 
             this.getAllServices()
             this.getAllAppointmentState()
-
+            that.current_time = moment().format('HH:mm')
 
 
             var dp2 = $(".datepicker-here1")
                 .datepicker({
                     autoClose: true,
+                    minDate: new Date(),
                     onSelect: function onSelect(fd, date) {
                         console.log("fd");
                         console.log(fd);
@@ -813,7 +814,7 @@
 
                             app.final_slot = response.final_slot
 
-                            app.getAppointments()
+                            app.getAppointments(app.current_moment)
 
                         },
                         error: function(response) {
@@ -829,18 +830,18 @@
 
                 var appointment_date = ""
 
-                if (this.default_appointment_date == this.update_date) {
+                // if (this.default_appointment_date == this.update_date && $('input[name=switch-two]:checked').val() == ) {
 
-                    appointment_date = this.selected_appointment_data['appointment_date']
+                //     appointment_date = this.selected_appointment_data['appointment_date']
 
-                } else {
+                // } else {
 
-                    var a = this.update_date.split("/")
+                var a = this.update_date.split("/")
 
-                    a = a[2] + "-" + a[1] + "-" + a[0]
+                a = a[2] + "-" + a[1] + "-" + a[0]
 
-                    appointment_date = a + " " + $('input[name=switch-two]:checked').val() + ":00"
-                }
+                appointment_date = a + " " + $('input[name=switch-two]:checked').val() + ":00"
+                    // }
 
                 console.log(appointment_date)
 
@@ -873,7 +874,7 @@
                             alert("Updated Successfully")
                         }
 
-                        app.getAppointments()
+                        app.getAppointments(app.current_moment)
 
                     },
                     error: function(response) {
@@ -910,7 +911,7 @@
                         }
 
 
-                        app.getAppointments()
+                        app.getAppointments(app.current_moment)
 
                     },
                     error: function(response) {
@@ -999,6 +1000,8 @@
                     app.default_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
 
                     $('#exampleModalCenter').modal('show')
+
+                    app.getFreeApointments()
 
                 });
 
