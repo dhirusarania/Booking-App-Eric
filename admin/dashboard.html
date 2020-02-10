@@ -148,6 +148,15 @@
             list-style: none;
         }
         
+        .sidebar-nav.rel {
+            position: static;
+            top: 0;
+            width: 250px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
         .sidebar-nav li {
             text-indent: 20px;
             line-height: 40px;
@@ -275,214 +284,236 @@
 
 <body>
 
+    <div id="admin">
+
+        <header class="bg-black hide-on-med-and-up  fixed-top">
+            <nav class="container navbar navbar-expand-md navbar-dark">
+                <a class="navbar-brand" href="#">Admin</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Appointments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Create Appointment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Shortcuts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Overview</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+        </header>
 
 
-    <header class="bg-black hide-on-med-and-up  fixed-top">
-        <nav class="container navbar navbar-expand-md navbar-dark">
-            <a class="navbar-brand" href="#">Admin</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Appointments</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Create Appointment</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Shortcuts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Overview</a>
-                    </li>
-                </ul>
 
-            </div>
-        </nav>
-    </header>
+        <main role="main">
+            <div id="wrapper">
 
+                <!-- Sidebar -->
+                <div id="sidebar-wrapper">
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-brand">
+                            <a href="#">
+                                Admin Dashboard
+                            </a>
+                        </li>
+                        <li class="active-nav">
+                            <a href="#">Appointments</a>
+                        </li>
+                        <li>
+                            <a href="/booking/admin/createappointment.html">Create Appointment</a>
+                        </li>
+                        <li>
+                            <a href="#">Shortcuts</a>
+                        </li>
+                        <li>
+                            <a href="#">Overview</a>
+                        </li>
+                        <li>
+                            <ul class="sidebar-nav rel">
+                                <li class="sidebar-brand">
+                                    <a href="#">
+                                        Filters
+                                    </a>
+                                </li>
+                                <li v-for="p in all_filters">
+                                    <form>
+                                        <div class="form-check" style="    display: flex;
+                                        align-items: center;
+                                        padding-left: 40px;">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label style="color:white" class="form-check-label" for="exampleCheck1">{{p}}</label>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
 
+                </div>
+                <!-- /#sidebar-wrapper -->
 
-    <main role="main" id="admin">
-        <div id="wrapper">
+                <!-- Page Content -->
+                <div id="page-content-wrapper">
 
-            <!-- Sidebar -->
-            <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <li class="sidebar-brand">
-                        <a href="#">
-                            Admin Dashboard
-                        </a>
-                    </li>
-                    <li class="active-nav">
-                        <a href="#">Appointments</a>
-                    </li>
-                    <li>
-                        <a href="/booking/admin/createappointment.html">Create Appointment</a>
-                    </li>
-                    <li>
-                        <a href="#">Shortcuts</a>
-                    </li>
-                    <li>
-                        <a href="#">Overview</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /#sidebar-wrapper -->
+                    <div class="">
 
-            <!-- Page Content -->
-            <div id="page-content-wrapper">
+                        <form class="d-flex align-items-center">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Select Date</label>
+                                <input v-on:change="getAppointments" type='text' readonly="readonly" class='datepicker-here form-control' v-model="date" data-date-format="dd/mm/yyyy" data-language='en' />
+                            </div>
 
-                <div class="">
+                            <button v-on:click="zoomin" style="    height: 40px;" class="btn ml-3" type="button">Zoom In</button>
+                            <button v-on:click="zoomout" style="    height: 40px;" class="btn ml-3" type="button">Zoom Out</button>
 
-                    <form>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Select Date</label>
-                            <input v-on:change="getAppointments" type='text' readonly="readonly" class='datepicker-here form-control' v-model="date" data-date-format="dd/mm/yyyy" data-language='en' />
-                        </div>
-                    </form>
+                        </form>
 
 
-                    <button v-on:click="zoomin" type="button">Zoom In</button>
-                    <button v-on:click="zoomout" type="button">Zoom Out</button>
+                        <div>
+                            <div id="sked">
 
-                    <div>
-                        <div id="sked">
-
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- /#page-content-wrapper -->
+
             </div>
-            <!-- /#page-content-wrapper -->
+            <!-- /#wrapper -->
 
-        </div>
-        <!-- /#wrapper -->
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Selected Appointment</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Customer Name</label>
-                                <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            </div>
-                            <!-- <div class="form-group">
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Selected Appointment</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Customer Name</label>
+                                    <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                </div>
+                                <!-- <div class="form-group">
                                 <label for="exampleInputPassword1">Change Date</label>
                                 <input type='text' readonly="readonly" class='changeapppointment form-control' v-model="selected_appointment_data['appointment_date']" data-timepicker="true" data-time-format='hh:ii aa' data-date-format="mm-dd-yyyy" data-language='en' />
                             </div> -->
 
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="form-group">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-group">
 
-                                        <label for="exampleInputEmail1">Service</label>
-                                        <select v-on:change="getServices" class="form-control" id="sel1" v-model="selected_appointment_data['id_service']">
-                                            <option v-for="p in all_services"
-                                                    :value="p.id_service"
-                                                    :key="p.id">{{p.name}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Employees</label>
-                                        <select v-on:change="getFreeApointments" class="form-control" id="sel1" v-model="selected_appointment_data['id_employee']">
-                                            <option v-for="p in all_employee_list"
-                                                    :value="p.id_employee"
-                                                    :key="p.id">{{p.employee_first_name}} {{p.employee_last_name}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Date</label>
-                                        <input v-on:change="getFreeApointments" type='text' readonly="readonly" class='datepicker-here1 form-control' v-model="update_date" data-date-format="dd/mm/yyyy" data-language='en' />
-                                    </div>
-                                    <div class="form-group" v-if="default_appointment_date == update_date">
-                                        <label for="exampleInputEmail1">Current Time</label>
-                                        <div class="switch-field">
-                                            <div>
-                                                <input type="radio" id="radio-default" name="switch-two" :value="selected_appointment_data['appointment_date']" checked />
-                                                <label for="radio-default">{{selected_appointment_time}}</label>
+                                            <label for="exampleInputEmail1">Service</label>
+                                            <select v-on:change="getServices" class="form-control" id="sel1" v-model="selected_appointment_data['id_service']">
+                                                <option v-for="p in all_services"
+                                                        :value="p.id_service"
+                                                        :key="p.id">{{p.name}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Employees</label>
+                                            <select v-on:change="getFreeApointments" class="form-control" id="sel1" v-model="selected_appointment_data['id_employee']">
+                                                <option v-for="p in all_employee_list"
+                                                        :value="p.id_employee"
+                                                        :key="p.id">{{p.employee_first_name}} {{p.employee_last_name}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Date</label>
+                                            <input v-on:change="getFreeApointments" type='text' readonly="readonly" class='datepicker-here1 form-control' v-model="update_date" data-date-format="dd/mm/yyyy" data-language='en' />
+                                        </div>
+                                        <div class="form-group" v-if="default_appointment_date == update_date">
+                                            <label for="exampleInputEmail1">Current Time</label>
+                                            <div class="switch-field">
+                                                <div>
+                                                    <input type="radio" id="radio-default" name="switch-two" :value="selected_appointment_data['appointment_date']" checked />
+                                                    <label for="radio-default">{{selected_appointment_time}}</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Available Appointment Time</label>
-                                        <div v-if="final_slot.length == 0">
-                                            <p>No Free Slots</p>
-                                        </div>
-                                        <div v-else class="switch-field">
-                                            <div v-for="(p, index) in final_slot" :key="p">
-                                                <div v-if="p > current_time || default_appointment_date != update_date">
-                                                    <input type="radio" :id="'radio-'+ index" name="switch-two" :value="p" />
-                                                    <label :for="'radio-'+ index">{{p}}</label>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Available Appointment Time</label>
+                                            <div v-if="final_slot.length == 0">
+                                                <p>No Free Slots</p>
+                                            </div>
+                                            <div v-else class="switch-field">
+                                                <div v-for="(p, index) in final_slot" :key="p">
+                                                    <div v-if="p > current_time || default_appointment_date != update_date">
+                                                        <input type="radio" :id="'radio-'+ index" name="switch-two" :value="p" />
+                                                        <label :for="'radio-'+ index">{{p}}</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" v-on:click="deleteAppointment" class="btn btn-danger" data-dismiss="modal">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" v-on:click="updateAppointment" class="btn btn-primary">Update Appointment</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" v-on:click="deleteAppointment" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" v-on:click="updateAppointment" class="btn btn-primary">Update Appointment</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="createAppointment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Selected Appointment</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Customer Name</label>
-                                <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Customer Email</label>
-                                <input type="text" v-model="selected_appointment_data['notes']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Customer Phone Number</label>
-                                <input type="text" v-model="selected_appointment_data['notes']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            </div>
-                            <!-- <div class="form-group">
+            <!-- Modal -->
+            <div class="modal fade" id="createAppointment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Selected Appointment</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Customer Name</label>
+                                    <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Customer Email</label>
+                                    <input type="text" v-model="selected_appointment_data['notes']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Customer Phone Number</label>
+                                    <input type="text" v-model="selected_appointment_data['notes']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                </div>
+                                <!-- <div class="form-group">
                                 <label for="exampleInputPassword1">Change Date</label>
                                 <input type='text' readonly="readonly" class='changeapppointment form-control' v-model="selected_appointment_data['appointment_date']" data-timepicker="true" data-time-format='hh:ii aa' data-date-format="mm-dd-yyyy" data-language='en' />
                             </div> -->
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" v-on:click="deleteAppointment" class="btn btn-danger" data-dismiss="modal">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" v-on:click="updateAppointment" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" v-on:click="deleteAppointment" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" v-on:click="updateAppointment" class="btn btn-primary">Save changes</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-    </main>
+        </main>
 
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -521,20 +552,17 @@
             current_time: "",
             selected_appointment_time: "",
             default_appointment_date: "",
-            default_appointment_time: ""
+            default_appointment_time: "",
+            store_start: "",
+            store_end: "",
+            all_filters: "",
         },
         mounted() {
 
             var that = this
 
-            var dp1 = $(".changeapppointment")
-                .datepicker({
-                    autoClose: true,
-                    hoursStep: 1,
-                    minutesStep: 15
-                })
-
             this.getAllServices()
+            this.getAllAppointmentState()
 
             var dp1 = $(".datepicker-here")
                 .datepicker({
@@ -555,17 +583,18 @@
 
                         that.date = fd
 
-                        that.calendar_start = momentObj.add(0, 'days').format('DD-MM-YYYY')
+                        // that.calendar_start = momentObj.add(0, 'days').format('DD-MM-YYYY')
 
-                        var endDate = momentObj.add(1, 'days').format('DD-MM-YYYY')
+                        // var endDate = momentObj.add(1, 'days').format('DD-MM-YYYY')
 
-                        that.calendar_end = endDate
+                        // that.calendar_end = endDate
 
-                        that.getAppointments()
+                        that.getAppointments(momentObj)
                     }
                 })
                 .data("datepicker");
 
+            dp1.selectDate(new Date());
 
             var dp2 = $(".datepicker-here1")
                 .datepicker({
@@ -605,7 +634,6 @@
                 .data("datepicker");
 
 
-            dp1.selectDate(new Date());
 
 
 
@@ -615,6 +643,26 @@
         },
         methods: {
 
+            getAllAppointmentState: function() {
+
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/api.php?getAllAppointmentState=getAllAppointmentState',
+                    success: function(response) {
+                        console.log(response)
+                        app.all_filters = response
+
+                    },
+                    error: function(response) {
+                        alert(response.responseJSON.message);
+                    }
+                });
+
+
+
+            },
             getAllServices: function(id) {
 
                 $.ajax({
@@ -895,7 +943,10 @@
 
 
             },
-            getAppointments: function() {
+            getAppointments: function(momentObj1) {
+
+
+                var that = this
 
 
                 var dateObj = new Date(this.date);
@@ -909,13 +960,21 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?getAppointmentList=getAppointmentList&date=' + this.send_date,
+                    url: '/booking/api.php?getAppointmentList=getAppointmentList&date=' + this.send_date + '&filter=' + this.filter,
                     data: $(this).serialize(),
                     success: function(response) {
                         console.log("new response")
                         console.log(response)
                         app.users = response.users
                         app.appointments = response.appointments
+                        app.store_start = response.store_open_time.start_time
+                        app.store_end = response.store_open_time.end_time
+
+                        that.calendar_start = momentObj1.add(0, 'days').format('DD-MM-YYYY') + " " + app.store_start.split(":")[0] + ":" + app.store_start.split(":")[1] + ":00"
+
+                        var endDate = momentObj1.add(0, 'days').format('DD-MM-YYYY') + " " + app.store_end.split(":")[0] + ":" + app.store_end.split(":")[1] + ":00"
+
+                        that.calendar_end = endDate
 
                         for (var i = 0; i < app.appointments.length; i++) {
 
@@ -961,17 +1020,23 @@
 
     function date(i) {
 
-        var split = i.split("-")
+
+        var a = i.split(" ")[0]
+        var time = i.split(" ")[1]
+
+        var split = a.split("-")
+        var time = time.split(":")
 
         // that.date = fd
 
         console.log(split)
+        console.log(time)
 
         // that.calendar_start = momentObj.add(0, 'days').format('DD-MM-YYYY')
 
 
 
-        var date = new Date(split[2], split[1] - 1, split[0]);
+        var date = new Date(split[2], split[1] - 1, split[0], time[0], time[1]);
         console.log("date")
         console.log(date)
         return date;

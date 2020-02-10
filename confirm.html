@@ -27,6 +27,50 @@
             margin: 10px 0;
             cursor: pointer;
         }
+        
+        .fa {
+            font-size: 16px;
+        }
+        
+        .faicon .fa {
+            font-size: 32px;
+            padding-top: 50px;
+        }
+        
+        .faicon b {
+            color: #949494
+        }
+        
+        .faicon a {
+            color: #337ab7
+        }
+        
+        .nav-item {
+            border-top: 3px solid transparent;
+        }
+        
+        .active {
+            border-top: 3px solid #1ab394 !important;
+        }
+        
+        .navbar-brand {
+            font-size: 40px;
+            font-family: 'Times, Times New Roman, Georgia, serif';
+        }
+        
+        .dashboard-header img {
+            width: 100%;
+        }
+        
+        .dashboard-header.row {
+            margin: 0 !important
+        }
+        
+        .closeButton {
+            font-size: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -64,7 +108,7 @@
 
 
 
-    <div class="container" style="margin-top: 80px">
+    <div class="container" style="margin-top: 130px">
 
         <div class="d-flex justify-content-around">
             <form style="width:100%;text-align: center;">
@@ -81,6 +125,10 @@
 
                     <label for="exampleInputEmail1">Email address</label>
                     <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Accetto Privacy 196/2006 <a href="#">www.privacy.com</a></label>
                 </div>
                 <div type="button" class="btn btn-primary" onclick="submit()">Confirm</div>
             </form>
@@ -102,7 +150,7 @@
 <script>
     if (localStorage.getItem('emp') == null) {
 
-        window.location.href = "/new/index.html"
+        window.location.href = "/booking/index.html"
 
 
     }
@@ -160,7 +208,7 @@
                 if (response.status == 200) {
 
                     alert("Successfully Added")
-                    window.location.href = "/new"
+                    window.location.href = "/booking"
 
                 } else {
 

@@ -88,7 +88,31 @@ function getRandomFreeUser($con, $service_id, $exclude, $date)
             }
         }
     } else {
-        $data['random_employee'] = "no employee available";
+        // $data['random_employee'] = "no employee available";
+
+
+        $query = mysqli_query($con, "SELECT * FROM booking_employees WHERE visible_on_line = 1 and id_booking_diary = " . $_SERVER['id_booking_diary'] . " ORDER BY RAND()") or die(mysqli_error($con));
+
+        if (mysqli_num_rows($query) > 0) {
+            while ($row = mysqli_fetch_assoc($query)) {
+                // $row['sour'] = "jahah";
+                // $data['random_employee'] = $row;
+    
+                $query2 = mysqli_query($con, "SELECT * FROM booking_personal_appointments where id_employee in ("  . $row['id_employee'] . ") and appointment_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+    
+                if (mysqli_num_rows($query2) == 0) {
+    
+                    $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $row['id_employee'] . ") and open_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+    
+                    if (mysqli_num_rows($query3) == 0) {
+                        $data['random_employee'] = $row;
+                        return $data['random_employee'];
+                    }
+                }
+            }
+        }
+
+
     }
 
 
@@ -462,6 +486,29 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
    exit;
 
 
+}else if (isset($_REQUEST['getAllAppointmentState']) && $_REQUEST['getAllAppointmentState'] == "getAllAppointmentState") {
+
+
+    $data = array();
+
+    $query = mysqli_query($con, "SELECT `appointment_state` FROM `booking_appointments` WHERE 1 GROUP by appointment_state") or die(mysqli_error($con));
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+
+                $data[] = $row['appointment_state'];
+            
+        }
+    }
+
+
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+
+
+
 }else if (isset($_REQUEST['getAllServicesAdmin']) && $_REQUEST['getAllServicesAdmin'] == "getAllServicesAdmin") {
 
 
@@ -570,6 +617,18 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     // $data = date('Y-m-d', strtotime($_REQUEST['date']));
 
     $newDate = $_REQUEST['date'];
+
+
+    $data['sdsdsd'] =  "SELECT " . date("l", strtotime($_REQUEST['date'])) . "_start_time booking_diary_open_times where id_booking_diary = " . $_SERVER['id_booking_diary'];
+
+    $query = mysqli_query($con, "SELECT " . date("l", strtotime($_REQUEST['date'])) . "_start_time as start_time, " . date("l", strtotime($_REQUEST['date'])) . "_end_time as end_time from booking_diary_open_times where id_booking_diary = 1") or die(mysqli_error($con));
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+                $data['store_open_time'] = $row;
+        }
+    }
+
 
 
     $newDate = explode("-", $newDate);

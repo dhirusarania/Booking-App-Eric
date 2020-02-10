@@ -44,6 +44,50 @@
             margin: 10px;
             cursor: pointer;
         }
+        
+        .fa {
+            font-size: 16px;
+        }
+        
+        .faicon .fa {
+            font-size: 32px;
+            padding-top: 50px;
+        }
+        
+        .faicon b {
+            color: #949494
+        }
+        
+        .faicon a {
+            color: #337ab7
+        }
+        
+        .nav-item {
+            border-top: 3px solid transparent;
+        }
+        
+        .active {
+            border-top: 3px solid #1ab394 !important;
+        }
+        
+        .navbar-brand {
+            font-size: 40px;
+            font-family: 'Times, Times New Roman, Georgia, serif';
+        }
+        
+        .dashboard-header img {
+            width: 100%;
+        }
+        
+        .dashboard-header.row {
+            margin: 0 !important
+        }
+        
+        .closeButton {
+            font-size: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -80,7 +124,7 @@
     </header>
 
 
-    <div class="" style="margin-top: 80px">
+    <div class="" style="margin-top: 130px">
         <div style="display: flex;justify-content: center;flex-wrap: wrap;" id="calendar">
 
             <!-- <div class="date" style="display: flex;border:1px solid #cccccc; width: 80px;height:50px;padding: 5px;border-radius: 3px;margin:0 10px;cursor: pointer;">
@@ -128,7 +172,7 @@
 
     if (localStorage.getItem('emp') == null) {
 
-        window.location.href = "/new/index.html"
+        window.location.href = "/booking/index.html"
 
 
     }
@@ -267,7 +311,7 @@
             success: function(response) {
 
                 console.log("response")
-                console.log(response)
+                console.log(response.selected_info)
                 console.log(response['emp_appointment_today'])
 
                 var busy = []
@@ -588,7 +632,7 @@
             localStorage.setItem('m_emp', JSON.stringify(old_data))
             localStorage.setItem('app_time', b)
 
-            window.location.href = "/new/confirm.html"
+            window.location.href = "/booking/confirm.html"
 
 
         } else {
