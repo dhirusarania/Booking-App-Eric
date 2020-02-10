@@ -282,6 +282,67 @@
             border-radius: 4px;
         }
         /* This is just for CodePen. */
+        
+        .sked-color-04e9d2 {
+            background-color: #04e9d2;
+            border-color: #04e9d2;
+        }
+        
+        .sked-color-008576 {
+            background-color: #008576;
+            border-color: #008576;
+        }
+        
+        .sked-color-dcdcdc {
+            background-color: #dcdcdc;
+            border-color: #dcdcdc;
+        }
+        
+        .sked-color-f2e900 {
+            background-color: #f2e900;
+            border-color: #f2e900;
+        }
+        
+        .sked-color-db0044 {
+            background-color: #db0044;
+            border-color: #db0044;
+        }
+        
+        .sked-color-5e8eff {
+            background-color: #5e8eff;
+            border-color: #5e8eff;
+        }
+        
+        .sked-color-c6ff73 {
+            background-color: #c6ff73;
+            border-color: #c6ff73;
+        }
+        
+        .sked-color-D30044 {
+            background-color: #D30044;
+            border-color: #D30044;
+        }
+        
+        .sked-color-008478 {
+            background-color: #008478;
+            border-color: #008478;
+        }
+        
+        .sked-color-F3E800 {
+            background-color: #F3E800;
+            border-color: #F3E800;
+        }
+        
+        .colors {
+            height: 15px;
+            width: 15px;
+            border-radius: 10px;
+            margin-right: 6px;
+        }
+        
+        label {
+            cursor: pointer;
+        }
     </style>
 
 </head>
@@ -308,15 +369,25 @@
                             <a class="nav-link" href="#">Shortcuts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Overview</a>
+                            <a class="nav-link" href="#">Filters</a>
                         </li>
 
-                        <li v-for="p in all_filters">
+                        <li v-for="(p, index) in all_filters">
                             <form>
                                 <div class="form-check" style="display: flex;
                                         align-items: center;">
-                                    <input v-on:change="filter_update1" type="checkbox" checked :value="p" class="form-check-input exampleCheck2" id="exampleCheck1">
-                                    <label style="color:white" class="form-check-label" for="exampleCheck1">{{p}}</label>
+                                    <label style="color:white" class="form-check-label"><input v-on:change="filter_update1(index)" type="checkbox" checked :value="p.name" class="form-check-input exampleCheck2" :id="'exampleCheck-' + index"> {{p.name}}</label>
+                                </div>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Appointment State</a>
+                        </li>
+                        <li v-for="(p, index) in all_filters_appointment_state">
+                            <form>
+                                <div class="form-check" style="display: flex;
+                                        align-items: center;">
+                                    <label style="color:white" class="form-check-label"><input v-on:change="filter_update1_state" type="checkbox" checked :value="p" class="form-check-input exampleCheck2_state" :id="'exampleCheck-' + index"> {{p}}</label>
                                 </div>
                             </form>
                         </li>
@@ -358,13 +429,30 @@
                                         Filters
                                     </a>
                                 </li>
-                                <li v-for="p in all_filters">
+                                <li v-for="(p, index)  in all_filters">
                                     <form>
-                                        <div class="form-check" style="display: flex;
-                                        align-items: center;
-                                        padding-left: 40px;">
-                                            <input v-on:change="filter_update" type="checkbox" checked :value="p" class="form-check-input exampleCheck1" id="exampleCheck1">
-                                            <label style="color:white" class="form-check-label" for="exampleCheck1">{{p}}</label>
+                                        <div class="form-check">
+                                            <label style="color:white;display: flex;
+                                            align-items: center;
+                                            padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update(index)" type="checkbox" checked :value="p.name" style="margin-top: 0" class="form-check-input exampleCheck1" :id="'exampleCheck-' + index"><span :class="'colors sked-color-'+ p.color"></span>{{p.name}}</label>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="sidebar-nav rel">
+                                <li class="sidebar-brand">
+                                    <a href="#">
+                                        Appointment State
+                                    </a>
+                                </li>
+                                <li v-for="(p, index)  in all_filters_appointment_state">
+                                    <form>
+                                        <div class="form-check">
+                                            <label style="color:white;display: flex;
+                                            align-items: center;
+                                            padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_state(index)" type="checkbox" checked :value="p" style="margin-top: 0" class="form-check-input exampleCheck1_state" :id="'exampleCheck-' + index">{{p}}</label>
                                         </div>
                                     </form>
                                 </li>
@@ -570,7 +658,9 @@
             store_start: "",
             store_end: "",
             all_filters: "",
+            all_filters_appointment_state: "",
             active_filters: [],
+            active_filters_state: [],
             current_moment: ""
         },
         mounted() {
@@ -634,8 +724,18 @@
                     url: '/booking/api.php?getAllAppointmentState=getAllAppointmentState',
                     success: function(response) {
                         console.log(response)
-                        app.all_filters = response
-                        app.active_filters = response
+                        app.all_filters = response['personal']
+                        app.active_filters_state = response['appointment_state']
+
+                        app.all_filters_appointment_state = response['appointment_state']
+
+                        // app.active_filters = 
+
+                        for (var i in app.all_filters) {
+
+                            app.active_filters.push(app.all_filters[i]['name']);
+
+                        }
 
                         var dp1 = $(".datepicker-here")
                             .datepicker({
@@ -684,6 +784,8 @@
 
                 app.active_filters = []
 
+                // $("#exampleCheck-" + id).prop('checked', false)
+
 
                 $(".exampleCheck1").each(function(index) {
 
@@ -691,6 +793,30 @@
                         console.log($(this).val());
 
                         app.active_filters.push($(this).val())
+                    }
+
+                });
+
+
+                this.getAppointments(app.current_moment)
+
+
+
+            },
+
+            filter_update_state: function(id) {
+
+                app.active_filters_state = []
+
+                // $("#exampleCheck-" + id).prop('checked', false)
+
+
+                $(".exampleCheck1_state").each(function(index) {
+
+                    if ($(this).prop('checked')) {
+                        console.log($(this).val());
+
+                        app.active_filters_state.push($(this).val())
                     }
 
                 });
@@ -713,6 +839,29 @@
                         console.log($(this).val());
 
                         app.active_filters.push($(this).val())
+                    }
+
+                });
+
+
+                this.getAppointments(app.current_moment)
+
+
+
+            },
+            filter_update1_state: function(id) {
+
+                app.active_filters_state = []
+
+                // $("#exampleCheck-" + id).prop('checked', false)
+
+
+                $(".exampleCheck2_state").each(function(index) {
+
+                    if ($(this).prop('checked')) {
+                        console.log($(this).val());
+
+                        app.active_filters_state.push($(this).val())
                     }
 
                 });
@@ -974,8 +1123,10 @@
 
                 });
 
-                var a = $(".sked-tape__hours").eq(0).clone().addClass('clonned-time')
-                $('.sked-tape__event-row:nth-child(3n)').prepend(a)
+                setTimeout(function() {
+                    var a = $(".sked-tape__hours").eq(0).clone().addClass('clonned-time')
+                    $('.sked-tape__event-row:nth-child(3n)').prepend(a)
+                }, 500);
 
                 $sked.on('event:click.skedtape', function(e) {
 
@@ -1035,7 +1186,7 @@
                     $.ajax({
                         type: "GET",
                         dataType: "json",
-                        url: '/booking/api.php?getAppointmentList=getAppointmentList&date=' + that.send_date + '&filters=' + that.active_filters,
+                        url: '/booking/api.php?getAppointmentList=getAppointmentList&date=' + that.send_date + '&filters=' + that.active_filters + '&filters_state=' + that.active_filters_state,
                         success: function(response) {
                             console.log("new response")
                             console.log(response)

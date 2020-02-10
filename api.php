@@ -496,10 +496,51 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
 
-                $data[] = $row['appointment_state'];
+                $data['appointment_state'][] = $row['appointment_state'];
             
         }
     }
+
+
+    $data['personal'] = array(
+        '0' => array(
+          'name' => 'Appuntamenti',
+          'color' => '04e9d2',
+        ),
+        '1' => array(
+          'name' => 'Formazione',
+          'color' => '008576',
+        ),
+        '2' => array(
+          'name' => 'Pausa',
+          'color' => 'dcdcdc',
+        ),
+        '3' => array(
+          'name' => 'Riunione',
+          'color' => 'f2e900',
+        ),
+        '4' => array(
+          'name' => 'Permesso',
+          'color' => 'db0044',
+        ),
+        '5' => array(
+          'name' => 'Recupero',
+          'color' => '5e8eff',
+        ),
+        '6' => array(
+          'name' => 'Altro',
+          'color' => 'c6ff73',
+        ),
+      );
+    
+  
+    // $data[] = "Appuntamenti";
+    // $data[] = "Formazione";
+    // $data[] = "Pausa";
+    // $data[] = "Riunione";
+    // $data[] = "Permesso";
+    // $data[] = "Recupero";
+    // $data[] = "Altro";
 
 
 
@@ -638,14 +679,17 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     // $date = str_replace('/', '-', $origDate );
     // $newDate = date("Y-m-d", strtotime($date));
 
+    $filter_needed = in_array("Appuntamenti", explode("," , $_REQUEST['filters']));
+
     $data['getAppointmentList'] = "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" ;
 
-
-
-    $data['ss'] = "SELECT id_appointment, appointment_date, id_employee, duration FROM booking_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59') union select id_appointment, appointment_date, id_employee, duration from booking_personal_appointments where appointment_date BETWEEN CONCAT( '" . $newDate  . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59') and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" . ")";
-    $query = mysqli_query($con, "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" . ")") or die(mysqli_error($con));
-
     $data['appointments'] = [];
+
+    if($filter_needed){
+
+    $data['ss'] = "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') and booking_appointments.state <> 'deleted' AND CONCAT( '" . $newDate  . "',' 23:59:59')";
+    $query = mysqli_query($con, "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and booking_appointments.state <> 'deleted' and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ") ") or die(mysqli_error($con));
+
 
 
     $i = 0;
@@ -655,6 +699,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
             $row['location'] = $row['id_employee'];
             $row['name'] = $row['service_name'];
             $row['data'] = $i++;
+            $row['className'] = 'sked-color-04e9d2';
             $row['start'] = date('Y,m,d,H,i', strtotime($row['appointment_date']));
             $row['en11'] = $row['end'];
             $row['end'] = date('Y,m,d,H,i', strtotime($row['end']));
@@ -669,6 +714,35 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
             }
         }
     }
+
+    }
+
+    $data['ssaaaa'] = "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_personal_appointments LEFT join employees on booking_personal_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')";
+    $query = mysqli_query($con, "SELECT *, booking_personal_appointments.color , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_personal_appointments LEFT join employees on booking_personal_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')   and booking_personal_appointments.state <> 'deleted'  and appointment_type in ("  . "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" . ")") or die(mysqli_error($con));
+
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $row['location'] = $row['id_employee'];
+            $row['name'] = 'personal';
+            $row['data'] = $i++;
+            $row['color_mod'] = str_replace("#","", $row['color']);
+            $row['className'] = 'sked-color-' . str_replace("#","", $row['color']);
+            $row['start'] = date('Y,m,d,H,i', strtotime($row['appointment_date']));
+            $row['en11'] = $row['end'];
+            $row['end'] = date('Y,m,d,H,i', strtotime($row['end']));
+            $data['appointments'][] = $row;
+            $tmp = array();
+
+            if (array_search($row['id_employee'], array_column($temp, 'id')) === false) {
+
+                $tmp['id'] = $row['id_employee'];
+                $tmp['name'] = $row['employee_first_name'];
+                array_push($temp, $tmp);
+            }
+       }
+    }
+
     
     $query = mysqli_query($con, "SELECT * from employees") or die(mysqli_error($con));
 
@@ -712,9 +786,13 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     
     $data['code']  = "401";
 
-    $data['sss'] = "DELETE from booking_appointments where id_appointment = " . $_POST['id_appointment'];
+    $data['sqss'] = "UPDATE booking_appointments set state = 'deleted' id_appointment = '" . $_POST['id_appointment'] . "'";
 
-    $query = mysqli_query($con, "DELETE from booking_appointments where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
+    $query = mysqli_query($con, "UPDATE booking_appointments set state = 'deleted' where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
+
+    $data['sssq'] = "UPDATE booking_personal_appointments set state = 'deleted' id_appointment = '" . $_POST['id_appointment'] . "'";
+
+    $query = mysqli_query($con, "UPDATE booking_personal_appointments set state = 'deleted' where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
 
     if ($query === TRUE) {
         $data['code']  = "200";
