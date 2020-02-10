@@ -158,75 +158,79 @@
 
     function submit() {
 
-
-        console.log("sub")
-
-        var payload = new FormData()
+        if ($("#exampleCheck1").prop('checked')) {
 
 
+            console.log("sub")
 
-        var a = JSON.parse(localStorage.getItem('m_emp'))
-
-
-        console.log(a)
-
-        console.log(a)
-
-        var b = localStorage.getItem('app_date') + " " + localStorage.getItem('app_time')
-
-        console.log(b)
-
-        a[0]['app_time'] = b;
-
-        for (i = 1; i < a.length; i++) {
-
-
-            a[i]['app_time'] = moment(a[i - 1]['app_time'], 'YYYY-MM-DD HH:mm').add(a[i - 1]['worker_duration'], 'minutes').format('YYYY-MM-DD HH:mm')
-
-        }
-
-        console.log(a)
-
-        payload.append('emp', JSON.stringify(a))
-        payload.append('customer_name', $("#name").val())
-        payload.append('appointment_date', localStorage.getItem('app_date') + " " + localStorage.getItem('app_time'))
-        payload.append('notes', "Tel:" + $("#phone").val() + " Email: " + $("#email").val())
-        payload.append('service_name', localStorage.getItem('service_name'))
-
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: '/booking/api.php?saveAppointment=saveAppointment',
-            "processData": false,
-            "mimeType": "multipart/form-data",
-            "contentType": false,
-            "data": payload,
-            success: function(response) {
-
-                console.log(response['status'])
-
-                if (response.status == 200) {
-
-                    alert("Successfully Added")
-                    window.location.href = "/booking"
-
-                } else {
-
-                    alert("Error")
-                }
+            var payload = new FormData()
 
 
 
+            var a = JSON.parse(localStorage.getItem('m_emp'))
 
 
-            },
-            error: function() {
+            console.log(a)
+
+            console.log(a)
+
+            var b = localStorage.getItem('app_date') + " " + localStorage.getItem('app_time')
+
+            console.log(b)
+
+            a[0]['app_time'] = b;
+
+            for (i = 1; i < a.length; i++) {
 
 
+                a[i]['app_time'] = moment(a[i - 1]['app_time'], 'YYYY-MM-DD HH:mm').add(a[i - 1]['worker_duration'], 'minutes').format('YYYY-MM-DD HH:mm')
 
             }
 
-        })
+            console.log(a)
 
+            payload.append('emp', JSON.stringify(a))
+            payload.append('customer_name', $("#name").val())
+            payload.append('appointment_date', localStorage.getItem('app_date') + " " + localStorage.getItem('app_time'))
+            payload.append('notes', "Tel:" + $("#phone").val() + " Email: " + $("#email").val())
+            payload.append('service_name', localStorage.getItem('service_name'))
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '/booking/api.php?saveAppointment=saveAppointment',
+                "processData": false,
+                "mimeType": "multipart/form-data",
+                "contentType": false,
+                "data": payload,
+                success: function(response) {
+
+                    console.log(response['status'])
+
+                    if (response.status == 200) {
+
+                        alert("Successfully Added")
+                        window.location.href = "/booking"
+
+                    } else {
+
+                        alert("Error")
+                    }
+
+
+
+
+
+                },
+                error: function() {
+
+
+
+                }
+
+            })
+        } else {
+            alert("Please Accept Privacy")
+        }
     }
 </script>
