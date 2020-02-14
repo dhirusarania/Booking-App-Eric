@@ -700,6 +700,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
             $row['name'] = $row['service_name'];
             $row['data'] = $i++;
             $row['className'] = 'sked-color-04e9d2';
+            $row['admin_appointment_type'] = 'booking_appointments';
             $row['start'] = date('Y,m,d,H,i', strtotime($row['appointment_date']));
             $row['en11'] = $row['end'];
             $row['end'] = date('Y,m,d,H,i', strtotime($row['end']));
@@ -726,6 +727,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
             $row['location'] = $row['id_employee'];
             $row['name'] = 'personal';
             $row['data'] = $i++;
+            $row['admin_appointment_type'] = 'booking_personal_appointments';
             $row['color_mod'] = str_replace("#","", $row['color']);
             $row['className'] = 'sked-color-' . str_replace("#","", $row['color']);
             $row['start'] = date('Y,m,d,H,i', strtotime($row['appointment_date']));
@@ -1568,9 +1570,9 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
     for ($i = 0; $i < count($info); $i++) {
 
         // $data['zdcdzz'] = $info[$i];
-        $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','1', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+        $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
-        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','1', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $info[$i]['app_time'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $info[$i]['app_time'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
         if (mysqli_query($con, $sql)) {
 
@@ -1586,6 +1588,90 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
         }
     }
 
+
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+} else if (isset($_REQUEST['saveOneAppointment']) && $_REQUEST['saveOneAppointment'] == "saveOneAppointment") {
+
+
+    $data = array();
+
+        $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+
+        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+
+        if (mysqli_query($con, $sql)) {
+
+            $data['message'] = "New record created successfully";
+            http_response_code(202);
+            $data['status'] = 200;
+        } else {
+
+            http_response_code(400);
+            $data['message'] = "Error: " . $sql . "<br>" . mysqli_error($con);
+            $data['status'] = 400;
+      
+        }
+
+
+
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+
+} else if (isset($_REQUEST['updatePersonalAppointment']) && $_REQUEST['updatePersonalAppointment'] == "updatePersonalAppointment") {
+
+
+    $data = array();
+    
+    $data['code']  = "401";
+
+    $data['sssq'] = "UPDATE booking_personal_appointments set id_employee = '". $_POST['id_employee'] ."'  , id_appointment = '" . $_POST['id_appointment'] . "'";
+
+    $query = mysqli_query($con, "UPDATE booking_personal_appointments set id_employee = '". $_POST['id_employee'] ."', description = '". $_POST['description'] ."', appointment_date = '". $_POST['appointment_date'] ."',duration = '". $_POST['duration'] ."',appointment_type = '". $_POST['appointment_type'] ."',color = '". $_POST['color'] ."'   where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
+
+    if ($query === TRUE) {
+        $data['code']  = "200";
+    } 
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+
+
+
+
+} else if (isset($_REQUEST['createPersonalAppointment']) && $_REQUEST['createPersonalAppointment'] == "createPersonalAppointment") {
+
+    $data = array();
+
+    $data['zzz'] = json_decode($_POST['emp'], true);
+    $info = json_decode($_POST['emp'], true);
+
+    $current_time = date('Y-m-d H:i:s');
+
+
+        // $data['zdcdzz'] = $info[$i];
+        $data['xxx'][] = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '".  $current_time ."' ,  'P460-1568990330', '".  $current_time ."', 'P460-1568990330')";
+
+        $sql = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '".  $current_time ."' ,  'P460-1568990330', '".  $current_time ."', 'P460-1568990330')";
+
+        if (mysqli_query($con, $sql)) {
+
+            $data['message'] = "New record created successfully";
+            http_response_code(202);
+            $data['status'] = 200;
+            $data['mysqli_insert_id($conn)'] = mysqli_insert_id($conn);
+        } else {
+
+            http_response_code(400);
+            $data['message'] = "Error: " . $sql . "<br>" . mysqli_error($con);
+            $data['status'] = 400;
+         
+        }
 
 
     $res = json_encode($data);

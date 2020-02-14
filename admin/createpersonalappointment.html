@@ -1,0 +1,1218 @@
+<!doctype html>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Booking Appointment</title>
+
+    <link rel="canonical" href="index.html">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/framework.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/carousel.css" rel="stylesheet">
+
+    <link href="../css/style.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://lexkrstn.github.io/jquery-sked-tape/jquery.skedTape.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.min.css" rel="stylesheet" />
+
+
+    <script>
+        if (localStorage.getItem('random') == undefined || localStorage.getItem('random') == null) {
+
+            window.location.href = "/booking/admin/index.html"
+
+        }
+    </script>
+
+    <style>
+        .fa {
+            font-size: 16px;
+        }
+        
+        .sked-tape__event--low-gap {
+            background-color: #EC6A5E !important;
+            border: 1px solid #e32c1b !important;
+        }
+        
+        .faicon .fa {
+            font-size: 32px;
+            padding-top: 50px;
+        }
+        
+        .faicon b {
+            color: #949494
+        }
+        
+        .faicon a {
+            color: #337ab7
+        }
+        
+        .nav-item {
+            border-top: 3px solid transparent;
+        }
+        
+        .active {
+            border-top: 3px solid #1ab394 !important;
+        }
+        
+        .navbar-brand {
+            font-size: 40px;
+            font-family: 'Times, Times New Roman, Georgia, serif';
+        }
+        
+        .dashboard-header img {
+            width: 100%;
+        }
+        
+        .dashboard-header.row {
+            margin: 0 !important
+        }
+        
+        .header-padding {
+            margin-top: 95px;
+        }
+        
+        .datepicker-here {
+            width: 150px;
+        }
+        
+        .clonned-time {
+            opacity: 0.4;
+        }
+        /*!
+ * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+        
+        body {
+            overflow-x: hidden;
+        }
+        /* Toggle Styles */
+        
+        #wrapper {
+            padding-left: 0;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+        
+        #wrapper.toggled {
+            padding-left: 250px;
+        }
+        
+        #sidebar-wrapper {
+            z-index: 1000;
+            position: fixed;
+            left: 250px;
+            width: 0;
+            height: 100%;
+            margin-left: -250px;
+            overflow-y: auto;
+            background: #000;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+        
+        #wrapper.toggled #sidebar-wrapper {
+            width: 250px;
+        }
+        
+        #page-content-wrapper>.page-body {
+            width: 100%;
+            position: absolute;
+            padding: 70px 20px;
+        }
+        
+        #wrapper.toggled #page-content-wrapper {
+            position: absolute;
+            margin-right: -250px;
+        }
+        /* Sidebar Styles */
+        
+        .sidebar-nav {
+            position: absolute;
+            top: 0;
+            width: 250px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-nav.rel {
+            position: static;
+            top: 0;
+            width: 250px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            text-indent: 20px;
+            line-height: 40px;
+        }
+        
+        .sidebar-nav li.active-nav {
+            background-color: white;
+        }
+        
+        .sidebar-nav li.active-nav a {
+            color: #000;
+        }
+        
+        .sidebar-nav li a {
+            display: block;
+            text-decoration: none;
+            color: #999999;
+        }
+        
+        .sidebar-nav li a:hover {
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .sidebar-nav li a:active,
+        .sidebar-nav li a:focus {
+            text-decoration: none;
+        }
+        
+        .sidebar-nav>.sidebar-brand {
+            height: 65px;
+            font-size: 18px;
+            line-height: 60px;
+        }
+        
+        .sidebar-nav>.sidebar-brand a {
+            color: #fff;
+        }
+        
+        .sidebar-nav>.sidebar-brand a:hover {
+            color: #fff;
+            background: none;
+        }
+        
+        #page-content-wrapper>.header {
+            height: 60px;
+            box-shadow: 0px 7px 20px 0px #f2f2f2;
+        }
+        
+        @media(min-width:601px) {
+            #wrapper {
+                padding-left: 250px;
+            }
+            #wrapper.toggled {
+                padding-left: 0;
+            }
+            #sidebar-wrapper {
+                width: 250px;
+            }
+            #wrapper.toggled #sidebar-wrapper {
+                width: 0;
+            }
+            #page-content-wrapper>.page-body {
+                padding: 20px;
+                position: relative;
+            }
+            #wrapper.toggled #page-content-wrapper {
+                position: relative;
+                margin-right: 0;
+            }
+            .datepickers-container {
+                z-index: 3000
+            }
+        }
+        
+        .switch-field {
+            display: flex;
+            margin-bottom: 36px;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        
+        .switch-field>div>div {
+            margin-right: 10px;
+        }
+        
+        .switch-field input {
+            position: absolute !important;
+            clip: rect(0, 0, 0, 0);
+            height: 1px;
+            width: 1px;
+            border: 0;
+            overflow: hidden;
+        }
+        
+        .switch-field label {
+            background-color: #ffffff;
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 14px;
+            line-height: 1;
+            text-align: center;
+            padding: 8px 16px;
+            margin-right: -1px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.1s ease-in-out;
+        }
+        
+        .switch-field label:hover {
+            cursor: pointer;
+        }
+        
+        .switch-field input:checked+label {
+            background-color: #a5dc86;
+            box-shadow: none;
+        }
+        
+        .switch-field label:first-of-type {
+            border-radius: 4px;
+        }
+        
+        .switch-field label:last-of-type {
+            border-radius: 4px;
+        }
+        /* This is just for CodePen. */
+        
+        .sked-color-04e9d2 {
+            background-color: #04e9d2;
+            border-color: #04e9d2;
+        }
+        
+        .sked-color-008576 {
+            background-color: #008576;
+            border-color: #008576;
+        }
+        
+        .sked-color-dcdcdc {
+            background-color: #dcdcdc;
+            border-color: #dcdcdc;
+        }
+        
+        .sked-color-f2e900 {
+            background-color: #f2e900;
+            border-color: #f2e900;
+        }
+        
+        .sked-color-db0044 {
+            background-color: #db0044;
+            border-color: #db0044;
+        }
+        
+        .sked-color-5e8eff {
+            background-color: #5e8eff;
+            border-color: #5e8eff;
+        }
+        
+        .sked-color-c6ff73 {
+            background-color: #c6ff73;
+            border-color: #c6ff73;
+        }
+        
+        .sked-color-D30044 {
+            background-color: #D30044;
+            border-color: #D30044;
+        }
+        
+        .sked-color-008478 {
+            background-color: #008478;
+            border-color: #008478;
+        }
+        
+        .sked-color-F3E800 {
+            background-color: #F3E800;
+            border-color: #F3E800;
+        }
+        
+        .colors {
+            height: 15px;
+            width: 15px;
+            border-radius: 10px;
+            margin-right: 6px;
+        }
+        
+        label {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="admin">
+        <header class="bg-black hide-on-med-and-up  fixed-top">
+            <nav class="container navbar navbar-expand-md navbar-dark">
+                <a class="navbar-brand" href="#">Admin</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/booking/admin/dashboard.html">{{language['appointments']}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/booking/admin/createappointment.html">{{language['create_appointments']}}</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{language['overview']}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{language['shortcuts']}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" v-on:click="changeLanguage">Change Language</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+        </header>
+
+
+
+
+        <main role="main">
+            <div id="wrapper">
+
+                <!-- Sidebar -->
+                <div id="sidebar-wrapper">
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-brand">
+                            <a href="/booking/admin/dashboard.html">
+                            Admin Dashboard
+                        </a>
+                        </li>
+                        <li>
+                            <a href="/booking/admin/dashboard.html">{{language['appointments']}}</a>
+                        </li>
+                        <li>
+                            <a href="/booking/admin/createappointment.html">{{language['create_appointments']}}</a>
+                        </li>
+                        <li class="active-nav">
+                            <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
+                        </li>
+                        <li>
+                            <a href=" # ">{{language['overview']}}</a>
+                        </li>
+                        <li>
+                            <a href="# ">{{language['shortcuts']}}</a>
+                        </li>
+                        <li>
+                            <a href="#" v-on:click="changeLanguage">Change Language</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /#sidebar-wrapper -->
+
+                <!-- Page Content -->
+                <div id="page-content-wrapper">
+
+                    <div class="header hide-on-small-and-down" style="display: flex;
+                    align-items: center;padding: 0">
+                        <p style="padding: 20px;cursor: pointer;" onclick='$("#wrapper").toggleClass("toggled")'><i class="fa fa-bars" aria-hidden="true"></i></p>
+                    </div>
+
+                    <div class="page-body">
+
+                        <h4>{{language['create_personal_appointments']}}</h4>
+
+                        <form style="padding-top: 20px">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">{{language['employees']}}</label>
+                                        <select class="form-control" id="sel1" v-model='selected_id_employee'>
+                                            <option v-for="p in all_employee_list"
+                                                    :value="p.id_employee"
+                                                    :key="p.id">{{p.employee_first_name}} {{p.employee_last_name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">{{language['appointment_type']}}</label>
+                                        <select class="form-control" id="app_type" v-model="selected_appointment_state">
+                                            <option v-for="p in appointment_state"
+                                                    :value="p.name"
+                                                    :data-color="p.color"
+                                                    :key="p.id">{{p.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">{{language['description']}}</label>
+                                        <input type="text" v-model="description" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">{{language['duration']}}</label>
+                                        <input type="number" v-model="duration" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">{{language['date']}}</label>
+                                        <div class="datepicker-here" data-timepicker="true" data-time-format='hh:ii:00' data-language='en'></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button v-on:click="createAppointment" type="button" class="btn btn-primary">{{language['create_personal_appointments']}}</button>
+
+                        </form>
+
+
+                    </div>
+                </div>
+                <!-- /#page-content-wrapper -->
+
+            </div>
+            <!-- /#wrapper -->
+
+        </main>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://lexkrstn.github.io/jquery-sked-tape/jquery.skedTape.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/i18n/datepicker.en.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="../js/moment.min.js"></script>
+
+</body>
+
+</html>
+
+<script>
+    var $sked
+
+    var app = new Vue({
+        el: '#admin',
+        data: {
+            date: "",
+            send_date: "",
+            update_date: "",
+            users: [],
+            zoom: 1,
+            appointments: [],
+            calendar_start: "",
+            calendar_end: "",
+            selected_appointment: 0,
+            selected_appointment_data: [],
+            all_services: [],
+            selected_service_id: 0,
+            all_employee_list: [],
+            final_slot: [],
+            current_time: "",
+            selected_appointment_time: "",
+            default_appointment_date: "",
+            default_appointment_time: "",
+            store_end: "",
+            datetime: "",
+            selected_appointment_state: "",
+            appointment_state: "",
+            selected_id_employee: [],
+            duration: 0,
+            description: "",
+            language: [],
+            lang: "en"
+        },
+        mounted() {
+
+            var that = this
+
+            this.getAllAppointmentState()
+            this.getAllEmployees()
+
+            if ("lang" in localStorage) {
+                this.lang = localStorage.getItem('lang')
+            } else {
+                localStorage.setItem('lang', 'en')
+            }
+
+            this.getLanguage()
+
+            var dp2 = $(".datepicker-here")
+                .datepicker({
+                    autoClose: true,
+                    hoursStep: 1,
+                    minutesStep: 15,
+                    minHours: 8,
+                    dateFormat: 'yyyy-mm-dd',
+                    maxHours: 21,
+                    minDate: new Date(),
+                    onSelect: function onSelect(fd, date) {
+                        console.log("fd");
+                        console.log(fd);
+
+
+                        app.datetime = fd
+
+                        // var a = fd.split("/")
+
+                        // // var date = a[1] + "-" + a[0] + "-" + a[2]
+
+
+
+                        // // var dateObj = new Date(date);
+
+                        // // var momentObj = moment(dateObj);
+
+                        // that.update_date = fd
+
+                        // if (this.default_appointment_date == this.update_date) {
+
+                        //     that.current_time = moment().format('HH:mm')
+
+                        // }
+
+
+                        // // that.calendar_start = momentObj.add(0, 'days').format('DD-MM-YYYY')
+
+                        // // var endDate = momentObj.add(1, 'days').format('DD-MM-YYYY')
+
+                        // // that.calendar_end = endDate
+
+                        // that.getFreeApointments()
+                    }
+                })
+                .data("datepicker");
+
+        },
+        methods: {
+
+            getLanguage: function() {
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/' + this.lang + '.php',
+                    success: function(response) {
+                        console.log(response)
+                        app.language = response
+                    }
+                })
+
+
+
+
+            },
+
+
+            changeLanguage: function() {
+
+                console.log("chage")
+                console.log(this.lang)
+
+                if (this.lang == 'en') {
+                    this.lang = 'it'
+                    localStorage.setItem('lang', 'it')
+                } else {
+                    localStorage.setItem('lang', 'en')
+                    this.lang = 'en'
+                }
+
+                this.getLanguage()
+
+
+            },
+
+
+            getAllAppointmentState: function() {
+
+                var that = this
+
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/api.php?getAllAppointmentState=getAllAppointmentState',
+                    success: function(response) {
+
+                        app.appointment_state = response['personal']
+
+                    },
+                    error: function(response) {
+                        alert(response.responseJSON.message);
+                    }
+                });
+
+
+
+            },
+
+            filter_update: function(id) {
+
+                app.active_filters = []
+
+                // $("#exampleCheck-" + id).prop('checked', false)
+
+
+                $(".exampleCheck1").each(function(index) {
+
+                    if ($(this).prop('checked')) {
+                        console.log($(this).val());
+
+                        app.active_filters.push($(this).val())
+                    }
+
+                });
+
+
+                this.getAppointments(app.current_moment)
+
+
+
+            },
+
+            filter_update_state: function(id) {
+
+                app.active_filters_state = []
+
+                // $("#exampleCheck-" + id).prop('checked', false)
+
+
+                $(".exampleCheck1_state").each(function(index) {
+
+                    if ($(this).prop('checked')) {
+                        console.log($(this).val());
+
+                        app.active_filters_state.push($(this).val())
+                    }
+
+                });
+
+
+                this.getAppointments(app.current_moment)
+
+
+
+            },
+
+            filter_update1: function(id) {
+
+                app.active_filters = []
+
+
+                $(".exampleCheck2").each(function(index) {
+
+                    if ($(this).prop('checked')) {
+                        console.log($(this).val());
+
+                        app.active_filters.push($(this).val())
+                    }
+
+                });
+
+
+                this.getAppointments(app.current_moment)
+
+
+
+            },
+            filter_update1_state: function(id) {
+
+                app.active_filters_state = []
+
+                // $("#exampleCheck-" + id).prop('checked', false)
+
+
+                $(".exampleCheck2_state").each(function(index) {
+
+                    if ($(this).prop('checked')) {
+                        console.log($(this).val());
+
+                        app.active_filters_state.push($(this).val())
+                    }
+
+                });
+
+
+                this.getAppointments(app.current_moment)
+
+
+
+            },
+            getAllServices: function(id) {
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/api.php?getAllServicesAdmin=getAllServicesAdmin',
+                    success: function(response) {
+                        console.log(response)
+                        app.all_services = response
+
+                        app.getServiceIDBasedEmployees(id)
+
+                    },
+                    error: function(response) {
+                        alert(response.responseJSON.message);
+                    }
+                });
+
+
+
+            },
+            getServiceIDBasedEmployees: function(service) {
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + service,
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log(response)
+                        app.all_employee_list = response
+
+                        app.getFreeApointments()
+
+
+                    }
+                });
+
+
+
+            },
+            getServices: function() {
+
+
+                this.getServiceIDBasedEmployees(this.selected_appointment_data['id_service'])
+
+
+            },
+            getAllEmployees: function() {
+
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/api.php?getAllEmployees=getAllEmployees',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log(response)
+                        app.all_employee_list = response
+
+
+                    }
+                });
+
+
+            },
+            getFreeApointments: function() {
+
+
+                console.log(this.selected_appointment_data.length)
+
+
+                if (!jQuery.isEmptyObject(app.selected_appointment_data)) {
+
+
+                    console.log("hjhjhj")
+
+                    var a = this.update_date.split("/")
+
+                    var date = a[1] + "-" + a[0] + "-" + a[2]
+
+                    var payload = new FormData()
+
+                    var data = {
+                        emp_a: this.selected_appointment_data['id_employee'],
+                        durr: this.all_services[this.selected_appointment_data['id_service']].worker_duration,
+                        id_service: this.selected_appointment_data['id_service']
+                    };
+
+                    // payload.append('emp_a', 1)
+                    // payload.append('durr', 45)
+                    // payload.append('id_service', 1)
+
+                    // payload.append('emp_a', emps.join(","))
+                    // payload.append('durr', duration_array.join(","))
+                    // payload.append('id_service', id_service.join(","))
+
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        dataType: "json",
+                        url: '/booking/api.php?getTimeSlot=getTimeSlot&selected_date=' + date,
+                        success: function(response) {
+                            console.log("new response")
+                            console.log(response)
+
+                            app.final_slot = response.final_slot
+
+                            app.getAppointments(app.current_moment)
+
+                        },
+                        error: function(response) {
+                            alert(response);
+                        }
+                    });
+
+                }
+
+
+            },
+            createAppointment: function() {
+
+
+
+
+                var payload = {
+                    description: this.description,
+                    duration: this.duration,
+                    appointment_date: this.datetime,
+                    appointment_type: this.selected_appointment_state,
+                    id_employee: this.selected_id_employee,
+                    color: $('#app_type option:selected').attr('data-color'),
+                }
+
+                console.log(payload)
+
+                $.ajax({
+                    type: "POST",
+                    data: payload,
+                    dataType: "json",
+                    url: '/booking/api.php?createPersonalAppointment=createPersonalAppointment',
+                    success: function(response) {
+                        console.log("new response")
+                        console.log(response)
+                        alert("Created Successfully")
+                        window.location.href = "/booking/admin/dashboard.html"
+
+                    },
+                    error: function(response) {
+                        alert(response);
+                        alert("Error")
+
+                    }
+                });
+
+            },
+            updateAppointment: function() {
+
+                var appointment_date = ""
+
+                // if (this.default_appointment_date == this.update_date && $('input[name=switch-two]:checked').val() == ) {
+
+                //     appointment_date = this.selected_appointment_data['appointment_date']
+
+                // } else {
+
+                var a = this.update_date.split("/")
+
+                a = a[2] + "-" + a[1] + "-" + a[0]
+
+                appointment_date = a + " " + $('input[name=switch-two]:checked').val() + ":00"
+                    // }
+
+                console.log(appointment_date)
+
+
+
+                var payload = {
+                    id_appointment: app.selected_appointment_data['id_appointment'],
+                    customer_name: app.selected_appointment_data['customer_name'],
+                    appointment_date: appointment_date,
+                    id_employee: app.selected_appointment_data['id_employee'],
+                    id_service: app.selected_appointment_data['id_service'],
+                    service_name: $("#sel1 option:selected").text(),
+                }
+
+                console.log(payload)
+
+                $.ajax({
+                    type: "POST",
+                    data: payload,
+                    dataType: "json",
+                    url: '/booking/api.php?updateAppointment=updateAppointment',
+                    success: function(response) {
+                        console.log("new response")
+                        console.log(response)
+
+                        $('#exampleModalCenter').modal('hide')
+
+                        if (response.code == 200) {
+
+                            alert("Updated Successfully")
+                        }
+
+                        app.getAppointments(app.current_moment)
+
+                    },
+                    error: function(response) {
+                        alert(response);
+                    }
+                });
+
+
+
+            },
+            deleteAppointment: function() {
+
+                var payload = {
+                    id_appointment: app.selected_appointment_data['id_appointment']
+                }
+
+                console.log(payload)
+
+                $.ajax({
+                    type: "POST",
+                    data: payload,
+                    dataType: "json",
+                    url: '/booking/api.php?deleteAppointment=deleteAppointment',
+                    success: function(response) {
+                        console.log("new response")
+                        console.log(response)
+
+                        $('#exampleModalCenter').modal('hide')
+
+                        if (response.code == 200) {
+
+                            alert("Deleted Successfully")
+
+                        }
+
+
+                        app.getAppointments(app.current_moment)
+
+                    },
+                    error: function(response) {
+                        alert(response);
+                    }
+                });
+
+
+
+            },
+            sidenavToggle: function() {
+                $("#wrapper").toggleClass("toggled");
+            },
+            zoomin: function() {
+                this.zoom += 1
+
+                this.restartSchedule()
+            },
+            zoomout: function() {
+
+                if (this.zoom > 1) {
+
+                    this.zoom -= 1
+
+                    this.restartSchedule()
+
+
+                }
+            },
+            restartSchedule: function() {
+
+
+                $sked = $('#sked').skedTape({
+                    caption: 'Employees',
+                    zoom: this.zoom,
+                    start: date(this.calendar_start), // Timeline starts this date-time (UTC)
+                    end: date(this.calendar_end), // Timeline ends this date-time (UTC)
+                    showEventTime: true, // Whether to show event start-end time
+                    showEventDuration: true, // Whether to show event duration
+                    locations: app.users,
+                    events: app.appointments,
+                    scrollWithYWheel: true,
+                    formatters: {
+                        date: function(date) {
+                            console.log("--date--")
+                            console.log(date)
+                            return $.fn.skedTape.format.date(date, 'l', '/');
+                        },
+                        // duration: function(start, end, opts) {
+                        //     return $.fn.skedTape.format.duration(start, end, {
+                        //         hrs: 'ч.',
+                        //         min: 'мин.'
+
+                        //     });
+
+                        // },
+
+
+                    }
+
+                });
+
+                setTimeout(function() {
+                    var a = $(".sked-tape__hours").eq(0).clone().addClass('clonned-time')
+                    $('.sked-tape__event-row:nth-child(3n)').prepend(a)
+                }, 500);
+
+                $sked.on('event:click.skedtape', function(e) {
+
+                    console.log(e)
+
+                    app.selected_appointment = e.detail.event.location
+
+                    app.selected_appointment_data = app.appointments.filter(v => v.id_employee == e.detail.event.location)[0]
+
+                    var a = app.selected_appointment_data.appointment_date.split(" ")[0]
+
+                    app.default_appointment_date = app.selected_appointment_data.appointment_date.split(" ")[0]
+
+                    a = a.split("-")[2] + "/" + a.split("-")[1] + "/" + a.split("-")[0]
+
+                    app.default_appointment_date = app.default_appointment_date.split("-")[2] + "/" + app.default_appointment_date.split("-")[1] + "/" + app.default_appointment_date.split("-")[0]
+
+
+                    app.update_date = a
+
+                    app.selected_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
+                    app.default_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
+
+                    $('#exampleModalCenter').modal('show')
+
+                    app.getFreeApointments()
+
+                });
+
+
+
+            },
+            getAppointments: function(momentObj1) {
+
+
+                console.log("getAppointment")
+
+                var that = this
+
+                setTimeout(function() {
+                    console.log($(".exampleCheck1").length)
+                    $(".exampleCheck1").each(function(i) {
+                        console.log(i)
+                    })
+
+
+
+                    var dateObj = new Date(that.date);
+
+                    var momentObj = moment(dateObj);
+
+                    that.send_date = momentObj.format('YYYY-MM-DD')
+
+
+                    console.log("cleiedd")
+                    console.log(that.active_filters)
+                    $.ajax({
+                        type: "GET",
+                        dataType: "json",
+                        url: '/booking/api.php?getAppointmentList=getAppointmentList&date=' + that.send_date + '&filters=' + that.active_filters + '&filters_state=' + that.active_filters_state,
+                        success: function(response) {
+                            console.log("new response")
+                            console.log(response)
+                            app.users = response.users
+                            app.appointments = response.appointments
+                            app.store_start = response.store_open_time.start_time
+                            app.store_end = response.store_open_time.end_time
+
+                            that.calendar_start = momentObj1.add(0, 'days').format('DD-MM-YYYY') + " " + app.store_start.split(":")[0] + ":" + app.store_start.split(":")[1] + ":00"
+
+                            var endDate = momentObj1.add(0, 'days').format('DD-MM-YYYY') + " " + app.store_end.split(":")[0] + ":" + app.store_end.split(":")[1] + ":00"
+
+                            that.calendar_end = endDate
+
+                            for (var i = 0; i < app.appointments.length; i++) {
+
+                                app.appointments[i].start = today(app.appointments[i].start)
+                                app.appointments[i].end = today(app.appointments[i].end)
+
+                                console.log(app.appointments[i].start)
+                                console.log(app.appointments[i].end)
+
+
+                            }
+
+                            console.log(app.appointments)
+
+
+                            app.restartSchedule()
+
+                        },
+                        error: function(response) {
+                            alert(response);
+                        }
+                    });
+
+                }, 100);
+            }
+        }
+    })
+
+
+
+
+
+    function today(i) {
+
+        var split = i.split(",")
+
+        console.log(split[0], split[1], split[2], split[3], split[4])
+        var date = new Date(split[0], split[1] - 1, split[2], split[3], split[4]);
+        console.log("today_daye")
+        console.log(date)
+            // date.setUTCHours(hours, minutes, 0, 0);
+            // console.log(date)
+        return date;
+    }
+
+    function date(i) {
+
+
+        var a = i.split(" ")[0]
+        var time = i.split(" ")[1]
+
+        var split = a.split("-")
+        var time = time.split(":")
+
+        // that.date = fd
+
+        console.log(split)
+        console.log(time)
+
+        // that.calendar_start = momentObj.add(0, 'days').format('DD-MM-YYYY')
+
+
+
+        var date = new Date(split[2], split[1] - 1, split[0], time[0], time[1]);
+        console.log("date")
+        console.log(date)
+        return date;
+    }
+
+
+
+    function yesterday(hours, minutes) {
+        var date = today(hours, minutes);
+        date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
+        return date;
+    }
+
+    function tomorrow(hours, minutes) {
+        var date = today(hours, minutes);
+        date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+        return date;
+    }
+</script>
+</script>

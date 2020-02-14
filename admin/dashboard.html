@@ -131,10 +131,10 @@
             width: 250px;
         }
         
-        #page-content-wrapper {
+        #page-content-wrapper>.page-body {
             width: 100%;
             position: absolute;
-            padding: 110px 15px;
+            padding: 70px 20px;
         }
         
         #wrapper.toggled #page-content-wrapper {
@@ -206,6 +206,11 @@
             background: none;
         }
         
+        #page-content-wrapper>.header {
+            height: 60px;
+            box-shadow: 0px 7px 20px 0px #f2f2f2;
+        }
+        
         @media(min-width:601px) {
             #wrapper {
                 padding-left: 250px;
@@ -219,7 +224,7 @@
             #wrapper.toggled #sidebar-wrapper {
                 width: 0;
             }
-            #page-content-wrapper {
+            #page-content-wrapper>.page-body {
                 padding: 20px;
                 position: relative;
             }
@@ -343,6 +348,10 @@
         label {
             cursor: pointer;
         }
+        
+        .datepickers-container {
+            z-index: 9999
+        }
     </style>
 
 </head>
@@ -360,23 +369,34 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/booking/admin/dashboard.html">Appointments</a>
+                            <a class="nav-link" href="/booking/admin/dashboard.html">{{language['appointments']}}</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/booking/admin/createappointment.html">Create Appointments</a>
+                            <a href="/booking/admin/createappointment.html">{{language['create_appointments']}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Shortcuts</a>
+                            <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Filters</a>
+                            <a class="nav-link" href="#">{{language['overview']}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{language['shortcuts']}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" v-on:click="changeLanguage">Change Language</a>
                         </li>
 
                         <li v-for="(p, index) in all_filters">
                             <form>
                                 <div class="form-check" style="display: flex;
                                         align-items: center;">
-                                    <label style="color:white" class="form-check-label"><input v-on:change="filter_update1(index)" type="checkbox" checked :value="p.name" class="form-check-input exampleCheck2" :id="'exampleCheck-' + index"> {{p.name}}</label>
+                                    <label style="color:white" class="form-check-label"><input v-on:change="filter_update1(index)"
+                                               type="checkbox"
+                                               checked
+                                               :value="p.name"
+                                               class="form-check-input exampleCheck2"
+                                               :id="'exampleCheck-' + index"> {{p.name}}</label>
                                 </div>
                             </form>
                         </li>
@@ -387,7 +407,12 @@
                             <form>
                                 <div class="form-check" style="display: flex;
                                         align-items: center;">
-                                    <label style="color:white" class="form-check-label"><input v-on:change="filter_update1_state" type="checkbox" checked :value="p" class="form-check-input exampleCheck2_state" :id="'exampleCheck-' + index"> {{p}}</label>
+                                    <label style="color:white" class="form-check-label"><input v-on:change="filter_update1_state"
+                                               type="checkbox"
+                                               checked
+                                               :value="p"
+                                               class="form-check-input exampleCheck2_state"
+                                               :id="'exampleCheck-' + index"> {{p}}</label>
                                 </div>
                             </form>
                         </li>
@@ -407,20 +432,26 @@
                     <ul class="sidebar-nav">
                         <li class="sidebar-brand">
                             <a href="/booking/admin/dashboard.html">
-                            Admin Dashboard
-                        </a>
+                                Admin Dashboard
+                            </a>
                         </li>
                         <li class="active-nav">
-                            <a href="/booking/admin/dashboard.html">Appointments</a>
+                            <a href="/booking/admin/dashboard.html">{{language['appointments']}}</a>
                         </li>
                         <li>
-                            <a href="/booking/admin/createappointment.html">Create Appointments</a>
+                            <a href="/booking/admin/createappointment.html">{{language['create_appointments']}}</a>
                         </li>
                         <li>
-                            <a href=" # ">Shortcuts</a>
+                            <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
                         <li>
-                            <a href="# ">Overview</a>
+                            <a href=" # ">{{language['overview']}}</a>
+                        </li>
+                        <li>
+                            <a href="# ">{{language['shortcuts']}}</a>
+                        </li>
+                        <li>
+                            <a href="#" v-on:click="changeLanguage">Change Language</a>
                         </li>
                         <li>
                             <ul class="sidebar-nav rel">
@@ -434,7 +465,13 @@
                                         <div class="form-check">
                                             <label style="color:white;display: flex;
                                             align-items: center;
-                                            padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update(index)" type="checkbox" checked :value="p.name" style="margin-top: 0" class="form-check-input exampleCheck1" :id="'exampleCheck-' + index"><span :class="'colors sked-color-'+ p.color"></span>{{p.name}}</label>
+                                            padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update(index)"
+                                                       type="checkbox"
+                                                       checked
+                                                       :value="p.name"
+                                                       style="margin-top: 0"
+                                                       class="form-check-input exampleCheck1"
+                                                       :id="'exampleCheck-' + index"><span :class="'colors sked-color-'+ p.color"></span>{{p.name}}</label>
                                         </div>
                                     </form>
                                 </li>
@@ -452,7 +489,13 @@
                                         <div class="form-check">
                                             <label style="color:white;display: flex;
                                             align-items: center;
-                                            padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_state(index)" type="checkbox" checked :value="p" style="margin-top: 0" class="form-check-input exampleCheck1_state" :id="'exampleCheck-' + index">{{p}}</label>
+                                            padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_state(index)"
+                                                       type="checkbox"
+                                                       checked
+                                                       :value="p"
+                                                       style="margin-top: 0"
+                                                       class="form-check-input exampleCheck1_state"
+                                                       :id="'exampleCheck-' + index">{{p}}</label>
                                         </div>
                                     </form>
                                 </li>
@@ -466,16 +509,21 @@
                 <!-- Page Content -->
                 <div id="page-content-wrapper">
 
-                    <div class="">
+                    <div class="header hide-on-small-and-down" style="display: flex;
+                    align-items: center;padding: 0">
+                        <p style="padding: 20px;cursor: pointer;" onclick='$("#wrapper").toggleClass("toggled")'><i class="fa fa-bars" aria-hidden="true"></i></p>
+                    </div>
+
+                    <div class="page-body">
 
                         <form class="d-flex align-items-center">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Select Date</label>
+                                <label for="exampleInputEmail1">{{language['select_date']}}</label>
                                 <input v-on:change="getAppointments" type='text' readonly="readonly" class='datepicker-here form-control' v-model="date" data-date-format="dd/mm/yyyy" data-language='en' />
                             </div>
 
-                            <button v-on:click="zoomin" style="height: 40px;" class="btn ml-3" type="button">Zoom In</button>
-                            <button v-on:click="zoomout" style="height: 40px;" class="btn ml-3" type="button">Zoom Out</button>
+                            <button v-on:click="zoomin" style="height: 40px;" class="btn ml-3" type="button">{{language['zoom_in']}}</button>
+                            <button v-on:click="zoomout" style="height: 40px;" class="btn ml-3" type="button">{{language['zoom_out']}}</button>
 
                         </form>
 
@@ -491,6 +539,93 @@
 
             </div>
             <!-- /#wrapper -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenterCreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Create Appointment</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Customer Name</label>
+                                    <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                </div>
+                                <!-- <div class="form-group">
+                                <label for="exampleInputPassword1">Change Date</label>
+                                <input type='text' readonly="readonly" class='changeapppointment form-control' v-model="selected_appointment_data['appointment_date']" data-timepicker="true" data-time-format='hh:ii aa' data-date-format="mm-dd-yyyy" data-language='en' />
+                            </div> -->
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-group">
+
+                                            <label for="exampleInputEmail1">Service</label>
+                                            <select v-on:change="getServices" class="form-control" id="sel1" v-model="selected_appointment_data['id_service']">
+                                                <option v-for="p in all_services"
+                                                        :value="p.id_service"
+                                                        :key="p.id">{{p.name}}</option>
+                                            </select>
+                                            <span v-if="selected_appointment_data['id_service']">Tempo : {{worker_duration}}</span>
+                                            <span v-if="selected_appointment_data['id_service']">Posa : {{customer_duration}}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Employees</label>
+                                            <select v-on:change="getFreeApointments" class="form-control" id="sel1" v-model="selected_appointment_data['id_employee']">
+                                                <option v-for="p in all_employee_list"
+                                                        :value="p.id_employee"
+                                                        :key="p.id">{{p.employee_first_name}} {{p.employee_last_name}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Note</label>
+                                            <input type='text' class="form-control note" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Date</label>
+                                            <input type='text' readonly="readonly" style="z-index:999" class='datepicker-here3 form-control' v-model="update_date" data-date-format="dd/mm/yyyy" data-language='en' />
+                                        </div>
+                                        <div class="form-group" v-if="default_appointment_date == update_date">
+                                            <label for="exampleInputEmail1">Current Time</label>
+                                            <div class="switch-field">
+                                                <div>
+                                                    <input type="radio" id="radio-default-1" name="switch-two-three" :value="selected_appointment_data['appointment_date']" checked />
+                                                    <label for="radio-default-1">{{selected_appointment_time}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Available Appointment Time</label>
+                                            <div v-if="final_slot.length == 0">
+                                                <p>No Free Slots</p>
+                                            </div>
+                                            <div v-else class="switch-field">
+                                                <div v-for="(p, index) in final_slot" :key="p">
+                                                    <div v-if="p > current_time || default_appointment_date != update_date">
+                                                        <input type="radio" :id="'radio1-'+ index" name="switch-two-three" :value="p" />
+                                                        <label :for="'radio1-'+ index">{{p}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button type="button" v-on:click="deleteAppointment" class="btn btn-danger" data-dismiss="modal">Delete</button> -->
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" v-if="selected_appointment_data['id_service']" v-on:click="createAppointment" class="btn btn-primary">Create Appointment</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -523,6 +658,8 @@
                                                         :value="p.id_service"
                                                         :key="p.id">{{p.name}}</option>
                                             </select>
+                                            <span v-if="selected_appointment_data['id_service']">Tempo : {{worker_duration}}</span>
+                                            <span v-if="selected_appointment_data['id_service']">Posa : {{customer_duration}}</span>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Employees</label>
@@ -612,6 +749,63 @@
                 </div>
             </div>
 
+            <!-- Modal -->
+            <div class="modal fade" id="updatePersonalAppointment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">{{language['selected_appointment']}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form style="padding-top: 20px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">{{language['employees']}}</label>
+                                            <select class="form-control" id="sel1" v-model='selected_appointment_data["id_employee"]'>
+                                                <option v-for="p in all_personal_employee_list"
+                                                        :value="p.id_employee"
+                                                        :key="p.id">{{p.employee_first_name}} {{p.employee_last_name}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">{{language['appointment_type']}}</label>
+                                            <select class="form-control" id="app_type" v-model='selected_appointment_data["appointment_type"]'>
+                                                <option v-for="p in all_filters"
+                                                        :value="p.name"
+                                                        :data-color="p.color"
+                                                        :key="p.id">{{p.name}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">{{language['description']}}</label>
+                                            <input type="text" v-model="selected_appointment_data['description']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">{{language['duration']}}</label>
+                                            <input type="number" v-model="selected_appointment_data['duration']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">{{language['date']}}</label>
+                                            <div class="datepicker-here_personal" data-timepicker="true" data-time-format='hh:ii:00' data-language='en'></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" v-on:click="deletePersonalAppointment" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" v-on:click="updatePersonalAppointment" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
         </main>
 
@@ -634,9 +828,12 @@
 <script>
     var $sked
 
+    var dp3
+
     var app = new Vue({
         el: '#admin',
         data: {
+            language: [],
             date: "",
             send_date: "",
             update_date: "",
@@ -661,17 +858,37 @@
             all_filters_appointment_state: "",
             active_filters: [],
             active_filters_state: [],
-            current_moment: ""
+            current_moment: "",
+
+            all_personal_employee_list: [],
+            datetime: "",
+            selected_appointment_state: "",
+            appointment_state: "",
+            selected_id_employee: [],
+            duration: 0,
+            description: "",
+            d3: {},
+            worker_duration: 0,
+            customer_duration: 0,
+            lang: "en"
         },
         mounted() {
 
             var that = this
 
             this.getAllServices()
+            this.getAllEmployees()
             this.getAllAppointmentState()
             that.current_time = moment().format('HH:mm')
 
 
+            if ("lang" in localStorage) {
+                this.lang = localStorage.getItem('lang')
+            } else {
+                localStorage.setItem('lang', 'en')
+            }
+
+            this.getLanguage()
             var dp2 = $(".datepicker-here1")
                 .datepicker({
                     autoClose: true,
@@ -710,9 +927,139 @@
                 })
                 .data("datepicker");
 
+
+            console.log(dp2)
+
+
+
+
+
+
         },
         methods: {
 
+            changeLanguage: function() {
+
+                console.log("chage")
+                console.log(this.lang)
+
+                if (this.lang == 'en') {
+                    this.lang = 'it'
+                    localStorage.setItem('lang', 'it')
+                } else {
+                    localStorage.setItem('lang', 'en')
+                    this.lang = 'en'
+                }
+
+                this.getLanguage()
+
+
+            },
+            createAppointment: function() {
+
+                console.log("zzzzzzzzzzzzz")
+
+
+                var appointment_date = ""
+
+                // if (this.default_appointment_date == this.update_date && $('input[name=switch-two]:checked').val() == ) {
+
+                //     appointment_date = this.selected_appointment_data['appointment_date']
+
+                // } else {
+
+                var a = this.update_date.split("/")
+
+                a = a[2] + "-" + a[1] + "-" + a[0]
+
+                appointment_date = a + " " + $('input[name=switch-two-three]:checked').val() + ":00"
+                    // }
+
+                console.log(appointment_date)
+
+
+
+                var payload = new FormData()
+                payload.append('customer_name', app.selected_appointment_data['customer_name'])
+                payload.append('appointment_date', appointment_date)
+                payload.append('id_employee', this.selected_appointment_data['id_employee'])
+                payload.append('id_service', this.selected_appointment_data['id_service'])
+                payload.append('notes', $(".note").val())
+                payload.append('service_name', $("#sel1 option:selected").text())
+                payload.append('worker_duration', this.worker_duration)
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: '/booking/api.php?saveOneAppointment=saveOneAppointment',
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": payload,
+                    success: function(response) {
+
+                        console.log(response['status'])
+
+                        if (response.status == 200) {
+
+                            alert("Successfully Added")
+                                // window.location.href = "/booking/admin/dashboard.html"
+
+                        } else {
+
+                            alert("Error")
+                        }
+
+
+
+                    },
+                    error: function() {
+
+
+
+                    }
+
+                })
+
+
+            },
+            getAllEmployees: function() {
+
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/api.php?getAllEmployees=getAllEmployees',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log(response)
+                        app.all_personal_employee_list = response
+
+                    }
+                });
+
+
+            },
+
+
+            getLanguage: function() {
+
+                console.log(this.lang)
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/' + this.lang + '.php',
+                    success: function(response) {
+                        console.log(response)
+                        app.language = response
+                    }
+                })
+
+
+
+
+            },
             getAllAppointmentState: function() {
 
                 var that = this
@@ -749,8 +1096,11 @@
                                     var date = a[1] + "-" + a[0] + "-" + a[2]
 
 
+                                    console.log(date)
+
 
                                     var dateObj = new Date(date);
+                                    console.log(dateObj)
 
                                     var momentObj = moment(dateObj);
 
@@ -918,6 +1268,9 @@
 
                 this.getServiceIDBasedEmployees(this.selected_appointment_data['id_service'])
 
+                this.worker_duration = app.all_services.filter(v => v.id_service == app.selected_appointment_data['id_service'])[0].worker_duration
+                this.customer_duration = app.all_services.filter(v => v.id_service == app.selected_appointment_data['id_service'])[0].customer_duration
+
 
             },
             getFreeApointments: function() {
@@ -975,6 +1328,45 @@
 
 
             },
+            updatePersonalAppointment: function() {
+
+
+
+
+                var payload = {
+                    id_appointment: app.selected_appointment_data.id_appointment,
+                    description: app.selected_appointment_data.description,
+                    duration: app.selected_appointment_data.duration,
+                    appointment_date: this.datetime,
+                    appointment_type: app.selected_appointment_data.appointment_type,
+                    id_employee: app.selected_appointment_data.id_employee,
+                    color: $('#app_type option:selected').attr('data-color'),
+                }
+
+                console.log(payload)
+
+                $.ajax({
+                    type: "POST",
+                    data: payload,
+                    dataType: "json",
+                    url: '/booking/api.php?updatePersonalAppointment=updatePersonalAppointment',
+                    success: function(response) {
+                        console.log("new response")
+                        console.log(response)
+                        alert("updated Successfully")
+                        $('#updatePersonalAppointment').modal('hide')
+                        app.getAppointments(app.current_moment)
+                            // window.location.href = "/booking/admin/dashboard.html"
+
+                    },
+                    error: function(response) {
+                        alert(response);
+                        alert("Error")
+
+                    }
+                });
+
+            },
             updateAppointment: function() {
 
                 var appointment_date = ""
@@ -999,7 +1391,7 @@
                 var payload = {
                     id_appointment: app.selected_appointment_data['id_appointment'],
                     customer_name: app.selected_appointment_data['customer_name'],
-                    appointment_date: appointment_date,
+                    appointment_date: $('input[name=switch-two]:checked').val(),
                     id_employee: app.selected_appointment_data['id_employee'],
                     id_service: app.selected_appointment_data['id_service'],
                     service_name: $("#sel1 option:selected").text(),
@@ -1032,6 +1424,9 @@
                 });
 
 
+
+            },
+            deletePersonalAppointment: function() {
 
             },
             deleteAppointment: function() {
@@ -1128,31 +1523,112 @@
                     $('.sked-tape__event-row:nth-child(3n)').prepend(a)
                 }, 500);
 
+                $sked.on('intersection:click.skedtape', function(e) {
+                    console.log(e)
+                })
+
+                $sked.on('timeline:click.skedtape', function(e) {
+
+
+                    var dp4 = $(".datepicker-here3")
+                        .datepicker({
+                            autoClose: true,
+                            onSelect: function onSelect(fd, date) {
+                                console.log("fd");
+                                console.log(fd);
+                            }
+                        })
+                        .data("datepicker");
+
+                    app.selected_appointment_data = {}
+                    console.log(e)
+                    app.selected_appointment = e.detail.locationId
+                    console.log(app.selected_appointment)
+                    start = moment(e.detail.date);
+                    remainder = 15 - (start.minute() % 15);
+
+                    dateTime = moment(start).add(remainder, "minutes").format("DD/MM/YYYY HH:mm");
+
+                    app.selected_appointment_data['id_employee'] = e.detail.locationId
+
+                    app.selected_appointment_time = dateTime.split(" ")[1]
+
+                    app.update_date = dateTime.split(" ")[0]
+
+
+                    $('#exampleModalCenterCreate').modal('show')
+
+                    console.log(dateTime);
+
+                })
+
+
                 $sked.on('event:click.skedtape', function(e) {
 
                     console.log(e)
 
                     app.selected_appointment = e.detail.event.location
 
+                    app.selected_appointment_data = {}
+
+
                     app.selected_appointment_data = app.appointments.filter(v => v.id_employee == e.detail.event.location)[0]
 
-                    var a = app.selected_appointment_data.appointment_date.split(" ")[0]
+                    if (app.selected_appointment_data.admin_appointment_type == "booking_appointments") {
 
-                    app.default_appointment_date = app.selected_appointment_data.appointment_date.split(" ")[0]
+                        var a = app.selected_appointment_data.appointment_date.split(" ")[0]
 
-                    a = a.split("-")[2] + "/" + a.split("-")[1] + "/" + a.split("-")[0]
+                        app.default_appointment_date = app.selected_appointment_data.appointment_date.split(" ")[0]
 
-                    app.default_appointment_date = app.default_appointment_date.split("-")[2] + "/" + app.default_appointment_date.split("-")[1] + "/" + app.default_appointment_date.split("-")[0]
+                        a = a.split("-")[2] + "/" + a.split("-")[1] + "/" + a.split("-")[0]
+
+                        app.default_appointment_date = app.default_appointment_date.split("-")[2] + "/" + app.default_appointment_date.split("-")[1] + "/" + app.default_appointment_date.split("-")[0]
 
 
-                    app.update_date = a
+                        app.update_date = a
 
-                    app.selected_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
-                    app.default_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
+                        app.worker_duration = app.selected_appointment_data.duration
 
-                    $('#exampleModalCenter').modal('show')
+                        app.selected_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
+                        app.default_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
 
-                    app.getFreeApointments()
+                        $('#exampleModalCenter').modal('show')
+
+                        console.log(app.selected_appointment_data)
+
+                        app.getFreeApointments()
+
+                    } else {
+
+
+                        // app.d3.date = new Date('12/02/2020')
+
+
+                        dp3 = $(".datepicker-here_personal")
+                            .datepicker({
+                                autoClose: true,
+                                hoursStep: 1,
+                                minutesStep: 15,
+                                minHours: 8,
+                                dateFormat: 'yyyy-mm-dd',
+                                maxHours: 21,
+                                minDate: new Date(),
+                                onSelect: function onSelect(fd, date) {
+                                    console.log("fd");
+                                    console.log(fd);
+                                    app.datetime = fd
+
+                                }
+                            })
+                            .data("datepicker");
+
+                        console.log(app.selected_appointment_data.appointment_date)
+
+                        dp3.selectDate(new Date(app.selected_appointment_data.appointment_date));
+
+                        $('#updatePersonalAppointment').modal('show')
+
+                    }
 
                 });
 
@@ -1160,6 +1636,9 @@
 
             },
             getAppointments: function(momentObj1) {
+
+
+                console.trace()
 
 
                 console.log("getAppointment")
@@ -1173,12 +1652,18 @@
                     })
 
 
+                    console.log(that.date)
 
-                    var dateObj = new Date(that.date);
+                    var te = that.date.split('/')[1] + "/" + that.date.split('/')[0] + "/" + that.date.split('/')[2]
 
-                    var momentObj = moment(dateObj);
+                    // var dateObj = new Date(te);
 
-                    that.send_date = momentObj.format('YYYY-MM-DD')
+                    // var momentObj = moment(dateObj);
+
+                    // console.log("dateObj")
+                    // console.log(dateObj)
+
+                    that.send_date = that.date.split('/')[2] + "-" + that.date.split('/')[0] + "-" + that.date.split('/')[1]
 
 
                     console.log("cleiedd")
@@ -1223,7 +1708,7 @@
                         }
                     });
 
-                }, 100);
+                }, 300);
             }
         }
     })
@@ -1282,5 +1767,4 @@
         date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
         return date;
     }
-</script>
 </script>
