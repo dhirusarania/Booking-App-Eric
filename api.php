@@ -486,6 +486,28 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
    exit;
 
 
+}else if (isset($_REQUEST['getCustomers']) && $_REQUEST['getCustomers'] == "getCustomers") {
+
+$data = array();
+
+    $query = mysqli_query($con, "SELECT * FROM customers WHERE CONCAT(first_name, ' ', last_name) LIKE '%" . $_REQUEST['query'] ."%' OR last_name LIKE '%" . $_REQUEST['query'] ."%' order by first_name desc limit 10") or die(mysqli_error($con));
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+
+            $row['first_name'] = preg_replace('/[^\00-\255]+/u', '',   $row['first_name']);
+            $row['last_name'] = preg_replace('/[^\00-\255]+/u', '', $row['last_name']);
+
+                $data[] = $row;
+            
+        }
+    }
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+ 
+
 }else if (isset($_REQUEST['getAllAppointmentState']) && $_REQUEST['getAllAppointmentState'] == "getAllAppointmentState") {
 
 
@@ -698,7 +720,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
         while ($row = mysqli_fetch_assoc($query)) {
             $row['location'] = $row['id_employee'];
             $row['name'] = $row['service_name'];
-            $row['data'] = $i++;
+            $row['userData'] = $row;
             $row['className'] = 'sked-color-04e9d2';
             $row['admin_appointment_type'] = 'booking_appointments';
             $row['start'] = date('Y,m,d,H,i', strtotime($row['appointment_date']));
@@ -726,7 +748,7 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
         while ($row = mysqli_fetch_assoc($query)) {
             $row['location'] = $row['id_employee'];
             $row['name'] = 'personal';
-            $row['data'] = $i++;
+            $row['userData'] = $row;
             $row['admin_appointment_type'] = 'booking_personal_appointments';
             $row['color_mod'] = str_replace("#","", $row['color']);
             $row['className'] = 'sked-color-' . str_replace("#","", $row['color']);

@@ -352,6 +352,30 @@
         .datepickers-container {
             z-index: 9999
         }
+        
+        .search-suggestions {
+            list-style: none;
+            padding-inline-start: 0;
+            list-style: none;
+            padding-inline-start: 0px;
+            background-color: white;
+            position: absolute;
+            z-index: 9;
+            max-width: 360px;
+            min-width: 100px;
+            width: 100%;
+            /* border: 1px solid; */
+            box-shadow: 0px 6px 18px #45454547
+        }
+        
+        .search-suggestions li {
+            padding: 5px 12px;
+        }
+        
+        .search-suggestions li:hover {
+            cursor: pointer;
+            background-color: #e4e4e4;
+        }
     </style>
 
 </head>
@@ -554,7 +578,13 @@
                             <form>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Customer Name</label>
-                                    <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <input type="text" autocomplete="off" v-on:keyup="getCustomers" v-model="queryCustomers" class="form-control">
+                                    <div>
+                                        <ul class="search-suggestions">
+                                            <li v-for="p in allgetCustomers" v-on:click="selectThis(p.customer_id)">{{p.first_name}} {{p.last_name}}</li>
+                                        </ul>
+                                    </div>
+                                    <!-- <input type="text" v-on:keydown="getCustomers" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> -->
                                 </div>
                                 <!-- <div class="form-group">
                                 <label for="exampleInputPassword1">Change Date</label>
@@ -594,7 +624,7 @@
                                             <label for="exampleInputEmail1">Current Time</label>
                                             <div class="switch-field">
                                                 <div>
-                                                    <input type="radio" id="radio-default-1" name="switch-two-three" :value="selected_appointment_data['appointment_date']" checked />
+                                                    <input type="radio" id="radio-default-1" name="switch-two-three" :value="selected_appointment_time" checked />
                                                     <label for="radio-default-1">{{selected_appointment_time}}</label>
                                                 </div>
                                             </div>
@@ -640,8 +670,16 @@
                         <div class="modal-body">
                             <form>
                                 <div class="form-group">
+                                    <!-- <label for="exampleInputEmail1">Customer Name</label>
+                                    <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> -->
+
                                     <label for="exampleInputEmail1">Customer Name</label>
-                                    <input type="text" v-model="selected_appointment_data['customer_name']" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <input type="text" autocomplete="off" v-on:keyup="getCustomers" v-model="queryCustomers" class="form-control">
+                                    <div>
+                                        <ul class="search-suggestions">
+                                            <li v-for="p in allgetCustomers" v-on:click="selectThis(p.customer_id)">{{p.first_name}} {{p.last_name}}</li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <!-- <div class="form-group">
                                 <label for="exampleInputPassword1">Change Date</label>
@@ -677,7 +715,7 @@
                                             <label for="exampleInputEmail1">Current Time</label>
                                             <div class="switch-field">
                                                 <div>
-                                                    <input type="radio" id="radio-default" name="switch-two" :value="selected_appointment_data['appointment_date']" checked />
+                                                    <input type="radio" id="radio-default" name="switch-two" :value="selected_appointment_time" checked />
                                                     <label for="radio-default">{{selected_appointment_time}}</label>
                                                 </div>
                                             </div>
@@ -689,7 +727,7 @@
                                             </div>
                                             <div v-else class="switch-field">
                                                 <div v-for="(p, index) in final_slot" :key="p">
-                                                    <div v-if="p > current_time || default_appointment_date != update_date">
+                                                    <div>
                                                         <input type="radio" :id="'radio-'+ index" name="switch-two" :value="p" />
                                                         <label :for="'radio-'+ index">{{p}}</label>
                                                     </div>
@@ -868,9 +906,12 @@
             duration: 0,
             description: "",
             d3: {},
+            d2: {},
             worker_duration: 0,
             customer_duration: 0,
-            lang: "en"
+            lang: "en",
+            allgetCustomers: [],
+            queryCustomers: ""
         },
         mounted() {
 
@@ -879,6 +920,7 @@
             this.getAllServices()
             this.getAllEmployees()
             this.getAllAppointmentState()
+                // this.getCustomers()
             that.current_time = moment().format('HH:mm')
 
 
@@ -889,7 +931,7 @@
             }
 
             this.getLanguage()
-            var dp2 = $(".datepicker-here1")
+            this.dp2 = $(".datepicker-here1")
                 .datepicker({
                     autoClose: true,
                     minDate: new Date(),
@@ -928,7 +970,6 @@
                 .data("datepicker");
 
 
-            console.log(dp2)
 
 
 
@@ -1003,6 +1044,8 @@
                         if (response.status == 200) {
 
                             alert("Successfully Added")
+                            app.getAppointments(app.current_moment)
+                            $("#exampleModalCenterCreate").modal('hide')
                                 // window.location.href = "/booking/admin/dashboard.html"
 
                         } else {
@@ -1034,6 +1077,36 @@
                     success: function(response) {
                         console.log(response)
                         app.all_personal_employee_list = response
+
+                    }
+                });
+
+
+            },
+            selectThis: function(id) {
+
+
+
+                var a = this.allgetCustomers.filter(v => v.customer_id == id)[0]
+
+                this.queryCustomers = a.first_name + " " + a.last_name
+
+                $(".search-suggestions").hide()
+
+
+
+            },
+            getCustomers: function() {
+
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/api.php?getCustomers=getCustomers&query=' + this.queryCustomers,
+                    success: function(response) {
+                        console.log(response)
+                        app.allgetCustomers = response
+                        $(".search-suggestions").show()
 
                     }
                 });
@@ -1286,13 +1359,13 @@
 
                     var a = this.update_date.split("/")
 
-                    var date = a[1] + "-" + a[0] + "-" + a[2]
+                    var date = a[2] + "-" + a[1] + "-" + a[0]
 
                     var payload = new FormData()
 
                     var data = {
                         emp_a: this.selected_appointment_data['id_employee'],
-                        durr: this.all_services[this.selected_appointment_data['id_service']].worker_duration,
+                        durr: this.all_services.filter(v => v.id_service == this.selected_appointment_data['id_service'])[0].worker_duration,
                         id_service: this.selected_appointment_data['id_service']
                     };
 
@@ -1317,6 +1390,16 @@
                             app.final_slot = response.final_slot
 
                             app.getAppointments(app.current_moment)
+
+
+
+                            setTimeout(function() {
+                                $("#radio1-0").prop('checked', true)
+                                $("#radio-default").prop('checked', true)
+                            }, 500);
+
+
+
 
                         },
                         error: function(response) {
@@ -1391,7 +1474,7 @@
                 var payload = {
                     id_appointment: app.selected_appointment_data['id_appointment'],
                     customer_name: app.selected_appointment_data['customer_name'],
-                    appointment_date: $('input[name=switch-two]:checked').val(),
+                    appointment_date: appointment_date,
                     id_employee: app.selected_appointment_data['id_employee'],
                     id_service: app.selected_appointment_data['id_service'],
                     service_name: $("#sel1 option:selected").text(),
@@ -1519,6 +1602,7 @@
                 });
 
                 setTimeout(function() {
+                    $(".clonned-time").remove()
                     var a = $(".sked-tape__hours").eq(0).clone().addClass('clonned-time')
                     $('.sked-tape__event-row:nth-child(3n)').prepend(a)
                 }, 500);
@@ -1530,15 +1614,15 @@
                 $sked.on('timeline:click.skedtape', function(e) {
 
 
-                    var dp4 = $(".datepicker-here3")
-                        .datepicker({
-                            autoClose: true,
-                            onSelect: function onSelect(fd, date) {
-                                console.log("fd");
-                                console.log(fd);
-                            }
-                        })
-                        .data("datepicker");
+                    // var dp4 = $(".datepicker-here3")
+                    //     .datepicker({
+                    //         autoClose: true,
+                    //         onSelect: function onSelect(fd, date) {
+                    //             console.log("fd");
+                    //             console.log(fd);
+                    //         }
+                    //     })
+                    //     .data("datepicker");
 
                     app.selected_appointment_data = {}
                     console.log(e)
@@ -1555,6 +1639,11 @@
 
                     app.update_date = dateTime.split(" ")[0]
 
+                    app.final_slot = []
+
+                    app.queryCustomers = ""
+
+                    app.allgetCustomers = []
 
                     $('#exampleModalCenterCreate').modal('show')
 
@@ -1567,12 +1656,12 @@
 
                     console.log(e)
 
-                    app.selected_appointment = e.detail.event.location
+                    app.selected_appointment = e.detail.event.userData.id_appointment
 
                     app.selected_appointment_data = {}
 
 
-                    app.selected_appointment_data = app.appointments.filter(v => v.id_employee == e.detail.event.location)[0]
+                    app.selected_appointment_data = app.appointments.filter(v => v.id_appointment == app.selected_appointment)[0]
 
                     if (app.selected_appointment_data.admin_appointment_type == "booking_appointments") {
 
@@ -1585,12 +1674,22 @@
                         app.default_appointment_date = app.default_appointment_date.split("-")[2] + "/" + app.default_appointment_date.split("-")[1] + "/" + app.default_appointment_date.split("-")[0]
 
 
+
                         app.update_date = a
 
                         app.worker_duration = app.selected_appointment_data.duration
 
                         app.selected_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
                         app.default_appointment_time = app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[0] + ":" + app.selected_appointment_data.appointment_date.split(" ")[1].split(":")[1]
+                        app.dp2.selectDate(new Date(app.selected_appointment_data.appointment_date))
+
+                        app.final_slot = []
+
+                        app.allgetCustomers = []
+
+
+                        app.queryCustomers = app.selected_appointment_data['customer_name']
+
 
                         $('#exampleModalCenter').modal('show')
 
