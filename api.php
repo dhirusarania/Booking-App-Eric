@@ -35,7 +35,9 @@ $id_booking_diary = 1;
 $_SERVER['id_booking_diary'] = $id_booking_diary;
 
 
-
+function slugify($string){
+        return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $string), '-'));
+}
 
 function getToken($length)
 {
@@ -526,9 +528,23 @@ $data = array();
 
     // 0 , 1, 2
     //state != deleted, state != deleted and source == internet, state = deleted 
-    $data['appointment_state'] = array('Attivi ', 'Da Internet', 'Eliminati',
-      );
+    // $data['appointment_state'] = array('Attivi ', 'Da Internet', 'Eliminati',
+    //   );
 
+   $data['appointment_state'] = array(
+        '0' => array(
+          'name' => 'Attivi',
+          'state' => 'active,checked_out,checked_in',
+        ),
+        '1' => array(
+          'name' => 'Da Internet',
+          'state' => 'internet',
+        ),
+        '2' => array(
+          'name' => 'Eliminati',
+          'state' => 'deleted',
+        )
+        );
 
     $data['personal'] = array(
         '0' => array(
@@ -709,14 +725,18 @@ $data = array();
 
     $filter_needed = in_array("Appuntamenti", explode("," , $_REQUEST['filters']));
 
+    $not_deleted = in_array("1", explode("," , $_REQUEST['filters_state']));
+
     $data['getAppointmentList'] = "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" ;
 
     $data['appointments'] = [];
 
     if($filter_needed){
 
-    $data['ss'] = "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') and booking_appointments.state <> 'deleted' AND CONCAT( '" . $newDate  . "',' 23:59:59')";
-    $query = mysqli_query($con, "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and booking_appointments.state <> 'deleted' and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ") ") or die(mysqli_error($con));
+        // if()
+
+    $data['ss'] = "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and booking_appointments.state <> 'deleted' and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ") and appointment_source in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ")  ";
+    $query = mysqli_query($con, "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and booking_appointments.state <> 'deleted' and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ") and appointment_source in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ") ") or die(mysqli_error($con));
 
 
 
@@ -726,8 +746,15 @@ $data = array();
         while ($row = mysqli_fetch_assoc($query)) {
             $row['location'] = $row['id_employee'];
             $row['name'] = $row['service_name'];
+
+            $cust_name = slugify($row['customer_name']);
+
+            // if($row['customer_name'] == 'undefined'){
+            //     $cust_name = "";
+            // }
+
             $row['userData'] = $row;
-            $row['className'] = 'sked-color-04e9d2';
+            $row['className'] = 'sked-color-04e9d2 appointment';
             $row['admin_appointment_type'] = 'booking_appointments';
             $row['start'] = date('Y,m,d,H,i', strtotime($row['appointment_date']));
             $row['en11'] = $row['end'];
@@ -746,7 +773,7 @@ $data = array();
 
     }
 
-    $data['ssaaaa'] = "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_personal_appointments LEFT join employees on booking_personal_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')";
+    $data['ssaaaa'] = "SELECT *, booking_personal_appointments.color , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_personal_appointments LEFT join employees on booking_personal_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')   and booking_personal_appointments.state <> 'deleted'  and appointment_type in ("  . "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" . ")";
     $query = mysqli_query($con, "SELECT *, booking_personal_appointments.color , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_personal_appointments LEFT join employees on booking_personal_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')   and booking_personal_appointments.state <> 'deleted'  and appointment_type in ("  . "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" . ")") or die(mysqli_error($con));
 
 

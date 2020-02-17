@@ -434,9 +434,9 @@
                                     <label style="color:white" class="form-check-label"><input v-on:change="filter_update1_state"
                                                type="checkbox"
                                                checked
-                                               :value="p"
+                                               :value="p.type"
                                                class="form-check-input exampleCheck2_state"
-                                               :id="'exampleCheck-' + index"> {{p}}</label>
+                                               :id="'exampleCheck-' + index"> {{p.name}}</label>
                                 </div>
                             </form>
                         </li>
@@ -516,12 +516,61 @@
                                             padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_state(index)"
                                                        type="checkbox"
                                                        checked
-                                                       :value="p"
+                                                       :value="p.state"
                                                        style="margin-top: 0"
                                                        class="form-check-input exampleCheck1_state"
-                                                       :id="'exampleCheck-' + index">{{p}}</label>
+                                                       :id="'exampleCheck-' + index">{{p.name}}</label>
                                         </div>
                                     </form>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="sidebar-nav rel">
+                                <li class="sidebar-brand">
+                                    <a href="#">
+                                        Color Appointment
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <label style="color:white;display: flex;
+                                            align-items: center;
+                                            padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_color(1)"
+                                                       type="radio"
+                                                       name="color_appointment"
+                                                       checked
+                                                       value="standard"
+                                                       style="margin-top: 0"
+                                                       class="form-check-input exampleCheck1_state"
+                                                       id="'exampleCheck-' + index">Standard</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <label style="color:white;display: flex;
+                                            align-items: center;
+                                            padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_color(2)"
+                                                       type="radio"
+                                                       name="color_appointment"
+                                                       value="standard"
+                                                       style="margin-top: 0"
+                                                       class="form-check-input exampleCheck1_state"
+                                                       id="'exampleCheck-' + index">Per Cliente</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <label style="color:white;display: flex;
+                                            align-items: center;
+                                            padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_color(3)"
+                                                       type="radio"
+                                                       name="color_appointment"
+                                                       value="standard"
+                                                       style="margin-top: 0"
+                                                       class="form-check-input exampleCheck1_state"
+                                                       id="'exampleCheck-' + index">Per Servizio</label>
+                                    </div>
                                 </li>
                             </ul>
                         </li>
@@ -853,7 +902,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://lexkrstn.github.io/jquery-sked-tape/jquery.skedTape.js"></script>
+    <script src="../js/jquery.skedTape.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/i18n/datepicker.en.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -1043,7 +1092,7 @@
 
                         if (response.status == 200) {
 
-                            alert("Successfully Added")
+                            // alert("Successfully Added")
                             app.getAppointments(app.current_moment)
                             $("#exampleModalCenterCreate").modal('hide')
                                 // window.location.href = "/booking/admin/dashboard.html"
@@ -1106,6 +1155,7 @@
                     success: function(response) {
                         console.log(response)
                         app.allgetCustomers = response
+                        app.selected_appointment_data['customer_name'] = app.queryCustomers
                         $(".search-suggestions").show()
 
                     }
@@ -1145,15 +1195,17 @@
                     success: function(response) {
                         console.log(response)
                         app.all_filters = response['personal']
-                        app.active_filters_state = response['appointment_state']
-
                         app.all_filters_appointment_state = response['appointment_state']
-
-                        // app.active_filters = 
 
                         for (var i in app.all_filters) {
 
                             app.active_filters.push(app.all_filters[i]['name']);
+
+                        }
+
+                        for (var i in app.all_filters_appointment_state) {
+
+                            app.active_filters_state.push(app.all_filters_appointment_state[i]['state']);
 
                         }
 
@@ -1227,6 +1279,47 @@
 
             },
 
+            stringToColour: function(str) {
+                var hash = 0;
+                for (var i = 0; i < str.length; i++) {
+                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                var colour = '#';
+                for (var i = 0; i < 3; i++) {
+                    var value = (hash >> (i * 8)) & 0xFF;
+                    colour += ('00' + value.toString(16)).substr(-2);
+                }
+                return colour;
+            },
+
+            filter_update_color: function(id) {
+
+                if (id == 1) {
+                    $.each($('.sked-tape__event.appointment'), function() {
+                        $(this).css('background-color', '#04e9d2')
+                    });
+
+                } else if (id == 3) {
+                    $.each($('.sked-tape__event'), function() {
+                        if ($(this).attr('service_name') != undefined) {
+                            $(this).css('background-color', app.stringToColour($(this).attr('service_name')))
+                        }
+
+                    });
+
+                } else if (id == 2) {
+                    $.each($('.sked-tape__event'), function() {
+                        if ($(this).attr('customer_name') != undefined) {
+                            $(this).css('background-color', app.stringToColour($(this).attr('customer_name')))
+                        }
+
+                    });
+
+                }
+
+
+
+            },
             filter_update_state: function(id) {
 
                 app.active_filters_state = []
@@ -1436,7 +1529,7 @@
                     success: function(response) {
                         console.log("new response")
                         console.log(response)
-                        alert("updated Successfully")
+                            // alert("updated Successfully")
                         $('#updatePersonalAppointment').modal('hide')
                         app.getAppointments(app.current_moment)
                             // window.location.href = "/booking/admin/dashboard.html"
@@ -1495,7 +1588,7 @@
 
                         if (response.code == 200) {
 
-                            alert("Updated Successfully")
+                            // alert("Updated Successfully")
                         }
 
                         app.getAppointments(app.current_moment)
@@ -1533,7 +1626,7 @@
 
                         if (response.code == 200) {
 
-                            alert("Deleted Successfully")
+                            // alert("Deleted Successfully")
 
                         }
 
