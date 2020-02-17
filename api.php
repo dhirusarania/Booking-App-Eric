@@ -524,6 +524,12 @@ $data = array();
     }
 
 
+    // 0 , 1, 2
+    //state != deleted, state != deleted and source == internet, state = deleted 
+    $data['appointment_state'] = array('Attivi ', 'Da Internet', 'Eliminati',
+      );
+
+
     $data['personal'] = array(
         '0' => array(
           'name' => 'Appuntamenti',

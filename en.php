@@ -8,7 +8,7 @@ $data = array();
 $data = array(
     
     //menu items
-    'appointments' => "Appointments",
+    'appointments' => "Agenda",
     'create_appointments' => "Create Appointments",
     'create_personal_appointments' => "Personal Appointments",
     'overview' => "Overview",

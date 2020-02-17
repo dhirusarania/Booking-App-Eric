@@ -541,8 +541,8 @@
                     <div class="page-body">
 
                         <form class="d-flex align-items-center">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">{{language['select_date']}}</label>
+                            <div class="">
+                                <!-- <label for="exampleInputEmail1">{{language['select_date']}}</label> -->
                                 <input v-on:change="getAppointments" type='text' readonly="readonly" class='datepicker-here form-control' v-model="date" data-date-format="dd/mm/yyyy" data-language='en' />
                             </div>
 
@@ -1572,7 +1572,7 @@
 
 
                 $sked = $('#sked').skedTape({
-                    caption: 'Employees',
+                    caption: 'Staff',
                     zoom: this.zoom,
                     start: date(this.calendar_start), // Timeline starts this date-time (UTC)
                     end: date(this.calendar_end), // Timeline ends this date-time (UTC)
