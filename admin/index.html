@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <link href="../css/framework.css" rel="stylesheet" />
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <style>
         #login {
             /* background-image: url('~static/logo.png'); */
@@ -23,7 +23,7 @@
             right: 0;
             top: 0;
             bottom: 0;
-            margin: auto 15%;
+            margin: auto;
             max-width: 390px;
             border-radius: 5px;
             box-shadow: 1px 4px 19px 7px rgba(0, 0, 0, 0.18);
@@ -44,14 +44,14 @@
         
         .login-texts {
             height: 100%;
-            padding: 0 5px;
+            padding: 0 40px;
         }
         
         .login-col {
             padding-left: 40px;
             padding-right: 40px;
             padding-top: 20px;
-            background-color: #0d164b;
+            background-color: #3c3d43;
             height: 100%;
             border-radius: 5px;
         }
@@ -68,7 +68,7 @@
         
         .underline::before {
             background-color: white;
-            content: '';
+            content: "";
             position: absolute;
             z-index: 1;
             color: red;
@@ -81,7 +81,7 @@
         }
         
         .white-text {
-            color: white
+            color: white;
         }
         
         input[type="password"],
@@ -103,13 +103,27 @@
             }
         }
         
+        @media screen and (max-width: 600px) {
+            .login-texts {
+                height: 100%;
+                padding: 0 0;
+            }
+            body {
+                background-color: #3c3d43;
+            }
+            .login-row {
+                margin: auto !important;
+                box-shadow: none;
+            }
+        }
+        
         .btn {
             text-decoration: none;
             color: #fff;
-            background-color: #f37638;
+            background-color: #4d9450;
             text-align: center;
-            letter-spacing: .5px;
-            transition: background-color .2s ease-out;
+            letter-spacing: 0.5px;
+            transition: background-color 0.2s ease-out;
             cursor: pointer;
             margin: 10px 0;
             border: none;
@@ -124,52 +138,45 @@
             -webkit-tap-highlight-color: transparent;
         }
     </style>
-
-
 </head>
 
 <body>
-
-
     <section id="login">
         <div class="login">
             <div class="row login-row">
                 <div class="col l24 login-col">
                     <div v-if="isLogin==true" class="login-texts flex flex-column">
-                        <h2 class="white-text">Admin Login</h2>
-
-                        <div class="form-group">
-                            <label class="control-label">
-                                Username
-                                <span class="symbol required"></span>
-                            </label>
+                        <div class="d-flex justify-content-center">
+                            <img class="mt-5" src="https://via.placeholder.com/150" alt="" />
+                        </div>
+                        <div class="form-group mt-5">
                             <span class="input-icon">
-                                <input id="username"
-                                       type="text"
-                                       class="form-control"
-                                       maxlength="50"
-                                       placeholder="username">
-                                <i class="fa fa-envelope"></i>
-                            </span>
+                  <input
+                    id="username"
+                    type="text"
+                    class="form-control"
+                    maxlength="50"
+                    placeholder="Username"
+                  />
+                  <i class="fa fa-envelope"></i>
+                </span>
                         </div>
                         <div class="form-group" ng-class="{'has-error':Form.password.$dirty && Form.password.$invalid, 'has-success':Form.password.$valid}">
-                            <label class="control-label">
-                                Password
-                                <span class="symbol required"></span>
-                            </label>
                             <span class="input-icon">
-                                <input id="password"
-                                       type="password"
-                                       class="form-control"
-                                       maxlength="25"
-                                       placeholder="Password"
-                                       ng-model="password">
-                                <i class="fa fa-lock"></i>
-                            </span>
+                  <input
+                    id="password"
+                    type="password"
+                    class="form-control"
+                    maxlength="25"
+                    placeholder="Password"
+                    ng-model="password"
+                  />
+                  <i class="fa fa-lock"></i>
+                </span>
                         </div>
 
                         <div class="row">
-                            <div class="col l12">
+                            <div class="col">
                                 <!-- <button
                       type="submit"
                       class="btn white-text loginButton"
@@ -177,16 +184,17 @@
                     >Join</button> -->
                             </div>
 
-                            <div class="col l24">
-                                <button v-on:click="login" type="submit" class="btn btn-my-blue white-text loginButton">Login</button>
+                            <div class="col-12">
+                                <button v-on:click="login" type="submit" class="btn btn-my-blue white-text loginButton">
+                    Login
+                  </button>
                             </div>
 
-                            <div class="col l24">
-                                <p style="color:white;cursor:pointer" @click="changeMode(false)">Change Password</p>
+                            <div class="col s24">
+                                <p style="color:white;cursor:pointer" @click="changeMode(false)" class="text-center">
+                                    Change Password
+                                </p>
                             </div>
-
-
-
                         </div>
                     </div>
                     <div v-if="isLogin==false" class="login-texts flex flex-column">
@@ -194,49 +202,55 @@
                         <p id="error"></p>
                         <div class="form-group">
                             <label class="control-label">
-                                Email
-                                <span class="symbol required"></span>
-                            </label>
+                  Email
+                  <span class="symbol required"></span>
+                </label>
                             <span class="input-icon">
-                                <input id="change_email"
-                                       type="email"
-                                       class="form-control"
-                                       maxlength="50"
-                                       placeholder="Email"
-                                       ng-model="email">
-                                <i class="fa fa-envelope"></i>
-                            </span>
+                  <input
+                    id="change_email"
+                    type="email"
+                    class="form-control"
+                    maxlength="50"
+                    placeholder="Email"
+                    ng-model="email"
+                  />
+                  <i class="fa fa-envelope"></i>
+                </span>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label">
-                                Old password
-                                <span class="symbol required"></span>
-                            </label>
+                  Old password
+                  <span class="symbol required"></span>
+                </label>
                             <span class="input-icon">
-                                <input id="change_old_p"
-                                       type="password"
-                                       class="form-control"
-                                       maxlength="50"
-                                       placeholder="Email"
-                                       ng-model="email">
-                                <i class="fa fa-envelope"></i>
-                            </span>
+                  <input
+                    id="change_old_p"
+                    type="password"
+                    class="form-control"
+                    maxlength="50"
+                    placeholder="Email"
+                    ng-model="email"
+                  />
+                  <i class="fa fa-envelope"></i>
+                </span>
                         </div>
                         <div class="form-group" ng-class="{'has-error':Form.password.$dirty && Form.password.$invalid, 'has-success':Form.password.$valid}">
                             <label class="control-label">
-                                New Password
-                                <span class="symbol required"></span>
-                            </label>
+                  New Password
+                  <span class="symbol required"></span>
+                </label>
                             <span class="input-icon">
-                                <input id="change_new_p"
-                                       type="password"
-                                       class="form-control"
-                                       maxlength="25"
-                                       placeholder="Password"
-                                       ng-model="password">
-                                <i class="fa fa-lock"></i>
-                            </span>
+                  <input
+                    id="change_new_p"
+                    type="password"
+                    class="form-control"
+                    maxlength="25"
+                    placeholder="Password"
+                    ng-model="password"
+                  />
+                  <i class="fa fa-lock"></i>
+                </span>
                         </div>
 
                         <div class="row">
@@ -249,23 +263,22 @@
                             </div>
 
                             <div class="col l24">
-                                <button @click="changePass" type="submit" class="btn btn-my-blue white-text loginButton">Change Password</button>
+                                <button @click="changePass" type="submit" class="btn btn-my-blue white-text loginButton">
+                    Change Password
+                  </button>
                             </div>
 
                             <div class="col l24">
-                                <p style="color:white;cursor:pointer" @click="changeMode(true)">Go to Login</p>
+                                <p style="color:white;cursor:pointer" @click="changeMode(true)">
+                                    Go to Login
+                                </p>
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-
 </body>
 
 </html>
@@ -273,108 +286,100 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
 
-
 <script>
     var app = new Vue({
-        el: '#login',
+        el: "#login",
         data: {
             jokes: [],
             loading: false,
             isLogin: true
-
         },
         methods: {
             changeMode: function(e) {
-
-                this.isLogin = e
-
-
-
+                this.isLogin = e;
             },
             login: function() {
+                var bodyFormData = new FormData();
 
-
-                var bodyFormData = new FormData()
-
-                bodyFormData.append('username', document.getElementById('username').value)
-                bodyFormData.append('password', document.getElementById('password').value)
+                bodyFormData.append(
+                    "username",
+                    document.getElementById("username").value
+                );
+                bodyFormData.append(
+                    "password",
+                    document.getElementById("password").value
+                );
 
                 axios({
-                        method: 'POST',
+                        method: "POST",
                         url: "/booking/api.php?login=login",
                         headers: {
-                            'Content-Type': 'multipart/form-data'
+                            "Content-Type": "multipart/form-data"
                         },
                         data: bodyFormData
                     })
                     .then(res => {
-                        console.log('res', res.data)
+                        console.log("res", res.data);
 
                         if (res.data.code == 200) {
-
-                            localStorage.setItem('random', res.data.token)
+                            localStorage.setItem("random", res.data.token);
 
                             // this.$router.push('/admin')
 
-                            window.location.href = "/booking/admin/dashboard.html"
+                            window.location.href = "/booking/admin/dashboard.html";
                         } else {
-
-                            alert("Wrong Password")
-
+                            alert("Wrong Password");
                         }
-
-
-
                     })
                     .catch(err => {
-                        console.log('error in request1', err.response.data.message)
-                    })
+                        console.log("error in request1", err.response.data.message);
+                    });
             },
             changePass: function() {
+                var bodyFormData = new FormData();
 
-
-                var bodyFormData = new FormData()
-
-                bodyFormData.append('email', document.getElementById('change_email').value)
-                bodyFormData.append('old_password', document.getElementById('change_old_p').value)
-                bodyFormData.append('new_password', document.getElementById('change_new_p').value)
+                bodyFormData.append(
+                    "email",
+                    document.getElementById("change_email").value
+                );
+                bodyFormData.append(
+                    "old_password",
+                    document.getElementById("change_old_p").value
+                );
+                bodyFormData.append(
+                    "new_password",
+                    document.getElementById("change_new_p").value
+                );
 
                 axios({
-                        method: 'POST',
+                        method: "POST",
                         url: "https://www.cheapairhub.com/api/api.php?changePass=changePass",
                         headers: {
-                            'Content-Type': 'multipart/form-data'
+                            "Content-Type": "multipart/form-data"
                         },
                         data: bodyFormData
                     })
                     .then(res => {
-                        console.log('res', res.data)
+                        console.log("res", res.data);
 
                         if (res.data.code == 200) {
+                            $("input").val("");
 
-                            $("input").val("")
+                            $("#error").html("Successfully Changed");
+                            $("#error").removeClass("hide");
 
-                            $("#error").html("Successfully Changed")
-                            $("#error").removeClass("hide")
-
-
-                            this.isLogin = true
-
+                            this.isLogin = true;
                         } else {
-
-                            $("#error").html("Error on change")
-                            $("#error").removeClass("hide")
-
+                            $("#error").html("Error on change");
+                            $("#error").removeClass("hide");
                         }
-
 
                         // this.$router.push('/admin')
                     })
                     .catch(err => {
-                        console.log('error in request1', err.response.data.message)
-                    })
+                        console.log("error in request1", err.response.data.message);
+                    });
             }
         }
-
-    })
+    });
 </script>
