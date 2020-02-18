@@ -399,6 +399,9 @@
                             <a href="/booking/admin/createappointment.html">{{language['create_appointments']}}</a>
                         </li>
                         <li class="nav-item">
+                            <a href="#" v-on:click='openDialog'>{{language['create_appointments']}}</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
                         <li class="nav-item">
@@ -515,6 +518,9 @@
                         </li>
                         <li>
                             <a href="/booking/admin/createappointment.html">{{language['create_appointments']}}</a>
+                        </li>
+                        <li>
+                            <a href="#" v-on:click='openDialog'>{{language['create_appointments']}}</a>
                         </li>
                         <li>
                             <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
@@ -1078,6 +1084,16 @@
 
         },
         methods: {
+            openDialog: function() {
+
+                this.update_date = moment().add(0, 'days').format('DD/MM/YYYY')
+
+                var a = this.update_date.split("/")
+
+                var date = a[2] + "-" + a[1] + "-" + a[0]
+                $("#exampleModalCenterCreate").modal("show")
+
+            },
 
             logout: function() {
                 localStorage.clear();
@@ -1303,6 +1319,7 @@
 
                     },
                     error: function(response) {
+                        console.log(response)
                         alert(response.responseJSON.message);
                     }
                 });
@@ -1457,6 +1474,7 @@
 
                     },
                     error: function(response) {
+                        console.log(response)
                         alert(response.responseJSON.message);
                     }
                 });
@@ -1551,7 +1569,8 @@
 
                         },
                         error: function(response) {
-                            alert(response);
+                            console.log(response)
+                                // alert(response);
                         }
                     });
 
