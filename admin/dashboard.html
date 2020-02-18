@@ -440,6 +440,53 @@
                                 </div>
                             </form>
                         </li>
+
+                        <li class="sidebar-brand">
+                            <a href="#">
+                                {{language['color_appointment']}}
+                            </a>
+                        </li>
+                        <li>
+                            <div>
+                                <label style="color:white;display: flex;
+                                    align-items: center;
+                                    padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_color(1)"
+                                           type="radio"
+                                           name="color_appointment1"
+                                           checked
+                                           value="standard"
+                                           style="margin-top: 0"
+                                           class="form-check-input exampleCheck1_state"
+                                           id="'exampleCheck-' + index">Standard</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <label style="color:white;display: flex;
+                                    align-items: center;
+                                    padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_color(2)"
+                                           type="radio"
+                                           name="color_appointment1"
+                                           value="standard"
+                                           style="margin-top: 0"
+                                           class="form-check-input exampleCheck1_state"
+                                           id="'exampleCheck-' + index">Per Cliente</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <label style="color:white;display: flex;
+                                    align-items: center;
+                                    padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_color(3)"
+                                           type="radio"
+                                           name="color_appointment1"
+                                           value="standard"
+                                           style="margin-top: 0"
+                                           class="form-check-input exampleCheck1_state"
+                                           id="'exampleCheck-' + index">Per Servizio</label>
+                            </div>
+                        </li>
+
                     </ul>
 
                 </div>
@@ -537,13 +584,13 @@
                                         <label style="color:white;display: flex;
                                             align-items: center;
                                             padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_color(1)"
-                                                       type="radio"
-                                                       name="color_appointment"
-                                                       checked
-                                                       value="standard"
-                                                       style="margin-top: 0"
-                                                       class="form-check-input exampleCheck1_state"
-                                                       id="'exampleCheck-' + index">Standard</label>
+                                                   type="radio"
+                                                   name="color_appointment"
+                                                   checked
+                                                   value="standard"
+                                                   style="margin-top: 0"
+                                                   class="form-check-input exampleCheck1_state"
+                                                   id="'exampleCheck-' + index">Standard</label>
                                     </div>
                                 </li>
                                 <li>
@@ -551,12 +598,12 @@
                                         <label style="color:white;display: flex;
                                             align-items: center;
                                             padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_color(2)"
-                                                       type="radio"
-                                                       name="color_appointment"
-                                                       value="standard"
-                                                       style="margin-top: 0"
-                                                       class="form-check-input exampleCheck1_state"
-                                                       id="'exampleCheck-' + index">Per Cliente</label>
+                                                   type="radio"
+                                                   name="color_appointment"
+                                                   value="standard"
+                                                   style="margin-top: 0"
+                                                   class="form-check-input exampleCheck1_state"
+                                                   id="'exampleCheck-' + index">Per Cliente</label>
                                     </div>
                                 </li>
                                 <li>
@@ -564,12 +611,12 @@
                                         <label style="color:white;display: flex;
                                             align-items: center;
                                             padding-left: 20px;" class="form-check-label"> <input v-on:change="filter_update_color(3)"
-                                                       type="radio"
-                                                       name="color_appointment"
-                                                       value="standard"
-                                                       style="margin-top: 0"
-                                                       class="form-check-input exampleCheck1_state"
-                                                       id="'exampleCheck-' + index">Per Servizio</label>
+                                                   type="radio"
+                                                   name="color_appointment"
+                                                   value="standard"
+                                                   style="margin-top: 0"
+                                                   class="form-check-input exampleCheck1_state"
+                                                   id="'exampleCheck-' + index">Per Servizio</label>
                                     </div>
                                 </li>
                             </ul>
