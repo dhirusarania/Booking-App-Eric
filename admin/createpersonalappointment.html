@@ -372,7 +372,7 @@
                         <li class="nav-item active">
                             <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="#">{{language['overview']}}</a>
                         </li>
                         <li class="nav-item">
@@ -380,7 +380,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" v-on:click="changeLanguage">Change Language</a>
-                        </li>
+                        </li> -->
                     </ul>
 
                 </div>
@@ -410,7 +410,7 @@
                         <li class="active-nav">
                             <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href=" # ">{{language['overview']}}</a>
                         </li>
                         <li>
@@ -418,7 +418,7 @@
                         </li>
                         <li>
                             <a href="#" v-on:click="changeLanguage">Change Language</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
                 <!-- /#sidebar-wrapper -->
@@ -544,7 +544,7 @@
             if ("lang" in localStorage) {
                 this.lang = localStorage.getItem('lang')
             } else {
-                localStorage.setItem('lang', 'en')
+                localStorage.setItem('lang', 'it')
             }
 
             this.getLanguage()
@@ -625,7 +625,7 @@
                     this.lang = 'it'
                     localStorage.setItem('lang', 'it')
                 } else {
-                    localStorage.setItem('lang', 'en')
+                    localStorage.setItem('lang', 'it')
                     this.lang = 'en'
                 }
 
