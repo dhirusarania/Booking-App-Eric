@@ -401,10 +401,10 @@
                         <li class="nav-item">
                             <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="#">{{language['overview']}}</a>
-                        </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="#" v-on:click="logout">{{language['logout']}}</a>
+                        </li>
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="#">{{language['shortcuts']}}</a>
                         </li>
                         <li class="nav-item">
@@ -515,10 +515,10 @@
                         <li>
                             <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
-                        <!-- <li>
-                            <a href=" # ">{{language['overview']}}</a>
-                        </li>
                         <li>
+                            <a href="#" v-on:click="logout">{{language['logout']}}</a>
+                        </li>
+                        <!--<li>
                             <a href="# ">{{language['shortcuts']}}</a>
                         </li>
                         <li>
@@ -1075,6 +1075,10 @@
         },
         methods: {
 
+            logout: function() {
+                localStorage.clear();
+                window.location.href = "/booking/admin"
+            },
             changeLanguage: function() {
 
                 console.log("chage")

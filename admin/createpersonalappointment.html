@@ -410,6 +410,9 @@
                         <li class="active-nav">
                             <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
+                        <li>
+                            <a href="#" v-on:click="logout">{{language['logout']}}</a>
+                        </li>
                         <!-- <li>
                             <a href=" # ">{{language['overview']}}</a>
                         </li>
@@ -597,7 +600,10 @@
 
         },
         methods: {
-
+            logout: function() {
+                localStorage.clear();
+                window.location.href = "/booking/admin"
+            },
             getLanguage: function() {
 
                 $.ajax({

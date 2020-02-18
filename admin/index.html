@@ -156,7 +156,7 @@
                     type="text"
                     class="form-control"
                     maxlength="50"
-                    placeholder="Username"
+                    :placeholder="language['username']"
                   />
                   <i class="fa fa-envelope"></i>
                 </span>
@@ -168,7 +168,7 @@
                     type="password"
                     class="form-control"
                     maxlength="25"
-                    placeholder="Password"
+                    :placeholder="language['password']"
                     ng-model="password"
                   />
                   <i class="fa fa-lock"></i>
@@ -192,7 +192,7 @@
 
                             <div class="col s24">
                                 <p style="color:white;cursor:pointer" @click="changeMode(false)" class="text-center">
-                                    Change Password
+                                    {{language['change_password']}}
                                 </p>
                             </div>
                         </div>
@@ -283,6 +283,7 @@
 
 </html>
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
 
@@ -290,11 +291,54 @@
     var app = new Vue({
         el: "#login",
         data: {
+            language: [],
             jokes: [],
             loading: false,
-            isLogin: true
+            isLogin: true,
+            lang: "it",
+        },
+        mounted() {
+
+
+            this.getLanguage()
         },
         methods: {
+            changeLanguage: function() {
+
+                console.log("chage")
+                console.log(this.lang)
+
+                if (this.lang == 'en') {
+                    this.lang = 'it'
+                    localStorage.setItem('lang', 'it')
+                } else {
+                    localStorage.setItem('lang', 'it')
+                    this.lang = 'en'
+                }
+
+                this.getLanguage()
+
+
+            },
+
+            getLanguage: function() {
+
+                console.log(this.lang)
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '/booking/' + this.lang + '.php',
+                    success: function(response) {
+                        console.log(response)
+                        app.language = response
+                    }
+                })
+
+
+
+
+            },
             changeMode: function(e) {
                 this.isLogin = e;
             },

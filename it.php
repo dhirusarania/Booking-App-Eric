@@ -12,6 +12,7 @@ $data = array(
     'username' => "nome utente",
     'password' => "password",
     'change_password' => "Cambia password",
+    'logout' => "Log Out",
 
 
     "filters" => "Filtri",
