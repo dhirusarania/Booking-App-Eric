@@ -17,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-error_reporting(0);
+// error_reporting(0);
 
-session_start();
+// session_start();
 
 
 
@@ -43,7 +43,75 @@ $ADMIN_DATABASE = "new3";
 // /*Variables */
 
 
-// $_SERVER['id_booking_diary'] = $id_booking_diary;
+// $_SESSION['id_booking_diary'] = $id_booking_diary;
+
+
+
+
+if(isset($_SESSION['db_name']) && $_SESSION['db_name']){
+    
+    $username = $USERNAME;
+    $password = $PASSWORD;
+    $servername = $SERVERNAME;
+    $database = $ADMIN_DATABASE;
+    // error_reporting(0);
+    // $database = "nexttable";
+
+    // Create connection
+    $con_admin = new mysqli($servername, $username, $password, $database);
+    // Check connection
+    if ($con_admin->connect_error) {
+
+        header($_SESSION['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+
+        $data['status'] = "error";
+        $data['message'] = $con->connect_error;
+        $res = json_encode($data);
+        echo $res;
+        // die("Connection failed: " . $con->connect_error);
+        exit;
+    }
+
+
+ 
+$query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE circuit_db  = '" . $_SESSION['db_name'] . "'") or die(mysqli_error($con_admin));
+    
+if (mysqli_num_rows($query) > 0) {
+    $row = mysqli_fetch_assoc($query);
+
+    // $data[] = $row;
+
+    $data['ssssss'] = "SELECT * FROM companies WHERE id_company  = " . $row['id_circuit'];
+
+    $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_circuit']) or die(mysqli_error($con_admin));
+
+    if (mysqli_num_rows($query) > 0) {
+
+        $row = mysqli_fetch_assoc($query);
+
+        $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE id_company = " . $row['id_company']) or die(mysqli_error($con_admin));
+
+        if (mysqli_num_rows($query) > 0) {
+            $row = mysqli_fetch_assoc($query);
+
+
+                $id_booking_diary = $row['id_booking_diary'];
+
+
+
+                $_SESSION['id_booking_diary'] = $id_booking_diary;
+
+        }
+    }
+} else {
+    $data['message'] = "Invalid ID Variable";
+    http_response_code(400);
+}
+
+
+}
+
+
 
 
 
@@ -83,18 +151,18 @@ function getRandomFreeUser($con, $service_id, $exclude, $date)
 
 
 
-    $query = mysqli_query($con, "SELECT * FROM employee_services JOIN booking_employees ON employee_services.id_employee = booking_employees.id_employee WHERE visible_on_line = 1 and id_booking_diary = " . $_SERVER['id_booking_diary'] . " and id_service = " . $service_id . " and booking_employees.id_employee not IN (" . $exclude . ") ORDER BY RAND()") or die(mysqli_error($con));
+    $query = mysqli_query($con, "SELECT * FROM employee_services JOIN booking_employees ON employee_services.id_employee = booking_employees.id_employee WHERE visible_on_line = 1 and id_booking_diary = " . $_SESSION['id_booking_diary'] . " and id_service = " . $service_id . " and booking_employees.id_employee not IN (" . $exclude . ") ORDER BY RAND()") or die(mysqli_error($con));
 
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
             // $row['sour'] = "jahah";
             // $data['random_employee'] = $row;
 
-            $query2 = mysqli_query($con, "SELECT * FROM booking_personal_appointments where id_employee in ("  . $row['id_employee'] . ") and appointment_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+            $query2 = mysqli_query($con, "SELECT * FROM booking_personal_appointments where id_employee in ("  . $row['id_employee'] . ") and appointment_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
             if (mysqli_num_rows($query2) == 0) {
 
-                $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $row['id_employee'] . ") and open_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+                $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $row['id_employee'] . ") and open_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
                 if (mysqli_num_rows($query3) == 0) {
                     $data['random_employee'] = $row;
@@ -106,18 +174,18 @@ function getRandomFreeUser($con, $service_id, $exclude, $date)
         // $data['random_employee'] = "no employee available";
 
 
-        $query = mysqli_query($con, "SELECT * FROM booking_employees WHERE visible_on_line = 1 and id_booking_diary = " . $_SERVER['id_booking_diary'] . " ORDER BY RAND()") or die(mysqli_error($con));
+        $query = mysqli_query($con, "SELECT * FROM booking_employees WHERE visible_on_line = 1 and id_booking_diary = " . $_SESSION['id_booking_diary'] . " ORDER BY RAND()") or die(mysqli_error($con));
 
         if (mysqli_num_rows($query) > 0) {
             while ($row = mysqli_fetch_assoc($query)) {
                 // $row['sour'] = "jahah";
                 // $data['random_employee'] = $row;
 
-                $query2 = mysqli_query($con, "SELECT * FROM booking_personal_appointments where id_employee in ("  . $row['id_employee'] . ") and appointment_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+                $query2 = mysqli_query($con, "SELECT * FROM booking_personal_appointments where id_employee in ("  . $row['id_employee'] . ") and appointment_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
                 if (mysqli_num_rows($query2) == 0) {
 
-                    $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $row['id_employee'] . ") and open_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+                    $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $row['id_employee'] . ") and open_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
                     if (mysqli_num_rows($query3) == 0) {
                         $data['random_employee'] = $row;
@@ -464,7 +532,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
         // Check connection
         if ($con_admin->connect_error) {
 
-            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+            header($_SESSION['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
 
             $data['status'] = "error";
             $data['message'] = $con->connect_error;
@@ -476,24 +544,27 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
 
 
-        $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE booking_url = " . $_REQUEST['booking_url']) or die(mysqli_error($con));
+        $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE booking_url = " . $_REQUEST['booking_url']) or die(mysqli_error($con_admin));
 
         if (mysqli_num_rows($query) > 0) {
             $row = mysqli_fetch_assoc($query);
 
             $data[] = $row;
 
-            $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con));
+            $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con_admin));
 
             if (mysqli_num_rows($query) > 0) {
 
                 $row = mysqli_fetch_assoc($query);
 
-                $query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con));
+                $data[] = $row;
+
+                $query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con_admin));
 
                 if (mysqli_num_rows($query) > 0) {
                     $data = mysqli_fetch_assoc($query);
 
+                    $data[] = $row;
                     $_SESSION['db_name'] = $data['circuit_db'];
                 }
             }
@@ -535,7 +606,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
         // Check connection
         if ($con_admin->connect_error) {
 
-            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+            header($_SESSION['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
             $data = array();
             $data['status'] = "error";
             $data['message'] = $con->connect_error;
@@ -548,20 +619,20 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
         $data = array();
 
-        $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE booking_url = " . $_REQUEST['booking_url']) or die(mysqli_error($con));
+        $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE booking_url = " . $_REQUEST['booking_url']) or die(mysqli_error($con_admin));
 
         if (mysqli_num_rows($query) > 0) {
             $row = mysqli_fetch_assoc($query);
 
             $data[] = $row;
 
-            $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con));
+            $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con_admin));
 
             if (mysqli_num_rows($query) > 0) {
 
                 $row = mysqli_fetch_assoc($query);
 
-                $query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con));
+                $query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con_admin));
 
                 if (mysqli_num_rows($query) > 0) {
                     $data = mysqli_fetch_assoc($query);
@@ -842,7 +913,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
     // $query = mysqli_query($con, "SELECT * FROM employee_services LEFT JOIN employees ON employee_services.id_employee = employees.id_employee WHERE id_service = " . $_REQUEST['service_id']) or die(mysqli_error($con));
 
-    $query = mysqli_query($con, "SELECT * FROM booking_employees LEFT join employees on booking_employees.id_employee = employees.id_employee WHERE visible_on_line = 1  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+    $query = mysqli_query($con, "SELECT * FROM booking_employees LEFT join employees on booking_employees.id_employee = employees.id_employee WHERE visible_on_line = 1  and id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
@@ -873,7 +944,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     $newDate = $_REQUEST['date'];
 
 
-    $data['sdsdsd'] =  "SELECT " . date("l", strtotime($_REQUEST['date'])) . "_start_time booking_diary_open_times where id_booking_diary = " . $_SERVER['id_booking_diary'];
+    $data['sdsdsd'] =  "SELECT " . date("l", strtotime($_REQUEST['date'])) . "_start_time booking_diary_open_times where id_booking_diary = " . $_SESSION['id_booking_diary'];
 
     $query = mysqli_query($con, "SELECT " . date("l", strtotime($_REQUEST['date'])) . "_start_time as start_time, " . date("l", strtotime($_REQUEST['date'])) . "_end_time as end_time from booking_diary_open_times where id_booking_diary = 1 ") or die(mysqli_error($con));
 
@@ -988,11 +1059,11 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
     $data = array();
 
-    $data['sss'] = $_SERVER['id_booking_diary'];
+    $data['sss'] = $_SESSION['id_booking_diary'];
 
-    $data['ssssss'] = "SELECT * FROM `booking_online_info` WHERE id_booking_diary = " . $_SERVER['id_booking_diary'];
+    $data['ssssss'] = "SELECT * FROM `booking_online_info` WHERE id_booking_diary = " . $_SESSION['id_booking_diary'];
 
-    $query = mysqli_query($con, "SELECT `id_booking_diary`, `enabled`, `path`, `title`, `address1`, `address2`, `address3`, `address4`, `address5`, `salon_tag`, `salon_lang`, `salon_pay`, `facebook_address`, `istagram_address`, `telegram_address`, `telegram_address_callback`, `mostra_prezzo_finale`, `mostra_prezzi_listino`, `mostra_seleziona_lavorante`, `mostra_dove_siamo`, `mostra_recensioni`, `mostra_altre_recensioni`, `map_link`  FROM booking_online_info WHERE id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+    $query = mysqli_query($con, "SELECT `id_booking_diary`, `enabled`, `path`, `title`, `address1`, `address2`, `address3`, `address4`, `address5`, `salon_tag`, `salon_lang`, `salon_pay`, `facebook_address`, `istagram_address`, `telegram_address`, `telegram_address_callback`, `mostra_prezzo_finale`, `mostra_prezzi_listino`, `mostra_seleziona_lavorante`, `mostra_dove_siamo`, `mostra_recensioni`, `mostra_altre_recensioni`, `map_link`  FROM booking_online_info WHERE id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
@@ -1269,7 +1340,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
 
 
-        $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee = "  . $emp_a[0] . " and open_date BETWEEN CONCAT( '" . $data['sssss']  . "',' 00:00:00') AND CONCAT( '" . $data['sssss']  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+        $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee = "  . $emp_a[0] . " and open_date BETWEEN CONCAT( '" . $data['sssss']  . "',' 00:00:00') AND CONCAT( '" . $data['sssss']  . "',' 23:59:59')  and id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
         $data['zzzz'] = "SELECT * FROM booking_employee_special_shift where id_employee = "  . $emp_a[0] . " and start_time BETWEEN CONCAT( '" . $data['sssss']  . "',' 00:00:00') AND CONCAT( '" . $data['sssss']  . "',' 23:59:59')   ";
 
@@ -1282,7 +1353,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
                 $data['emp_shift'][$row['id_employee']]['end_pause'] = $row['end_pause'];
             }
         } else {
-            $query = mysqli_query($con, "SELECT u.*, s.*,t.* FROM employee_general_shifts u inner join employee_general_shift_details s on u.id_shift = s.id_shift inner join booking_employees t on t.shift_id = s.id_shift where t.id_employee = ("  . $emp_a[0] . ") and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+            $query = mysqli_query($con, "SELECT u.*, s.*,t.* FROM employee_general_shifts u inner join employee_general_shift_details s on u.id_shift = s.id_shift inner join booking_employees t on t.shift_id = s.id_shift where t.id_employee = ("  . $emp_a[0] . ") and id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
             if (mysqli_num_rows($query) > 0) {
                 while ($row1 = mysqli_fetch_assoc($query)) {
@@ -1295,7 +1366,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
                     $data['emp_shift'][$row['id_employee']]['end_pause'] =   $data['timeslot'][strtolower($data['day']) . '_end_pause'];
                 }
             } else {
-                $query = mysqli_query($con, "SELECT * FROM booking_diary_open_times where id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+                $query = mysqli_query($con, "SELECT * FROM booking_diary_open_times where id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
                 if (mysqli_num_rows($query) > 0) {
                     while ($row2 = mysqli_fetch_assoc($query)) {
@@ -1404,8 +1475,8 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
         foreach ($data['users'] as $key => $value) {
 
-            $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $value . ") and open_date BETWEEN CONCAT( '" . $data['sssss']  . "',' 00:00:00') AND CONCAT( '" . $data['sssss']  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
-            $data['xxx'] = "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $value . ") and open_date BETWEEN CONCAT( '" . $data['sssss']  . "',' 00:00:00') AND CONCAT( '" . $data['sssss']  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary'];
+            $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $value . ") and open_date BETWEEN CONCAT( '" . $data['sssss']  . "',' 00:00:00') AND CONCAT( '" . $data['sssss']  . "',' 23:59:59')  and id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
+            $data['xxx'] = "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $value . ") and open_date BETWEEN CONCAT( '" . $data['sssss']  . "',' 00:00:00') AND CONCAT( '" . $data['sssss']  . "',' 23:59:59')  and id_booking_diary = " . $_SESSION['id_booking_diary'];
 
             if (mysqli_num_rows($query3) > 0) {
                 while ($row = mysqli_fetch_assoc($query3)) {
@@ -1432,7 +1503,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
                         $data['emp_shift'][$row['id_employee']]['end_pause'] =   $data['timeslot'][strtolower($data['day']) . '_end_pause'];
                     }
                 } else {
-                    $query = mysqli_query($con, "SELECT * FROM booking_diary_open_times where id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
+                    $query = mysqli_query($con, "SELECT * FROM booking_diary_open_times where id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
                     if (mysqli_num_rows($query) > 0) {
                         while ($row = mysqli_fetch_assoc($query)) {
@@ -1785,9 +1856,9 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     for ($i = 0; $i < count($info); $i++) {
 
         // $data['zdcdzz'] = $info[$i];
-        $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+        $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
-        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $info[$i]['app_time'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $info[$i]['app_time'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
         if (mysqli_query($con, $sql)) {
 
@@ -1813,9 +1884,9 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
     $data = array();
 
-    $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+    $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
-    $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+    $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
     if (mysqli_query($con, $sql)) {
 
@@ -1864,9 +1935,9 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
 
     // $data['zdcdzz'] = $info[$i];
-    $data['xxx'][] = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '" .  $current_time . "' ,  'P460-1568990330', '" .  $current_time . "', 'P460-1568990330')";
+    $data['xxx'][] = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '" .  $current_time . "' ,  'P460-1568990330', '" .  $current_time . "', 'P460-1568990330')";
 
-    $sql = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '" .  $current_time . "' ,  'P460-1568990330', '" .  $current_time . "', 'P460-1568990330')";
+    $sql = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '" .  $current_time . "' ,  'P460-1568990330', '" .  $current_time . "', 'P460-1568990330')";
 
     if (mysqli_query($con, $sql)) {
 

@@ -386,6 +386,31 @@
                         localStorage.setItem('init_db', app.booking_url)
                         app.slider_image = response['files']
                         app.getHomepageInfo()
+
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: '/booking/api.php?getAllServices=getAllServices',
+                            data: $(this).serialize(),
+                            success: function(response) {
+                                console.log(response)
+                                all_service = response
+                                app.services = response
+                                    // var d1 = document.getElementById('allservices');
+
+                                // for (var i = 0; i < response['parrucchiere'].length; i++) {
+
+                                //     d1.insertAdjacentHTML('beforeend', ' <tr><td class="mainsection"><p>' + response[i].name + '</p><p style="font-size:13px">Prezzo da: ' + parseFloat(response[i].standard_sell_price).toFixed(2) + ' €</p></td><td><label class="switch"><input type="checkbox" data-toggle="collapse" data-name="' + response[i].name + '" data-id="' + response[i].id_service + '" data-target="#accordion-' + response[i].id_service + '"class="clickable"><span class="slider round"></span></label></td></tr><tr><td colspan="6"><div id="accordion-' + response[i].id_service + '" data-name="' + response[i].name + '" data-id="' + response[i].id_service + '" data-duration="' + response[i].worker_duration + '" data-dependency="' + response[i].service_dependence + '" class="drop collapse"><select class="e1" style="width: 100%" data-pd="' + response[i].id_service + '" id="select2-' + response[i].id_service + '"><option value="0">Indifferente</option></select></div></td></tr>');
+
+                                // }
+
+
+                            },
+                            error: function(response) {
+                                // alert(response.responseJSON.message);
+                            }
+                        });
+
                     },
                     error: function(response) {
                         console.log(response);
@@ -414,29 +439,7 @@
         $(".e1").select2();
     });
 
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: '/booking/api.php?getAllServices=getAllServices',
-        data: $(this).serialize(),
-        success: function(response) {
-            console.log(response)
-            all_service = response
-            app.services = response
-                // var d1 = document.getElementById('allservices');
 
-            // for (var i = 0; i < response['parrucchiere'].length; i++) {
-
-            //     d1.insertAdjacentHTML('beforeend', ' <tr><td class="mainsection"><p>' + response[i].name + '</p><p style="font-size:13px">Prezzo da: ' + parseFloat(response[i].standard_sell_price).toFixed(2) + ' €</p></td><td><label class="switch"><input type="checkbox" data-toggle="collapse" data-name="' + response[i].name + '" data-id="' + response[i].id_service + '" data-target="#accordion-' + response[i].id_service + '"class="clickable"><span class="slider round"></span></label></td></tr><tr><td colspan="6"><div id="accordion-' + response[i].id_service + '" data-name="' + response[i].name + '" data-id="' + response[i].id_service + '" data-duration="' + response[i].worker_duration + '" data-dependency="' + response[i].service_dependence + '" class="drop collapse"><select class="e1" style="width: 100%" data-pd="' + response[i].id_service + '" id="select2-' + response[i].id_service + '"><option value="0">Indifferente</option></select></div></td></tr>');
-
-            // }
-
-
-        },
-        error: function(response) {
-            // alert(response.responseJSON.message);
-        }
-    });
 
 
     $(document).on('change', '.clickable', function() {
