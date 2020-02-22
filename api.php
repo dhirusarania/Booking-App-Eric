@@ -592,7 +592,9 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 } else if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
 
 
-    if ($_POST['booking_url'] != "" && $_POST['booking_url'] != 0) {
+    // if ($_POST['booking_url'] != "" && $_POST['booking_url'] != 0) {
+
+        unset($_SESSION["db_name"]);
 
         $username = $USERNAME;
         $password = $PASSWORD;
@@ -619,44 +621,44 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
         $data = array();
 
-        $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE booking_url = " . $_REQUEST['booking_url']) or die(mysqli_error($con_admin));
+        // $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE booking_url = " . $_REQUEST['booking_url']) or die(mysqli_error($con_admin));
 
-        if (mysqli_num_rows($query) > 0) {
-            $row = mysqli_fetch_assoc($query);
+        // if (mysqli_num_rows($query) > 0) {
+        //     $row = mysqli_fetch_assoc($query);
 
-            $data[] = $row;
+        //     $data[] = $row;
 
-            $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con_admin));
+        //     $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con_admin));
 
-            if (mysqli_num_rows($query) > 0) {
+        //     if (mysqli_num_rows($query) > 0) {
 
-                $row = mysqli_fetch_assoc($query);
+        //         $row = mysqli_fetch_assoc($query);
 
-                $query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con_admin));
+        //         $query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con_admin));
 
-                if (mysqli_num_rows($query) > 0) {
-                    $data = mysqli_fetch_assoc($query);
+        //         if (mysqli_num_rows($query) > 0) {
+        //             $data = mysqli_fetch_assoc($query);
 
-                    $_SESSION['db_name'] = $data['circuit_db'];
-                }
-            }
-        } else {
-            $data['message'] = "Invalid ID Variable";
-            http_response_code(400);
+        //             $_SESSION['db_name'] = $data['circuit_db'];
+        //         }
+        //     }
+        // } else {
+        //     $data['message'] = "Invalid ID Variable";
+        //     http_response_code(400);
 
-            $res = json_encode($data);
-            echo $res;
-            exit;
-        }
-    } else {
+        //     $res = json_encode($data);
+        //     echo $res;
+        //     exit;
+        // }
+    // } else {
 
-        $data['message'] = "Missing ID Variable";
-        http_response_code(404);
+    //     $data['message'] = "Missing ID Variable";
+    //     http_response_code(404);
 
-        $res = json_encode($data);
-        echo $res;
-        exit;
-    }
+    //     $res = json_encode($data);
+    //     echo $res;
+    //     exit;
+    // }
 
 
 
@@ -668,7 +670,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
     // $data['xdsds'] = "SELECT id, municipality, iata_code, iso_country, type FROM data WHERE municipality IS NOT NULL AND type = 'large_airport' AND municipality LIKE '". $_REQUEST['query'] ."%' AND iata_code LIKE '". $_REQUEST['query'] ."%' ORDER BY FIELD(iso_country, 'US', 'IN') DESC";
 
-    $query = mysqli_query($con, "SELECT * FROM system_admin WHERE username = '" . $_POST['username'] . "'") or die(mysqli_error($con));
+    $query = mysqli_query($con_admin, "SELECT * FROM system_admin WHERE username = '" . $_POST['username'] . "'") or die(mysqli_error($con_admin));
     // $query = mysqli_query($con, "SELECT id,  'municipality',  'iata_code', 'iso_country', 'type' FROM data WHERE 'municipality' IS NOT NULL AND 'type' = large_airport AND 'municipality LIKE 'B%' AND 'iata_code' LIKE 'B%' ORDER BY FIELD('iso_country', 'US', 'IN') DESC ");
 
     // $data['hash'] = password_hash("admin1234", PASSWORD_DEFAULT);
@@ -688,6 +690,41 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
                 $_SESSION['loggedin'] = true;
                 $data['token'] = $row['token'];
+
+
+
+
+                $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE booking_url = " . $row['booking_url']) or die(mysqli_error($con_admin));
+
+                if (mysqli_num_rows($query) > 0) {
+                    $row = mysqli_fetch_assoc($query);
+        
+                    $data[] = $row;
+        
+                    $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con_admin));
+        
+                    if (mysqli_num_rows($query) > 0) {
+        
+                        $row = mysqli_fetch_assoc($query);
+        
+                        $data[] = $row;
+        
+                        $query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con_admin));
+        
+                        if (mysqli_num_rows($query) > 0) {
+                            $row = mysqli_fetch_assoc($query);
+        
+                            $data[] = $row;
+                            $_SESSION['db_name'] = $row['circuit_db'];
+                        }
+                    }
+                } else {
+                    $data['message'] = "Invalid ID Variable";
+                    http_response_code(400);
+                }
+
+
+
             } else {
 
                 $data['message'] = 'Invalid password.';
@@ -771,6 +808,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
             $data['appointment_state'][] = $row['appointment_state'];
         }
     }
+
 
 
     // 0 , 1, 2
@@ -970,6 +1008,8 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     $data['getAppointmentList'] = "'" . implode("','", explode(",", $_REQUEST['filters'])) . "'";
 
     $data['appointments'] = [];
+
+    $data['session'] = $_SESSION;
 
     if ($filter_needed) {
 

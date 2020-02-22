@@ -303,14 +303,14 @@
             // console.log(this.$route.query.test)
             this.getLanguage()
 
-            console.log(window.location.search.replace('?id=', ''))
+            // console.log(window.location.search.replace('?id=', ''))
 
-            if (window.location.search == "") {
-                alert("ID Param Missing")
-            } else {
+            // if (window.location.search == "") {
+            //     alert("ID Param Missing")
+            // } else {
 
-                this.booking_url = window.location.search.replace('?id=', '')
-            }
+            //     this.booking_url = window.location.search.replace('?id=', '')
+            // }
 
         },
         methods: {
@@ -363,10 +363,6 @@
                 bodyFormData.append(
                     "password",
                     document.getElementById("password").value
-                );
-                bodyFormData.append(
-                    "booking_url",
-                    app.booking_url
                 );
 
                 axios({
@@ -442,4 +438,5 @@
             }
         }
     });
+</script>
 </script>
