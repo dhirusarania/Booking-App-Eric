@@ -22,21 +22,34 @@ error_reporting(0);
 session_start();
 
 
-/*Variables */
+
+$USERNAME = "root";
+$PASSWORD = "";
+$SERVERNAME = "localhost";
+$ADMIN_DATABASE = "new3";
 
 
-$id_booking_diary = 1;
 
 
 
-/*Variables */
+
+// /*Variables */
 
 
-$_SERVER['id_booking_diary'] = $id_booking_diary;
+// $id_booking_diary = 1;
 
 
-function slugify($string){
-        return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $string), '-'));
+
+// /*Variables */
+
+
+// $_SERVER['id_booking_diary'] = $id_booking_diary;
+
+
+
+function slugify($string)
+{
+    return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $string), '-'));
 }
 
 function getToken($length)
@@ -99,13 +112,13 @@ function getRandomFreeUser($con, $service_id, $exclude, $date)
             while ($row = mysqli_fetch_assoc($query)) {
                 // $row['sour'] = "jahah";
                 // $data['random_employee'] = $row;
-    
+
                 $query2 = mysqli_query($con, "SELECT * FROM booking_personal_appointments where id_employee in ("  . $row['id_employee'] . ") and appointment_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
-    
+
                 if (mysqli_num_rows($query2) == 0) {
-    
+
                     $query3 = mysqli_query($con, "SELECT * FROM booking_employee_special_shift where id_employee in ("  . $row['id_employee'] . ") and open_date BETWEEN CONCAT( '" . $date  . "',' 00:00:00') AND CONCAT( '" . $date  . "',' 23:59:59')  and id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
-    
+
                     if (mysqli_num_rows($query3) == 0) {
                         $data['random_employee'] = $row;
                         return $data['random_employee'];
@@ -113,8 +126,6 @@ function getRandomFreeUser($con, $service_id, $exclude, $date)
                 }
             }
         }
-
-
     }
 
 
@@ -430,16 +441,165 @@ function in_array_field($needle, $needle_field, $haystack, $strict = false)
 }
 
 
-if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
+if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
+
+
+    $data = array();
+
+    unset($_SESSION["db_name"]);
+
+
+
+    if ($_REQUEST['booking_url'] != "" && $_REQUEST['booking_url'] != 0) {
+
+        $username = $USERNAME;
+        $password = $PASSWORD;
+        $servername = $SERVERNAME;
+        $database = $ADMIN_DATABASE;
+        // error_reporting(0);
+        // $database = "nexttable";
+
+        // Create connection
+        $con_admin = new mysqli($servername, $username, $password, $database);
+        // Check connection
+        if ($con_admin->connect_error) {
+
+            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+
+            $data['status'] = "error";
+            $data['message'] = $con->connect_error;
+            $res = json_encode($data);
+            echo $res;
+            // die("Connection failed: " . $con->connect_error);
+            exit;
+        }
+
+
+
+        $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE booking_url = " . $_REQUEST['booking_url']) or die(mysqli_error($con));
+
+        if (mysqli_num_rows($query) > 0) {
+            $row = mysqli_fetch_assoc($query);
+
+            $data[] = $row;
+
+            $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con));
+
+            if (mysqli_num_rows($query) > 0) {
+
+                $row = mysqli_fetch_assoc($query);
+
+                $query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con));
+
+                if (mysqli_num_rows($query) > 0) {
+                    $data = mysqli_fetch_assoc($query);
+
+                    $_SESSION['db_name'] = $data['circuit_db'];
+                }
+            }
+        } else {
+            $data['message'] = "Invalid ID Variable";
+            http_response_code(400);
+        }
+    } else {
+
+        $data['message'] = "Missing ID Variable";
+        http_response_code(404);
+    }
+
+    $data['booking_url'] =  $_REQUEST['booking_url'];
+
+    $data['ses'] = $_SESSION;
+
+    $absolpath = getcwd();
+    $path  = $absolpath . '/img/landing/' . $_REQUEST['booking_url'];
+    $data['files'] =  array_values(array_diff(scandir($path), array('.', '..')));
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+} else if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
+
+
+    if ($_POST['booking_url'] != "" && $_POST['booking_url'] != 0) {
+
+        $username = $USERNAME;
+        $password = $PASSWORD;
+        $servername = $SERVERNAME;
+        $database = $ADMIN_DATABASE;
+        // error_reporting(0);
+        // $database = "nexttable";
+
+        // Create connection
+        $con_admin = new mysqli($servername, $username, $password, $database);
+        // Check connection
+        if ($con_admin->connect_error) {
+
+            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+            $data = array();
+            $data['status'] = "error";
+            $data['message'] = $con->connect_error;
+            $res = json_encode($data);
+            echo $res;
+            // die("Connection failed: " . $con->connect_error);
+            exit;
+        }
+
+
+        $data = array();
+
+        $query = mysqli_query($con_admin, "SELECT * FROM pos WHERE booking_url = " . $_REQUEST['booking_url']) or die(mysqli_error($con));
+
+        if (mysqli_num_rows($query) > 0) {
+            $row = mysqli_fetch_assoc($query);
+
+            $data[] = $row;
+
+            $query = mysqli_query($con_admin, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con));
+
+            if (mysqli_num_rows($query) > 0) {
+
+                $row = mysqli_fetch_assoc($query);
+
+                $query = mysqli_query($con_admin, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con));
+
+                if (mysqli_num_rows($query) > 0) {
+                    $data = mysqli_fetch_assoc($query);
+
+                    $_SESSION['db_name'] = $data['circuit_db'];
+                }
+            }
+        } else {
+            $data['message'] = "Invalid ID Variable";
+            http_response_code(400);
+
+            $res = json_encode($data);
+            echo $res;
+            exit;
+        }
+    } else {
+
+        $data['message'] = "Missing ID Variable";
+        http_response_code(404);
+
+        $res = json_encode($data);
+        echo $res;
+        exit;
+    }
+
+
+
+
+
 
 
     $data = array();
 
     // $data['xdsds'] = "SELECT id, municipality, iata_code, iso_country, type FROM data WHERE municipality IS NOT NULL AND type = 'large_airport' AND municipality LIKE '". $_REQUEST['query'] ."%' AND iata_code LIKE '". $_REQUEST['query'] ."%' ORDER BY FIELD(iso_country, 'US', 'IN') DESC";
 
-    $query = mysqli_query($con, "SELECT * FROM system_admin WHERE username = '" . $_POST['username'] ."'") or die(mysqli_error($con));
+    $query = mysqli_query($con, "SELECT * FROM system_admin WHERE username = '" . $_POST['username'] . "'") or die(mysqli_error($con));
     // $query = mysqli_query($con, "SELECT id,  'municipality',  'iata_code', 'iso_country', 'type' FROM data WHERE 'municipality' IS NOT NULL AND 'type' = large_airport AND 'municipality LIKE 'B%' AND 'iata_code' LIKE 'B%' ORDER BY FIELD('iso_country', 'US', 'IN') DESC ");
-    
+
     // $data['hash'] = password_hash("admin1234", PASSWORD_DEFAULT);
 
     if (mysqli_num_rows($query) > 0) {
@@ -457,42 +617,32 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == "login") {
 
                 $_SESSION['loggedin'] = true;
                 $data['token'] = $row['token'];
-
             } else {
 
                 $data['message'] = 'Invalid password.';
 
                 $_SESSION['loggedin'] = false;
                 $data['code'] = 401;
-
             }
-
-
-
-
         }
-    }else{
+    } else {
 
-       $data['message'] = 'Invalid Email or Password.';
+        $data['message'] = 'Invalid Email or Password.';
 
-       $_SESSION['loggedin'] = false;
+        $_SESSION['loggedin'] = false;
 
-       $data['code'] = 401;
-
-
-   }
+        $data['code'] = 401;
+    }
 
 
-   $res = json_encode($data);
-   echo $res;
-   exit;
+    $res = json_encode($data);
+    echo $res;
+    exit;
+} else if (isset($_REQUEST['getCustomers']) && $_REQUEST['getCustomers'] == "getCustomers") {
 
+    $data = array();
 
-}else if (isset($_REQUEST['getCustomers']) && $_REQUEST['getCustomers'] == "getCustomers") {
-
-$data = array();
-
-    $query = mysqli_query($con, "SELECT * FROM customers WHERE CONCAT(first_name, ' ', last_name) LIKE '%" . $_REQUEST['query'] ."%' OR last_name LIKE '%" . $_REQUEST['query'] ."%' order by first_name desc limit 10") or die(mysqli_error($con));
+    $query = mysqli_query($con, "SELECT * FROM customers WHERE CONCAT(first_name, ' ', last_name) LIKE '%" . $_REQUEST['query'] . "%' OR last_name LIKE '%" . $_REQUEST['query'] . "%' order by first_name desc limit 10") or die(mysqli_error($con));
 
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
@@ -500,17 +650,44 @@ $data = array();
             $row['first_name'] = preg_replace('/[^\00-\255]+/u', '',   $row['first_name']);
             $row['last_name'] = preg_replace('/[^\00-\255]+/u', '', $row['last_name']);
 
-                $data[] = $row;
-            
+            $data[] = $row;
         }
     }
 
     $res = json_encode($data);
     echo $res;
     exit;
- 
+} else if (isset($_REQUEST['id_booking']) && $_REQUEST['id_booking'] == "id_booking") {
 
-}else if (isset($_REQUEST['getAllAppointmentState']) && $_REQUEST['getAllAppointmentState'] == "getAllAppointmentState") {
+    $data = array();
+
+    $query = mysqli_query($con, "SELECT * FROM pos WHERE booking_url = " . $_REQUEST['booking_url']) or die(mysqli_error($con));
+
+    if (mysqli_num_rows($query) > 0) {
+        $row = mysqli_fetch_assoc($query);
+
+        $query = mysqli_query($con, "SELECT * FROM companies WHERE id_company  = " . $row['id_company']) or die(mysqli_error($con));
+
+        if (mysqli_num_rows($query) > 0) {
+
+            $row = mysqli_fetch_assoc($query);
+
+            $query = mysqli_query($con, "SELECT * FROM circuits WHERE id_circuit  = " . $row['id_circuit']) or die(mysqli_error($con));
+
+            if (mysqli_num_rows($query) > 0) {
+                $data[] = mysqli_fetch_assoc($query);
+            }
+        }
+    }
+
+    $absolpath = getcwd();
+    $path  = $absolpath . '/img/landing/' . $_REQUEST['booking_url'];
+    $data['files'] =  array_values(array_diff(scandir($path), array('.', '..')));
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+} else if (isset($_REQUEST['getAllAppointmentState']) && $_REQUEST['getAllAppointmentState'] == "getAllAppointmentState") {
 
 
     $data = array();
@@ -520,8 +697,7 @@ $data = array();
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
 
-                $data['appointment_state'][] = $row['appointment_state'];
-            
+            $data['appointment_state'][] = $row['appointment_state'];
         }
     }
 
@@ -531,53 +707,53 @@ $data = array();
     // $data['appointment_state'] = array('Attivi ', 'Da Internet', 'Eliminati',
     //   );
 
-   $data['appointment_state'] = array(
+    $data['appointment_state'] = array(
         '0' => array(
-          'name' => 'Attivi',
-          'state' => 'active,checked_out,checked_in',
+            'name' => 'Attivi',
+            'state' => 'active,checked_out,checked_in',
         ),
         '1' => array(
-          'name' => 'Da Internet',
-          'state' => 'internet',
+            'name' => 'Da Internet',
+            'state' => 'internet',
         ),
         '2' => array(
-          'name' => 'Eliminati',
-          'state' => 'deleted',
+            'name' => 'Eliminati',
+            'state' => 'deleted',
         )
-        );
+    );
 
     $data['personal'] = array(
         '0' => array(
-          'name' => 'Appuntamenti',
-          'color' => '04e9d2',
+            'name' => 'Appuntamenti',
+            'color' => '04e9d2',
         ),
         '1' => array(
-          'name' => 'Formazione',
-          'color' => '008576',
+            'name' => 'Formazione',
+            'color' => '008576',
         ),
         '2' => array(
-          'name' => 'Pausa',
-          'color' => 'dcdcdc',
+            'name' => 'Pausa',
+            'color' => 'dcdcdc',
         ),
         '3' => array(
-          'name' => 'Riunione',
-          'color' => 'f2e900',
+            'name' => 'Riunione',
+            'color' => 'f2e900',
         ),
         '4' => array(
-          'name' => 'Permesso',
-          'color' => 'db0044',
+            'name' => 'Permesso',
+            'color' => 'db0044',
         ),
         '5' => array(
-          'name' => 'Recupero',
-          'color' => '5e8eff',
+            'name' => 'Recupero',
+            'color' => '5e8eff',
         ),
         '6' => array(
-          'name' => 'Altro',
-          'color' => 'c6ff73',
+            'name' => 'Altro',
+            'color' => 'c6ff73',
         ),
-      );
-    
-  
+    );
+
+
     // $data[] = "Appuntamenti";
     // $data[] = "Formazione";
     // $data[] = "Pausa";
@@ -591,10 +767,7 @@ $data = array();
     $res = json_encode($data);
     echo $res;
     exit;
-
-
-
-}else if (isset($_REQUEST['getAllServicesAdmin']) && $_REQUEST['getAllServicesAdmin'] == "getAllServicesAdmin") {
+} else if (isset($_REQUEST['getAllServicesAdmin']) && $_REQUEST['getAllServicesAdmin'] == "getAllServicesAdmin") {
 
 
 
@@ -605,21 +778,19 @@ $data = array();
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
 
-                $data[] = $row;
-            
+            $data[] = $row;
         }
     }
+
+
+    // $data['se'] = $_SESSION;
 
 
 
     $res = json_encode($data);
     echo $res;
     exit;
-
-
-
-
-}else if (isset($_REQUEST['getAllServices']) && $_REQUEST['getAllServices'] == "getAllServices") {
+} else if (isset($_REQUEST['getAllServices']) && $_REQUEST['getAllServices'] == "getAllServices") {
 
     // url : http://localhost/booking/api.php?getAllServices=getAllServices
 
@@ -635,11 +806,9 @@ $data = array();
             } else
             if ($row['id_commodity_sector'] == 2) {
                 $data['estetica'][] = $row;
-            
+            }
         }
     }
-
-}
 
 
     $res = json_encode($data);
@@ -710,7 +879,7 @@ $data = array();
 
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
-                $data['store_open_time'] = $row;
+            $data['store_open_time'] = $row;
         }
     }
 
@@ -719,43 +888,71 @@ $data = array();
     $newDate = explode("-", $newDate);
 
     $newDate = $newDate[0] . "-" . $newDate[2] . "-" . $newDate[1];
-    
+
     // $date = str_replace('/', '-', $origDate );
     // $newDate = date("Y-m-d", strtotime($date));
 
-    $filter_needed = in_array("Appuntamenti", explode("," , $_REQUEST['filters']));
+    $filter_needed = in_array("Appuntamenti", explode(",", $_REQUEST['filters']));
 
-    $not_deleted = in_array("1", explode("," , $_REQUEST['filters_state']));
+    $not_deleted = in_array("1", explode(",", $_REQUEST['filters_state']));
 
-    $data['getAppointmentList'] = "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" ;
+    $data['getAppointmentList'] = "'" . implode("','", explode(",", $_REQUEST['filters'])) . "'";
 
     $data['appointments'] = [];
 
-    if($filter_needed){
+    if ($filter_needed) {
 
         // if()
 
-    $data['ss'] = "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and booking_appointments.state <> 'deleted' and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ") and appointment_source in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ")  ";
-    $query = mysqli_query($con, "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and booking_appointments.state <> 'deleted' and appointment_state in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ") and appointment_source in ("  . "'" . implode("','",explode("," , $_REQUEST['filters_state'])) . "'" . ") ") or die(mysqli_error($con));
+        $data['ss'] = "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and booking_appointments.state <> 'deleted' and appointment_state in ("  . "'" . implode("','", explode(",", $_REQUEST['filters_state'])) . "'" . ") and appointment_source in ("  . "'" . implode("','", explode(",", $_REQUEST['filters_state'])) . "'" . ")  ";
+        $query = mysqli_query($con, "SELECT * , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_appointments LEFT join employees on booking_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')  and booking_appointments.state <> 'deleted' and appointment_state in ("  . "'" . implode("','", explode(",", $_REQUEST['filters_state'])) . "'" . ") and appointment_source in ("  . "'" . implode("','", explode(",", $_REQUEST['filters_state'])) . "'" . ") ") or die(mysqli_error($con));
 
 
 
-    $i = 0;
+        $i = 0;
+
+        if (mysqli_num_rows($query) > 0) {
+            while ($row = mysqli_fetch_assoc($query)) {
+                $row['location'] = $row['id_employee'];
+                $row['name'] = $row['service_name'];
+
+                $cust_name = slugify($row['customer_name']);
+
+                // if($row['customer_name'] == 'undefined'){
+                //     $cust_name = "";
+                // }
+
+                $row['userData'] = $row;
+                $row['className'] = 'sked-color-04e9d2 appointment';
+                $row['admin_appointment_type'] = 'booking_appointments';
+                $row['start'] = date('Y,m,d,H,i', strtotime($row['appointment_date']));
+                $row['en11'] = $row['end'];
+                $row['end'] = date('Y,m,d,H,i', strtotime($row['end']));
+                $data['appointments'][] = $row;
+                $tmp = array();
+
+                if (array_search($row['id_employee'], array_column($temp, 'id')) === false) {
+
+                    $tmp['id'] = $row['id_employee'];
+                    $tmp['name'] = $row['employee_first_name'];
+                    array_push($temp, $tmp);
+                }
+            }
+        }
+    }
+
+    $data['ssaaaa'] = "SELECT *, booking_personal_appointments.color , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_personal_appointments LEFT join employees on booking_personal_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')   and booking_personal_appointments.state <> 'deleted'  and appointment_type in ("  . "'" . implode("','", explode(",", $_REQUEST['filters'])) . "'" . ")";
+    $query = mysqli_query($con, "SELECT *, booking_personal_appointments.color , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_personal_appointments LEFT join employees on booking_personal_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')   and booking_personal_appointments.state <> 'deleted'  and appointment_type in ("  . "'" . implode("','", explode(",", $_REQUEST['filters'])) . "'" . ")") or die(mysqli_error($con));
+
 
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
             $row['location'] = $row['id_employee'];
-            $row['name'] = $row['service_name'];
-
-            $cust_name = slugify($row['customer_name']);
-
-            // if($row['customer_name'] == 'undefined'){
-            //     $cust_name = "";
-            // }
-
+            $row['name'] = 'personal';
             $row['userData'] = $row;
-            $row['className'] = 'sked-color-04e9d2 appointment';
-            $row['admin_appointment_type'] = 'booking_appointments';
+            $row['admin_appointment_type'] = 'booking_personal_appointments';
+            $row['color_mod'] = str_replace("#", "", $row['color']);
+            $row['className'] = 'sked-color-' . str_replace("#", "", $row['color']);
             $row['start'] = date('Y,m,d,H,i', strtotime($row['appointment_date']));
             $row['en11'] = $row['end'];
             $row['end'] = date('Y,m,d,H,i', strtotime($row['end']));
@@ -771,36 +968,7 @@ $data = array();
         }
     }
 
-    }
 
-    $data['ssaaaa'] = "SELECT *, booking_personal_appointments.color , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_personal_appointments LEFT join employees on booking_personal_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')   and booking_personal_appointments.state <> 'deleted'  and appointment_type in ("  . "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" . ")";
-    $query = mysqli_query($con, "SELECT *, booking_personal_appointments.color , DATE_ADD(appointment_date, INTERVAL duration MINUTE) as end FROM booking_personal_appointments LEFT join employees on booking_personal_appointments.id_employee = employees.id_employee where appointment_date BETWEEN CONCAT( '" . $newDate . "',' 00:00:00') AND CONCAT( '" . $newDate  . "',' 23:59:59')   and booking_personal_appointments.state <> 'deleted'  and appointment_type in ("  . "'" . implode("','",explode("," , $_REQUEST['filters'])) . "'" . ")") or die(mysqli_error($con));
-
-
-    if (mysqli_num_rows($query) > 0) {
-        while ($row = mysqli_fetch_assoc($query)) {
-            $row['location'] = $row['id_employee'];
-            $row['name'] = 'personal';
-            $row['userData'] = $row;
-            $row['admin_appointment_type'] = 'booking_personal_appointments';
-            $row['color_mod'] = str_replace("#","", $row['color']);
-            $row['className'] = 'sked-color-' . str_replace("#","", $row['color']);
-            $row['start'] = date('Y,m,d,H,i', strtotime($row['appointment_date']));
-            $row['en11'] = $row['end'];
-            $row['end'] = date('Y,m,d,H,i', strtotime($row['end']));
-            $data['appointments'][] = $row;
-            $tmp = array();
-
-            if (array_search($row['id_employee'], array_column($temp, 'id')) === false) {
-
-                $tmp['id'] = $row['id_employee'];
-                $tmp['name'] = $row['employee_first_name'];
-                array_push($temp, $tmp);
-            }
-       }
-    }
-
-    
     $query = mysqli_query($con, "SELECT * from employees") or die(mysqli_error($con));
 
     if (mysqli_num_rows($query) > 0) {
@@ -824,7 +992,7 @@ $data = array();
 
     $data['ssssss'] = "SELECT * FROM `booking_online_info` WHERE id_booking_diary = " . $_SERVER['id_booking_diary'];
 
-    $query = mysqli_query($con, "SELECT `id_booking_diary`, `enabled`, `path`, `title`, `address1`, `address2`, `address3`, `address4`, `address5`, `salon_tag`, `salon_lang`, `salon_pay`, `facebook_address`, `istagram_address`, `telegram_address`, `telegram_address_callback`, `mostra_prezzo_finale`, `mostra_prezzi_listino`, `mostra_seleziona_lavorante`, `mostra_dove_siamo`, `mostra_recensioni`, `mostra_altre_recensioni`, `map_link`  FROM booking_online_info WHERE id_booking_diary = " . $_SERVER['id_booking_diary'] ) or die(mysqli_error($con));
+    $query = mysqli_query($con, "SELECT `id_booking_diary`, `enabled`, `path`, `title`, `address1`, `address2`, `address3`, `address4`, `address5`, `salon_tag`, `salon_lang`, `salon_pay`, `facebook_address`, `istagram_address`, `telegram_address`, `telegram_address_callback`, `mostra_prezzo_finale`, `mostra_prezzi_listino`, `mostra_seleziona_lavorante`, `mostra_dove_siamo`, `mostra_recensioni`, `mostra_altre_recensioni`, `map_link`  FROM booking_online_info WHERE id_booking_diary = " . $_SERVER['id_booking_diary']) or die(mysqli_error($con));
 
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
@@ -836,11 +1004,10 @@ $data = array();
     $res = json_encode($data);
     echo $res;
     exit;
-
 } else if (isset($_REQUEST['deleteAppointment']) && $_REQUEST['deleteAppointment'] == "deleteAppointment") {
 
     $data = array();
-    
+
     $data['code']  = "401";
 
     $data['sqss'] = "UPDATE booking_appointments set state = 'deleted' id_appointment = '" . $_POST['id_appointment'] . "'";
@@ -853,35 +1020,28 @@ $data = array();
 
     if ($query === TRUE) {
         $data['code']  = "200";
-    } 
+    }
 
     $res = json_encode($data);
     echo $res;
     exit;
-
-        
 } else if (isset($_REQUEST['updateAppointment']) && $_REQUEST['updateAppointment'] == "updateAppointment") {
 
     $data = array();
 
     $data['code']  = "401";
 
-    $data['sss'] = "UPDATE booking_appointments set customer_name = '" . $_POST['customer_name'] . "', service_name = '" . $_POST['service_name'] . "', appointment_date = '" . $_POST['appointment_date'] . "', id_employee = '" . $_POST['id_employee'] . "', id_service = '" . $_POST['id_service'] . "' where id_appointment = '" . $_POST['id_appointment'] . "'" ;
+    $data['sss'] = "UPDATE booking_appointments set customer_name = '" . $_POST['customer_name'] . "', service_name = '" . $_POST['service_name'] . "', appointment_date = '" . $_POST['appointment_date'] . "', id_employee = '" . $_POST['id_employee'] . "', id_service = '" . $_POST['id_service'] . "' where id_appointment = '" . $_POST['id_appointment'] . "'";
 
     $query = mysqli_query($con, "UPDATE booking_appointments set customer_name = '" . $_POST['customer_name'] . "', service_name = '" . $_POST['service_name'] . "', appointment_date = '" . $_POST['appointment_date'] . "', id_employee = '" . $_POST['id_employee'] . "', id_service = '" . $_POST['id_service'] . "' where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
 
     if ($query === TRUE) {
         $data['code']  = "200";
-    } 
+    }
 
     $res = json_encode($data);
     echo $res;
     exit;
-
-        
-
-
-
 } else if (isset($_REQUEST['getopentime']) && $_REQUEST['getopentime'] == "getopentime") {
 
     // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
@@ -1625,9 +1785,9 @@ $data = array();
     for ($i = 0; $i < count($info); $i++) {
 
         // $data['zdcdzz'] = $info[$i];
-        $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+        $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
-        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $info[$i]['app_time'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $info[$i]['app_time'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
         if (mysqli_query($con, $sql)) {
 
@@ -1653,22 +1813,21 @@ $data = array();
 
     $data = array();
 
-        $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+    $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
-        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+    $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
-        if (mysqli_query($con, $sql)) {
+    if (mysqli_query($con, $sql)) {
 
-            $data['message'] = "New record created successfully";
-            http_response_code(202);
-            $data['status'] = 200;
-        } else {
+        $data['message'] = "New record created successfully";
+        http_response_code(202);
+        $data['status'] = 200;
+    } else {
 
-            http_response_code(400);
-            $data['message'] = "Error: " . $sql . "<br>" . mysqli_error($con);
-            $data['status'] = 400;
-      
-        }
+        http_response_code(400);
+        $data['message'] = "Error: " . $sql . "<br>" . mysqli_error($con);
+        $data['status'] = 400;
+    }
 
 
 
@@ -1676,29 +1835,24 @@ $data = array();
     $res = json_encode($data);
     echo $res;
     exit;
-
 } else if (isset($_REQUEST['updatePersonalAppointment']) && $_REQUEST['updatePersonalAppointment'] == "updatePersonalAppointment") {
 
 
     $data = array();
-    
+
     $data['code']  = "401";
 
-    $data['sssq'] = "UPDATE booking_personal_appointments set id_employee = '". $_POST['id_employee'] ."'  , id_appointment = '" . $_POST['id_appointment'] . "'";
+    $data['sssq'] = "UPDATE booking_personal_appointments set id_employee = '" . $_POST['id_employee'] . "'  , id_appointment = '" . $_POST['id_appointment'] . "'";
 
-    $query = mysqli_query($con, "UPDATE booking_personal_appointments set id_employee = '". $_POST['id_employee'] ."', description = '". $_POST['description'] ."', appointment_date = '". $_POST['appointment_date'] ."',duration = '". $_POST['duration'] ."',appointment_type = '". $_POST['appointment_type'] ."',color = '". $_POST['color'] ."'   where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
+    $query = mysqli_query($con, "UPDATE booking_personal_appointments set id_employee = '" . $_POST['id_employee'] . "', description = '" . $_POST['description'] . "', appointment_date = '" . $_POST['appointment_date'] . "',duration = '" . $_POST['duration'] . "',appointment_type = '" . $_POST['appointment_type'] . "',color = '" . $_POST['color'] . "'   where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
 
     if ($query === TRUE) {
         $data['code']  = "200";
-    } 
+    }
 
     $res = json_encode($data);
     echo $res;
     exit;
-
-
-
-
 } else if (isset($_REQUEST['createPersonalAppointment']) && $_REQUEST['createPersonalAppointment'] == "createPersonalAppointment") {
 
     $data = array();
@@ -1709,24 +1863,23 @@ $data = array();
     $current_time = date('Y-m-d H:i:s');
 
 
-        // $data['zdcdzz'] = $info[$i];
-        $data['xxx'][] = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '".  $current_time ."' ,  'P460-1568990330', '".  $current_time ."', 'P460-1568990330')";
+    // $data['zdcdzz'] = $info[$i];
+    $data['xxx'][] = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '" .  $current_time . "' ,  'P460-1568990330', '" .  $current_time . "', 'P460-1568990330')";
 
-        $sql = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','". $_SERVER['id_booking_diary'] ."', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '".  $current_time ."' ,  'P460-1568990330', '".  $current_time ."', 'P460-1568990330')";
+    $sql = "INSERT INTO booking_personal_appointments (id_appointment, id_booking_diary, id_employee, description, appointment_date, duration, appointment_type, color, state, created_at, created_from, modified_at, modified_from ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SERVER['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , '" . $_POST['description'] . "', '" . $_POST['appointment_date'] . "', '" . $_POST['duration'] . "' , '" . $_POST['appointment_type'] . "'  , '#" . $_POST['color'] . "'  , 'active' , '" .  $current_time . "' ,  'P460-1568990330', '" .  $current_time . "', 'P460-1568990330')";
 
-        if (mysqli_query($con, $sql)) {
+    if (mysqli_query($con, $sql)) {
 
-            $data['message'] = "New record created successfully";
-            http_response_code(202);
-            $data['status'] = 200;
-            $data['mysqli_insert_id($conn)'] = mysqli_insert_id($conn);
-        } else {
+        $data['message'] = "New record created successfully";
+        http_response_code(202);
+        $data['status'] = 200;
+        $data['mysqli_insert_id($conn)'] = mysqli_insert_id($conn);
+    } else {
 
-            http_response_code(400);
-            $data['message'] = "Error: " . $sql . "<br>" . mysqli_error($con);
-            $data['status'] = 400;
-         
-        }
+        http_response_code(400);
+        $data['message'] = "Error: " . $sql . "<br>" . mysqli_error($con);
+        $data['status'] = 400;
+    }
 
 
     $res = json_encode($data);

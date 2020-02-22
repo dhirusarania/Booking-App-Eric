@@ -296,11 +296,22 @@
             loading: false,
             isLogin: true,
             lang: "it",
+            booking_url: 0
         },
         mounted() {
 
-
+            // console.log(this.$route.query.test)
             this.getLanguage()
+
+            console.log(window.location.search.replace('?id=', ''))
+
+            if (window.location.search == "") {
+                alert("ID Param Missing")
+            } else {
+
+                this.booking_url = window.location.search.replace('?id=', '')
+            }
+
         },
         methods: {
             changeLanguage: function() {
@@ -353,6 +364,10 @@
                     "password",
                     document.getElementById("password").value
                 );
+                bodyFormData.append(
+                    "booking_url",
+                    app.booking_url
+                );
 
                 axios({
                         method: "POST",
@@ -367,6 +382,7 @@
 
                         if (res.data.code == 200) {
                             localStorage.setItem("random", res.data.token);
+                            localStorage.setItem("admin_id", this.booking_url);
 
                             // this.$router.push('/admin')
 

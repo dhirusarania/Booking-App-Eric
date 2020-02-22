@@ -1097,7 +1097,7 @@
 
             logout: function() {
                 localStorage.clear();
-                window.location.href = "/booking/admin"
+                window.location.href = "/booking/admin/id?=" + localStorage.getItem('admin_id')
             },
             changeLanguage: function() {
 
