@@ -683,7 +683,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
             // $data['hash'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-            if (password_verify($_POST['password'], $row['password'])) {
+            if (strcmp($_POST['password'], $row['password']) == 0) {
 
                 $data['message'] = 'Password is valid!';
                 $data['code'] = 200;

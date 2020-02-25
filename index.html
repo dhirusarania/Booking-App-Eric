@@ -74,87 +74,88 @@
 
 <body>
 
-    <header class="bg-black  fixed-top">
-        <nav class="container navbar navbar-expand-md navbar-dark">
-            <a class="navbar-brand" href="#"><img src="img/landing/logo1.png"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <div id="app">
+        <header class="bg-black  fixed-top">
+            <nav class="container navbar navbar-expand-md navbar-dark">
+                <a class="navbar-brand" href="#"><img :src="'img/landing/' + booking_url + '/' + 'logo1.png'"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Prenota</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Chi siamo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Dove siamo</a>
-                    </li>
-                </ul>
-                <div id="htk" class="header_tk  ml-auto" style="float: right; color: #FFFFFF;">
-                    <h3>
-                        <i class="fa fa-phone ng-binding">&nbsp;&nbsp;123456789</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-envelope-o ng-binding">&nbsp;&nbsp;demo@gmail.com</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-map-marker ng-binding">&nbsp;&nbsp; - PIAZZA 10 -229 (MI)</i></h3>
+                <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Prenota</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Chi siamo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dove siamo</a>
+                        </li>
+                    </ul>
+                    <div id="htk" class="header_tk  ml-auto" style="float: right; color: #FFFFFF;">
+                        <h3>
+                            <i class="fa fa-phone ng-binding">&nbsp;&nbsp;{{homepageInfo.address4}}</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-envelope-o ng-binding">&nbsp;&nbsp;{{homepageInfo.address5}}</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-map-marker ng-binding">&nbsp;&nbsp; {{homepageInfo.address1}}</i></h3>
+                    </div>
+
                 </div>
+            </nav>
+        </header>
 
-            </div>
-        </nav>
-    </header>
+        <main role="main">
 
-    <main role="main" id="app">
-
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="index" :class="{ 'active': index === 0 }" v-for="(p, index) in slider_image"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(p, index) in slider_image">
-                    <img class="first-slide" :src="'img/landing/' + booking_url + '/' + p" alt="First slide">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="index" :class="{ 'active': index === 0 }" v-for="(p, index) in slider_image"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(p, index) in slider_image">
+                        <img class="first-slide" :src="'img/landing/' + booking_url + '/' + p" alt="First slide">
+                    </div>
                 </div>
+                <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
 
 
-        <!-- Marketing messaging and featurettes
+            <!-- Marketing messaging and featurettes
       ================================================== -->
-        <!-- Wrap the rest of the page in another container to center all the content. -->
+            <!-- Wrap the rest of the page in another container to center all the content. -->
 
 
 
 
 
-        <div class="container">
-            <div class="row" style="margin-top: 50px;">
-                <div class="col-md-12 text-center">
-                    <h1 class="text-center">PRENOTA APPUNTAMENTO</h1>
-                    <div v-for="(p,index) in services" :key="p.id">
-                        <div class="ibox-title" @click="isVisible = !isVisible" style="cursor: pointer;">
-                            <p class="ng-binding" style="text-transform: capitalize;"><img src="img/scissors.jpg" height="27" width="27" src="/img/scissor.jpg">&nbsp; {{index}}</p>
-                            <div ibox-tools="" class="ng-scope">
-                                <div class="ibox-tools dropdown" uib-dropdown="">
+            <div class="container">
+                <div class="row" style="margin-top: 50px;">
+                    <div class="col-md-12 text-center">
+                        <h1 class="text-center">PRENOTA APPUNTAMENTO</h1>
+                        <div v-for="(p,index) in services" :key="p.id">
+                            <div class="ibox-title" @click="isVisible = !isVisible" style="cursor: pointer;">
+                                <p class="ng-binding" style="text-transform: capitalize;"><img src="img/scissors.jpg" height="27" width="27" src="/img/scissor.jpg">&nbsp; {{index}}</p>
+                                <div ibox-tools="" class="ng-scope">
+                                    <div class="ibox-tools dropdown" uib-dropdown="">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="outer-form" v-if="isVisible">
-                            <table class="table table-bordered table-hover vertical">
-                                <tbody id="allservices" v-for="q in p" style="border:1px solid transparent; background-color:white; color:black; text-align: left;">
-                                    <tr>
-                                        <td class="mainsection">
-                                            <p>{{q.name}}</p>
-                                            <p v-if="homepageInfo.mostra_prezzi_listino == 1" style="font-size:13px">Prezzo da: {{ parseFloat(q.standard_sell_price).toFixed() }} €</p>
-                                        </td>
-                                        <td><label class="switch"><input type="checkbox"
+                            <div class="outer-form" v-if="isVisible">
+                                <table class="table table-bordered table-hover vertical">
+                                    <tbody id="allservices" v-for="q in p" style="border:1px solid transparent; background-color:white; color:black; text-align: left;">
+                                        <tr>
+                                            <td class="mainsection">
+                                                <p>{{q.name}}</p>
+                                                <p v-if="homepageInfo.mostra_prezzi_listino == 1" style="font-size:13px">Prezzo da: {{ parseFloat(q.standard_sell_price).toFixed() }} €</p>
+                                            </td>
+                                            <td><label class="switch"><input type="checkbox"
                                                        data-toggle="collapse"
                                                        v-model="q.toggle"
                                                        @change="!q.toggle"
@@ -163,150 +164,152 @@
                                                        v-bind:data-id="q.id_service"
                                                        v-bind:data-target="'#accordion-' + q.id_service"
                                                        class="clickable"><span class="slider round"></span></label></td>
-                                    </tr>
-                                    <tr v-if="q.toggle == true" style="background-color: #e7e7e7;">
-                                        <td colspan="6">
-                                            <div style="padding: 30px" v-bind:id="'accordion-' + q.id_service" v-bind:data-name="q.name" v-bind:data-id="q.id_service" v-bind:data-duration="q.worker_duration" v-bind:data-dependency="q.service_dependence" class="drop"><select class="e1" style="width: 100%" v-bind:data-pd="q.id_service" v-bind:id="'select2-' + q.id_service">
+                                        </tr>
+                                        <tr v-if="q.toggle == true" style="background-color: #e7e7e7;">
+                                            <td colspan="6">
+                                                <div style="padding: 30px" v-bind:id="'accordion-' + q.id_service" v-bind:data-name="q.name" v-bind:data-id="q.id_service" v-bind:data-duration="q.worker_duration" v-bind:data-dependency="q.service_dependence" class="drop"><select class="e1" style="width: 100%" v-bind:data-pd="q.id_service" v-bind:id="'select2-' + q.id_service">
                                                     <option value="0">Indifferente</option>
                                                 </select></div>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                            </td>
+                                        </tr>
+                                    </tbody>
 
 
-                            </table>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="selected_services hide">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5>Con una spesa di circa</h5>
-                        <!-- <p> </p> -->
+            <div class="selected_services hide">
+                <div class="container">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5>Con una spesa di circa</h5>
+                            <!-- <p> </p> -->
+                        </div>
+                        <div class="d-flex">
+                            <h3 class="service_price"></h3>€
+                        </div>
                     </div>
-                    <div class="d-flex">
-                        <h3 class="service_price"></h3>€
-                    </div>
-                </div>
-                <div style="display: inline-block;
+                    <div style="display: inline-block;
                 overflow-y: scroll;
                 max-height: 92px;
                 width: 100%;
                 padding: 0 50px 0 0;">
-                    <table class="w-100">
-                        <tbody id="selected_services_tr">
+                        <table class="w-100">
+                            <tbody id="selected_services_tr">
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-block btn-dark next_page" style="margin: 30px 0;">PRENOTA</button>
                 </div>
-                <button class="btn btn-block btn-dark next_page" style="margin: 30px 0;">PRENOTA</button>
             </div>
-        </div>
 
 
-        <section class="pt-5 pb-5">
+            <section class="pt-5 pb-5">
 
 
 
-            <div class="row  no-borders white-bg dashboard-header" style="position: relative;">
-                <div class="col-lg-12 text-center">
-                    <div class="ibox-content">
-                        <div class="default-line"></div>
-                        <h1 style="font-size: 30px;">GLAMOUR, ALL'ULTIMA MODA E UNICI...<br>UNICI COME TE!</h1>
-                        <p style="padding: 10px 0 40px;">Prenota subito il tuo servizio esclusivo, appuntamento in salone !</p>
+                <div class="row  no-borders white-bg dashboard-header" style="position: relative;">
+                    <div class="col-lg-12 text-center">
+                        <div class="ibox-content">
+                            <div class="default-line"></div>
+                            <h1 style="font-size: 30px;">GLAMOUR, ALL'ULTIMA MODA E UNICI...<br>UNICI COME TE!</h1>
+                            <p style="padding: 10px 0 40px;">Prenota subito il tuo servizio esclusivo, appuntamento in salone !</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row no-borders black-bg dashboard-header" style="padding: 20px 20px 20px 20px; background-color: #262626;">
+                    <div class="col-12 col-md-3">
+                        <img class="img_tk" :src="'img/landing/' + booking_url + '/' + 'collection_01.jpg'">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <img class="img_tk" :src="'img/landing/' + booking_url + '/' + 'collection_02.jpg'">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <img class="img_tk" :src="'img/landing/' + booking_url + '/' + 'collection_03.jpg'">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <img class="img_tk" :src="'img/landing/' + booking_url + '/' + 'collection_04.jpg'">
                     </div>
                 </div>
 
-            </div>
+            </section>
 
-            <div class="row no-borders black-bg dashboard-header" style="padding: 20px 20px 20px 20px; background-color: #262626;">
-                <div class="col-12 col-md-3">
-                    <img class="img_tk" src="img/landing/collection_01.jpg">
+            <section class="pt-5 pb-5">
+
+
+
+                <div class="row  no-borders white-bg dashboard-header" style="position: relative;">
+                    <div class="col-lg-12 text-center">
+                        <div class="ibox-content">
+                            <div class="default-line"></div>
+                            <h1 style="font-size: 60px;"><img style="height: 60px;object-fit: contain;" :src="'img/landing/' + booking_url + '/' + 'logo2.png'"></h1>
+                            <p style="padding: 10px 0 40px;">
+                                Glamour, all'ultima Moda e Unici... unici come Te!. Scopri tutti i Look firmati Louis, da oggi potrai regalarti un momento beauty semplicemente con un click. Prenota subito il tuo servizio esclusivo, appuntamento in salone!</p>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="col-12 col-md-3">
-                    <img class="img_tk" src="img/landing/collection_02.jpg">
-                </div>
-                <div class="col-12 col-md-3">
-                    <img class="img_tk" src="img/landing/collection_03.jpg">
-                </div>
-                <div class="col-12 col-md-3">
-                    <img class="img_tk" src="img/landing/collection_04.jpg">
-                </div>
-            </div>
 
-        </section>
-
-        <section class="pt-5 pb-5">
-
-
-
-            <div class="row  no-borders white-bg dashboard-header" style="position: relative;">
-                <div class="col-lg-12 text-center">
-                    <div class="ibox-content">
-                        <div class="default-line"></div>
-                        <h1 style="font-size: 60px;"><img style="height: 60px;object-fit: contain;" src="img/landing/logo2.png"></h1>
-                        <p style="padding: 10px 0 40px;">
-                            Glamour, all'ultima Moda e Unici... unici come Te!. Scopri tutti i Look firmati Louis, da oggi potrai regalarti un momento beauty semplicemente con un click. Prenota subito il tuo servizio esclusivo, appuntamento in salone!</p>
+                <div class="row no-borders black-bg dashboard-header" style="padding: 20px 20px 20px 20px; background-color: #262626;">
+                    <div class="col-12">
+                        <img class="img_tk" :src="'img/landing/' + booking_url + '/' + 'team.jpg'">
                     </div>
                 </div>
 
-            </div>
 
-            <div class="row no-borders black-bg dashboard-header" style="padding: 20px 20px 20px 20px; background-color: #262626;">
-                <div class="col-12">
-                    <img class="img_tk" src="img/landing/team.jpg">
-                </div>
-            </div>
-
-
-            <div class="container faicon">
-                <div class="row">
-                    <div class="col-lg-4 text-center">
-                        <h2>
-                            <i class="fa fa-phone"> </i><br><br>
-                            <font style="font-family: Verdana, Georgia, Serif  , Courier, monospace;"><b>TELEFONO</b><br></font>
-                            <a ng-href="tel:123456478" class="ng-binding" href="tel:123456789   ">{{homepageInfo.address4}}</a><br><br>
-                        </h2>
-                    </div>
-                    <div class="col-lg-4 text-center">
-                        <h2 class="ng-binding">
-                            <i class="fa fa-map-marker"> </i><br><br>
-                            <font style="font-family: Verdana, Georgia, Serif  , Courier, monospace;"><b>{{homepageInfo.address1}}</b></font><br> {{homepageInfo.address3}}
-                        </h2>
-                    </div>
-                    <div class="col-lg-4 text-center">
-                        <h2>
-                            <i class="fa fa-envelope-o"> </i><br><br>
-                            <font style="font-family: Verdana, Georgia, Serif  , Courier, monospace;"><b>EMAIL</b><br></font>
-                            <a class="ng-binding" v-bind:href="'mailto:' + homepageInfo.address5">{{homepageInfo.address5}}</a><br><br>
-                        </h2>
+                <div class="container faicon">
+                    <div class="row">
+                        <div class="col-lg-4 text-center">
+                            <h2>
+                                <i class="fa fa-phone"> </i><br><br>
+                                <font style="font-family: Verdana, Georgia, Serif  , Courier, monospace;"><b>TELEFONO</b><br></font>
+                                <a ng-href="tel:123456478" class="ng-binding" href="tel:123456789   ">{{homepageInfo.address4}}</a><br><br>
+                            </h2>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <h2 class="ng-binding">
+                                <i class="fa fa-map-marker"> </i><br><br>
+                                <font style="font-family: Verdana, Georgia, Serif  , Courier, monospace;"><b>{{homepageInfo.address1}}</b></font><br> {{homepageInfo.address3}}
+                            </h2>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <h2>
+                                <i class="fa fa-envelope-o"> </i><br><br>
+                                <font style="font-family: Verdana, Georgia, Serif  , Courier, monospace;"><b>EMAIL</b><br></font>
+                                <a class="ng-binding" v-bind:href="'mailto:' + homepageInfo.address5">{{homepageInfo.address5}}</a><br><br>
+                            </h2>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="container faicon" v-if="homepageInfo.mostra_dove_siamo == 1">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <iframe style="width: 100%" width="600" height="450" frameborder="0" style="border:0" :src="homepageInfo.map_link" allowfullscreen>
+                <div class="container faicon" v-if="homepageInfo.mostra_dove_siamo == 1">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <iframe style="width: 100%" width="600" height="450" frameborder="0" style="border:0" :src="homepageInfo.map_link" allowfullscreen>
                         </iframe>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
 
-        </section>
+            </section>
 
-        <!-- FOOTER -->
-        <footer class="container">
-            <p class="float-right"><a href="#">Back to top</a></p>
-            <p>&copy; 2017-2018 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-        </footer>
-    </main>
+            <!-- FOOTER -->
+            <footer class="container">
+                <p class="float-right"><a href="#">Back to top</a></p>
+                <p>&copy; 2017-2018 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+            </footer>
+        </main>
+
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -390,7 +393,7 @@
                         $.ajax({
                             type: "GET",
                             dataType: "json",
-                            url: '/booking/api.php?getAllServices=getAllServices',
+                            url: 'api.php?getAllServices=getAllServices',
                             data: $(this).serialize(),
                             success: function(response) {
                                 console.log(response)
