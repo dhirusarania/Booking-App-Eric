@@ -583,7 +583,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     $data['ses'] = $_SESSION;
 
     $absolpath = getcwd();
-    $path  = $absolpath . '/img/landing/' . $_REQUEST['booking_url'];
+    $path  = $absolpath . '/img/landing/' . $_REQUEST['booking_url']  . '/slider/';
     $data['files'] =  array_values(array_diff(scandir($path), array('.', '..')));
 
     $res = json_encode($data);
