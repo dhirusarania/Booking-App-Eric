@@ -251,10 +251,10 @@
             <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/booking/admin/dashboard.html">Appointments</a>
+                        <a class="nav-link" href="dashboard.html">Appointments</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/booking/admin/createappointment.html">Create Appointments</a>
+                        <a href="createappointment.html">Create Appointments</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Shortcuts</a>
@@ -277,15 +277,15 @@
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
                     <li class="sidebar-brand">
-                        <a href="/booking/admin/dashboard.html">
+                        <a href="dashboard.html">
                             Admin Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="/booking/admin/dashboard.html">Appointments</a>
+                        <a href="dashboard.html">Appointments</a>
                     </li>
                     <li class="active-nav">
-                        <a href="/booking/admin/createappointment.html">Create Appointments</a>
+                        <a href="createappointment.html">Create Appointments</a>
                     </li>
                     <li>
                         <a href=" # ">Shortcuts</a>
@@ -352,7 +352,7 @@
 
     if (localStorage.getItem('emp') == null) {
 
-        window.location.href = "/booking/index.html"
+        window.location.href = "index.html"
 
 
     }
@@ -487,7 +487,7 @@
             "contentType": false,
             data: payload,
             dataType: "json",
-            url: '/booking/api.php?getTimeSlot=getTimeSlot&emp_id=' + 14 + "&selected_date=" + selected_date + "&total=" + duration,
+            url: '../api.php?getTimeSlot=getTimeSlot&emp_id=' + 14 + "&selected_date=" + selected_date + "&total=" + duration,
             success: function(response) {
 
                 console.log("response")
@@ -684,7 +684,7 @@
     //         "contentType": false,
     //         data: payload,
     //         dataType: "json",
-    //         url: '/booking/api.php?getopentime=getopentime&emp_id=' + 14 + "&selected_date=" + selected_date + "&total=" + duration,
+    //         url: 'api.php?getopentime=getopentime&emp_id=' + 14 + "&selected_date=" + selected_date + "&total=" + duration,
     //         success: function (response) {
 
     //             console.log("response")
@@ -812,7 +812,7 @@
             localStorage.setItem('m_emp', JSON.stringify(old_data))
             localStorage.setItem('app_time', b)
 
-            window.location.href = "/booking/admin/adminconfirm.html"
+            window.location.href = "adminconfirm.html"
 
 
         } else {
@@ -929,7 +929,7 @@
             "contentType": false,
             data: payload,
             dataType: "json",
-            url: '/booking/api.php?getTimeSlot=getTimeSlot&selected_date=' + selected_date + "&total=" + duration,
+            url: '../api.php?getTimeSlot=getTimeSlot&selected_date=' + selected_date + "&total=" + duration,
             success: function(response) {
 
                 console.log(response)
@@ -1074,7 +1074,7 @@
     //         "contentType": false,
     //         data: payload,
     //         dataType: "json",
-    //         url: '/booking/api.php?getopentime=getopentime&selected_date=' + selected_date + "&total=" + duration,
+    //         url: 'api.php?getopentime=getopentime&selected_date=' + selected_date + "&total=" + duration,
     //         success: function (response) {
 
     //             console.log(response)

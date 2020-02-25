@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-// error_reporting(0);
+error_reporting(0);
 
 // session_start();
 
@@ -901,7 +901,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     exit;
 } else if (isset($_REQUEST['getAllServices']) && $_REQUEST['getAllServices'] == "getAllServices") {
 
-    // url : http://localhost/booking/api.php?getAllServices=getAllServices
+    // url : http://localhostapi.php?getAllServices=getAllServices
 
     $data = array();
 
@@ -925,7 +925,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     exit;
 } else if (isset($_REQUEST['getAllEmployees']) && $_REQUEST['getAllEmployees'] == "getAllEmployees") {
 
-    // url : http://localhost/booking/api.php?getAllEmployees=getAllEmployees
+    // url : http://localhostapi.php?getAllEmployees=getAllEmployees
 
     $data = array();
 
@@ -943,7 +943,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     exit;
 } else if (isset($_REQUEST['getServiceIDBasedEmployees']) && $_REQUEST['getServiceIDBasedEmployees'] == "getServiceIDBasedEmployees") {
 
-    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhostapi.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
     // count_employees : SELECT count(id_employee), id_employee FROM `employee_services` GROUP BY id_employee
 
     $data = array();
@@ -1125,6 +1125,27 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
     $query = mysqli_query($con, "UPDATE booking_appointments set state = 'deleted' where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
 
+    // $data['sssq'] = "UPDATE booking_personal_appointments set state = 'deleted' id_appointment = '" . $_POST['id_appointment'] . "'";
+
+    // $query = mysqli_query($con, "UPDATE booking_personal_appointments set state = 'deleted' where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
+
+    if ($query === TRUE) {
+        $data['code']  = "200";
+    }
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+} else if (isset($_REQUEST['deletePersonalAppointment']) && $_REQUEST['deletePersonalAppointment'] == "deletePersonalAppointment") {
+
+    $data = array();
+
+    $data['code']  = "401";
+
+    // $data['sqss'] = "UPDATE booking_appointments set state = 'deleted' id_appointment = '" . $_POST['id_appointment'] . "'";
+
+    // $query = mysqli_query($con, "UPDATE booking_appointments set state = 'deleted' where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
+
     $data['sssq'] = "UPDATE booking_personal_appointments set state = 'deleted' id_appointment = '" . $_POST['id_appointment'] . "'";
 
     $query = mysqli_query($con, "UPDATE booking_personal_appointments set state = 'deleted' where id_appointment = '" . $_POST['id_appointment'] . "'") or die(mysqli_error($con));
@@ -1155,7 +1176,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     exit;
 } else if (isset($_REQUEST['getopentime']) && $_REQUEST['getopentime'] == "getopentime") {
 
-    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhostapi.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
 
     $data = array();
 
@@ -1173,7 +1194,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     exit;
 } else if (isset($_REQUEST['getStoreopentime']) && $_REQUEST['getStoreopentime'] == "getStoreopentime") {
 
-    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhostapi.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
 
 
     $data = array();
@@ -1275,7 +1296,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     exit;
 } else if (isset($_REQUEST['getTimeSlot']) && $_REQUEST['getTimeSlot'] == "getTimeSlot") {
 
-    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhostapi.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
 
     $data = array();
     $data1 = array();
@@ -1882,7 +1903,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     exit;
 } else if (isset($_REQUEST['saveAppointment']) && $_REQUEST['saveAppointment'] == "saveAppointment") {
 
-    // url : http://localhost/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
+    // url : http://localhostapi.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=136
 
 
     // INSERT INTO `booking_appointments` (`id_appointment`, `id_booking_diary`, `id_employee`, `id_customer`, `id_service`, `customer_name`, `service_name`, `appointment_date`, `duration`, `appointment_state`, `delete_reason`, `appointment_source`, `is_new_customer`, `is_requested`, `is_suggested`, `worker_lock`, `time_lock`, `experince_feedback`, `color`, `id_cabin`, `notes`, `state`, `created_at`, `created_from`, `modified_at`, `modified_from`) VALUES

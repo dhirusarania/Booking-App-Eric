@@ -29,7 +29,7 @@
     <script>
         if (localStorage.getItem('random') == undefined || localStorage.getItem('random') == null) {
 
-            window.location.href = "/booking/admin/index.html"
+            window.location.href = "index.html"
 
         }
     </script>
@@ -328,6 +328,10 @@
             border-color: #D30044;
         }
         
+        .sked-tape__intersection {
+            border-color: red;
+        }
+        
         .sked-color-008478 {
             background-color: #008478;
             border-color: #008478;
@@ -393,16 +397,16 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/booking/admin/dashboard.html">{{language['appointments']}}</a>
+                            <a class="nav-link" href="dashboard.html">{{language['appointments']}}</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/booking/admin/createappointment.html">{{language['create_appointments']}}</a>
+                            <a href="createappointment.html">{{language['create_appointments']}}</a>
                         </li>
                         <li class="nav-item">
                             <a href="#" v-on:click='openDialog'>{{language['create_appointments']}}</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
+                            <a href="createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
                         <li class="nav-item">
                             <a href="#" v-on:click="logout">{{language['logout']}}</a>
@@ -509,21 +513,21 @@
                 <div id="sidebar-wrapper">
                     <ul class="sidebar-nav">
                         <li class="sidebar-brand">
-                            <a href="/booking/admin/dashboard.html">
+                            <a href="dashboard.html">
                                 Admin Dashboard
                             </a>
                         </li>
                         <li class="active-nav">
-                            <a href="/booking/admin/dashboard.html">{{language['appointments']}}</a>
+                            <a href="dashboard.html">{{language['appointments']}}</a>
                         </li>
                         <li>
-                            <a href="/booking/admin/createappointment.html">{{language['create_appointments']}}</a>
+                            <a href="createappointment.html">{{language['create_appointments']}}</a>
                         </li>
                         <li>
                             <a href="#" v-on:click='openDialog'>{{language['create_appointments']}}</a>
                         </li>
                         <li>
-                            <a href="/booking/admin/createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
+                            <a href="createpersonalappointment.html">{{language['create_personal_appointments']}}</a>
                         </li>
                         <li>
                             <a href="#" v-on:click="logout">{{language['logout']}}</a>
@@ -1097,7 +1101,7 @@
 
             logout: function() {
                 localStorage.clear();
-                window.location.href = "/booking/admin"
+                window.location.href = ""
             },
             changeLanguage: function() {
 
@@ -1152,11 +1156,11 @@
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: '/booking/api.php?saveOneAppointment=saveOneAppointment',
-                    "processData": false,
-                    "mimeType": "multipart/form-data",
-                    "contentType": false,
-                    "data": payload,
+                    url: '../api.php?saveOneAppointment=saveOneAppointment',
+                    processData: false,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    data: payload,
                     success: function(response) {
 
                         console.log(response['status'])
@@ -1166,7 +1170,7 @@
                             // alert("Successfully Added")
                             app.getAppointments(app.current_moment)
                             $("#exampleModalCenterCreate").modal('hide')
-                                // window.location.href = "/booking/admin/dashboard.html"
+                                // window.location.href = "admin/dashboard.html"
 
                         } else {
 
@@ -1192,7 +1196,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?getAllEmployees=getAllEmployees',
+                    url: '../api.php?getAllEmployees=getAllEmployees',
                     data: $(this).serialize(),
                     success: function(response) {
                         console.log(response)
@@ -1222,7 +1226,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?getCustomers=getCustomers&query=' + this.queryCustomers,
+                    url: '../api.php?getCustomers=getCustomers&query=' + this.queryCustomers,
                     success: function(response) {
                         console.log(response)
                         app.allgetCustomers = response
@@ -1243,7 +1247,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/' + this.lang + '.php',
+                    url: '../' + this.lang + '.php',
                     success: function(response) {
                         console.log(response)
                         app.language = response
@@ -1262,7 +1266,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?getAllAppointmentState=getAllAppointmentState',
+                    url: '../api.php?getAllAppointmentState=getAllAppointmentState',
                     success: function(response) {
                         console.log(response)
                         app.all_filters = response['personal']
@@ -1465,7 +1469,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?getAllServicesAdmin=getAllServicesAdmin',
+                    url: '../api.php?getAllServicesAdmin=getAllServicesAdmin',
                     success: function(response) {
                         console.log(response)
                         app.all_services = response
@@ -1487,7 +1491,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + service,
+                    url: '../api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + service,
                     data: $(this).serialize(),
                     success: function(response) {
                         console.log(response)
@@ -1548,7 +1552,7 @@
                         type: "POST",
                         data: data,
                         dataType: "json",
-                        url: '/booking/api.php?getTimeSlot=getTimeSlot&selected_date=' + date,
+                        url: '../api.php?getTimeSlot=getTimeSlot&selected_date=' + date,
                         success: function(response) {
                             console.log("new response")
                             console.log(response)
@@ -1599,14 +1603,14 @@
                     type: "POST",
                     data: payload,
                     dataType: "json",
-                    url: '/booking/api.php?updatePersonalAppointment=updatePersonalAppointment',
+                    url: '../api.php?updatePersonalAppointment=updatePersonalAppointment',
                     success: function(response) {
                         console.log("new response")
                         console.log(response)
                             // alert("updated Successfully")
                         $('#updatePersonalAppointment').modal('hide')
                         app.getAppointments(app.current_moment)
-                            // window.location.href = "/booking/admin/dashboard.html"
+                            // window.location.href = "admin/dashboard.html"
 
                     },
                     error: function(response) {
@@ -1653,7 +1657,7 @@
                     type: "POST",
                     data: payload,
                     dataType: "json",
-                    url: '/booking/api.php?updateAppointment=updateAppointment',
+                    url: '../api.php?updateAppointment=updateAppointment',
                     success: function(response) {
                         console.log("new response")
                         console.log(response)
@@ -1678,8 +1682,8 @@
             },
             deletePersonalAppointment: function() {
 
-            },
-            deleteAppointment: function() {
+
+                console.log("deleteAppointment")
 
                 var payload = {
                     id_appointment: app.selected_appointment_data['id_appointment']
@@ -1691,7 +1695,47 @@
                     type: "POST",
                     data: payload,
                     dataType: "json",
-                    url: '/booking/api.php?deleteAppointment=deleteAppointment',
+                    url: '../api.php?deletePersonalAppointment=deletePersonalAppointment',
+                    success: function(response) {
+                        console.log("new response")
+                        console.log(response)
+
+                        $('#exampleModalCenter').modal('hide')
+
+                        if (response.code == 200) {
+
+                            // alert("Deleted Successfully")
+
+                        }
+
+
+                        app.getAppointments(app.current_moment)
+
+                    },
+                    error: function(response) {
+                        alert(response);
+                    }
+                });
+
+
+
+
+            },
+            deleteAppointment: function() {
+
+                console.log("deleteAppointment")
+
+                var payload = {
+                    id_appointment: app.selected_appointment_data['id_appointment']
+                }
+
+                console.log(payload)
+
+                $.ajax({
+                    type: "POST",
+                    data: payload,
+                    dataType: "json",
+                    url: '../api.php?deleteAppointment=deleteAppointment',
                     success: function(response) {
                         console.log("new response")
                         console.log(response)
@@ -1937,7 +1981,7 @@
                     $.ajax({
                         type: "GET",
                         dataType: "json",
-                        url: '/booking/api.php?getAppointmentList=getAppointmentList&date=' + that.send_date + '&filters=' + that.active_filters + '&filters_state=' + that.active_filters_state,
+                        url: '../api.php?getAppointmentList=getAppointmentList&date=' + that.send_date + '&filters=' + that.active_filters + '&filters_state=' + that.active_filters_state,
                         success: function(response) {
                             console.log("new response")
                             console.log(response)

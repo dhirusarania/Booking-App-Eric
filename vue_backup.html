@@ -362,7 +362,7 @@
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: '/booking/api.php?getAllServices=getAllServices',
+        url: 'api.php?getAllServices=getAllServices',
         data: $(this).serialize(),
         success: function(response) {
             console.log(response)
@@ -399,7 +399,7 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: '/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + $(this).data('id'),
+                url: 'api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + $(this).data('id'),
                 data: $(this).serialize(),
                 success: function(response) {
                     console.log(response)
@@ -619,7 +619,7 @@
             console.log(arr)
             localStorage.setItem('emp', JSON.stringify(arr))
 
-            window.location.href = "/booking/appointment.html"
+            window.location.href = "appointment.html"
 
 
         }

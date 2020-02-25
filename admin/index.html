@@ -339,7 +339,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/' + this.lang + '.php',
+                    url: '../' + this.lang + '.php',
                     success: function(response) {
                         console.log(response)
                         app.language = response
@@ -367,7 +367,7 @@
 
                 axios({
                         method: "POST",
-                        url: "/booking/api.php?login=login",
+                        url: "../api.php?login=login",
                         headers: {
                             "Content-Type": "multipart/form-data"
                         },
@@ -382,7 +382,7 @@
 
                             // this.$router.push('/admin')
 
-                            window.location.href = "/booking/admin/dashboard.html";
+                            window.location.href = "dashboard.html";
                         } else {
                             alert("Wrong Password");
                         }

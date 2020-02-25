@@ -98,7 +98,7 @@
                     </ul>
                     <div id="htk" class="header_tk  ml-auto" style="float: right; color: #FFFFFF;">
                         <h3>
-                            <i class="fa fa-phone ng-binding">&nbsp;&nbsp;{{homepageInfo.address4}}</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-envelope-o ng-binding">&nbsp;&nbsp;{{homepageInfo.address5}}</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-map-marker ng-binding">&nbsp;&nbsp; {{homepageInfo.address1}}</i></h3>
+                            <i class="fa fa-phone ng-binding">&nbsp;&nbsp;{{homepageInfo.address4}}</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-envelope-o ng-binding">&nbsp;&nbsp;{{homepageInfo.address5}}</i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-map-marker ng-binding">&nbsp;&nbsp; {{homepageInfo.address3}}</i></h3>
                     </div>
 
                 </div>
@@ -363,7 +363,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?getHomepageInfo=getHomepageInfo',
+                    url: 'api.php?getHomepageInfo=getHomepageInfo',
                     success: function(response) {
                         console.log(response)
                         app.homepageInfo = response
@@ -383,7 +383,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '/booking/api.php?init_db=init_db&booking_url=' + this.booking_url,
+                    url: 'api.php?init_db=init_db&booking_url=' + this.booking_url,
                     success: function(response) {
                         console.log(response)
                         localStorage.setItem('init_db', app.booking_url)
@@ -463,7 +463,7 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: '/booking/api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + $(this).data('id'),
+                url: 'api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + $(this).data('id'),
                 data: $(this).serialize(),
                 success: function(response) {
                     console.log(response)
@@ -724,7 +724,7 @@
             console.log(arr)
             localStorage.setItem('emp', JSON.stringify(arr))
 
-            window.location.href = "/booking/appointment.html"
+            window.location.href = "appointment.html"
 
 
         }
