@@ -1077,17 +1077,21 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     }
 
 
-    $query = mysqli_query($con, "SELECT * from employees") or die(mysqli_error($con));
+    $query = mysqli_query($con, "SELECT * from booking_employees LEFT join employees on booking_employees.id_employee = employees.id_employee  WHERE id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
+
+    $data['ssss'] = "SELECT * from booking_employees LEFT join employees on booking_employees.id_employee = employees.id_employee   WHERE id_booking_diary = " . $_SESSION['id_booking_diary'];
+
+    $data['sssks'] = mysqli_num_rows($query);
 
     if (mysqli_num_rows($query) > 0) {
-        while ($row = mysqli_fetch_assoc($query)) {
-            $row['id'] = $row['id_employee'];
-            $row['name'] = $row['employee_first_name'];
-            $data['users'][] = $row;
+        while ($row2 = mysqli_fetch_assoc($query)) {
+            $row2['id'] = $row2['id_employee'];
+            $row2['name'] = $row2['employee_first_name'];
+            $data['users'][] = $row2;
         }
     }
 
-    $data['users'] = $temp;
+    // $data['users'] = $temp;
     $res = json_encode($data);
     echo $res;
     exit;

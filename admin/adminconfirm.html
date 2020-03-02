@@ -13,7 +13,7 @@
 
     <link href="../css/framework.css" rel="stylesheet">
     <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
     <style>
         p {
             font-size: 13px;
@@ -353,16 +353,16 @@
 
 </html>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="../js/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js "></script>
 <script>
     if ($.cookie('emp') == null) {
 
-        window.location.href = "index.html"
+        window.location.href = "index.html "
 
 
     }
@@ -371,7 +371,7 @@
     function submit() {
 
 
-        console.log("sub")
+        console.log("sub ")
 
         var payload = new FormData()
 
@@ -400,34 +400,34 @@
         console.log(a)
 
         payload.append('emp', JSON.stringify(a))
-        payload.append('customer_name', $("#name").val())
+        payload.append('customer_name', $("#name ").val())
         payload.append('appointment_date', $.cookie('app_date') + " " + $.cookie('app_time'))
-        payload.append('notes', "Tel:" + $("#phone").val() + " Email: " + $("#email").val())
+        payload.append('notes', "Tel: " + $("#phone ").val() + " Email: " + $("#email ").val())
         payload.append('service_name', $.cookie('service_name'))
-        payload.append('id_customer', "P0-" + parseInt(Date.now() / 1000))
-        payload.append('appointment_state', "booked")
-        payload.append('appointment_source', "application")
+        payload.append('id_customer', "P0- " + parseInt(Date.now() / 1000))
+        payload.append('appointment_state', "booked ")
+        payload.append('appointment_source', "application ")
 
         $.ajax({
-            type: "POST",
-            dataType: "json",
+            type: "POST ",
+            dataType: "json ",
             url: '../api.php?saveAppointment=saveAppointment',
-            "processData": false,
-            "mimeType": "multipart/form-data",
-            "contentType": false,
-            "data": payload,
+            "processData ": false,
+            "mimeType ": "multipart/form-data ",
+            "contentType ": false,
+            "data ": payload,
             success: function(response) {
 
                 console.log(response['status'])
 
                 if (response.status == 200) {
 
-                    // alert("Successfully Added")
-                    window.location.href = "dashboard.html"
+                    // alert("Successfully Added ")
+                    window.location.href = "dashboard.html "
 
                 } else {
 
-                    alert("Error")
+                    alert("Error ")
                 }
 
 

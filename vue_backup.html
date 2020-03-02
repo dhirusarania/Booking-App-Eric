@@ -20,7 +20,7 @@
     <link href="css/carousel.css" rel="stylesheet">
 
     <link href="css/style.css" rel="stylesheet" />
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css" rel="stylesheet" />
 
@@ -328,11 +328,11 @@
     <script src="js/holder.min.js"></script>
 
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="../js/bootstrap.min.js></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js "></script>
 </body>
 
 </html>
@@ -356,12 +356,12 @@
     var selected_service_array = []
 
     $(document).ready(function() {
-        $(".e1").select2();
+        $(".e1 ").select2();
     });
 
     $.ajax({
-        type: "GET",
-        dataType: "json",
+        type: "GET ",
+        dataType: "json ",
         url: 'api.php?getAllServices=getAllServices',
         data: $(this).serialize(),
         success: function(response) {
@@ -372,7 +372,10 @@
 
             // for (var i = 0; i < response['parrucchiere'].length; i++) {
 
-            //     d1.insertAdjacentHTML('beforeend', ' <tr><td class="mainsection"><p>' + response[i].name + '</p><p style="font-size:13px">Prezzo da: ' + parseFloat(response[i].standard_sell_price).toFixed(2) + ' €</p></td><td><label class="switch"><input type="checkbox" data-toggle="collapse" data-name="' + response[i].name + '" data-id="' + response[i].id_service + '" data-target="#accordion-' + response[i].id_service + '"class="clickable"><span class="slider round"></span></label></td></tr><tr><td colspan="6"><div id="accordion-' + response[i].id_service + '" data-name="' + response[i].name + '" data-id="' + response[i].id_service + '" data-duration="' + response[i].worker_duration + '" data-dependency="' + response[i].service_dependence + '" class="drop collapse"><select class="e1" style="width: 100%" data-pd="' + response[i].id_service + '" id="select2-' + response[i].id_service + '"><option value="0">Indifferente</option></select></div></td></tr>');
+            //     d1.insertAdjacentHTML('beforeend', ' <tr><td class="mainsection "><p>' + response[i].name + '</p><p style="font-size:13px ">Prezzo da: ' + parseFloat(response[i].standard_sell_price).toFixed(2) + ' €</p></td><td><label class="switch
+        "><input type="checkbox " data-toggle="collapse " data-name=" ' + response[i].name + ' " data-id=" ' + response[i].id_service + ' " data-target="#accordion- ' + response[i].id_service + ' "class="clickable "><span class="slider round
+        "></span></label></td></tr><tr><td colspan="6 "><div id="accordion- ' + response[i].id_service + ' " data-name=" ' + response[i].name + ' " data-id=" ' + response[i].id_service + ' " data-duration=" ' + response[i].worker_duration + ' " data-dependency="
+        ' + response[i].service_dependence + ' " class="drop collapse "><select class="e1 " style="width: 100% " data-pd=" ' + response[i].id_service + ' " id="select2- ' + response[i].id_service + ' "><option value="0 ">Indifferente</option></select></div></td></tr>');
 
             // }
 
@@ -397,8 +400,8 @@
             // $('.clickable').not('.collapsed').click()
 
             $.ajax({
-                type: "GET",
-                dataType: "json",
+                type: "GET ",
+                dataType: "json ",
                 url: 'api.php?getServiceIDBasedEmployees=getServiceIDBasedEmployees&service_id=' + $(this).data('id'),
                 data: $(this).serialize(),
                 success: function(response) {
@@ -412,10 +415,10 @@
 
                     for (var i = 0; i < response.length; i++) {
 
-                        d1.insertAdjacentHTML('beforeend', '<option value="' + response[i].id_employee + '">' + response[i].employee_first_name + " " + response[i].employee_last_name[0] + '.</option>');
+                        d1.insertAdjacentHTML('beforeend', '<option value=" ' + response[i].id_employee + ' ">' + response[i].employee_first_name + " " + response[i].employee_last_name[0] + '.</option>');
 
                     }
-                    $(".e1").select2();
+                    $(".e1 ").select2();
 
                     selected_service.push(section_id)
 
@@ -427,19 +430,19 @@
 
                     selected_service_array.push(temp)
 
-                    $(".service_price").html(selected_sum)
+                    $(".service_price ").html(selected_sum)
 
 
-                    $(".selected_services").removeClass('hide')
+                    $(".selected_services ").removeClass('hide')
 
-                    $("#selected_services_tr").empty()
+                    $("#selected_services_tr ").empty()
 
                     var d2 = document.getElementById('selected_services_tr');
 
 
                     for (var i = 0; i < selected_service_array.length; i++) {
 
-                        d2.insertAdjacentHTML('beforeend', '<tr class="tr--select2-' + selected_service_array[i].id_service + '"><td>' + selected_service_array[i].name + '<br><p class="emp_name">Employee: Indifferente</p></td><td>' + parseFloat(selected_service_array[i].standard_sell_price).toFixed(2) + '</td></tr>');
+                        d2.insertAdjacentHTML('beforeend', '<tr class="tr--select2- ' + selected_service_array[i].id_service + ' "><td>' + selected_service_array[i].name + '<br><p class="emp_name ">Employee: Indifferente</p></td><td>' + parseFloat(selected_service_array[i].standard_sell_price).toFixed(2) + '</td></tr>');
 
                     }
 
@@ -457,21 +460,21 @@
 
             selected_sum = selected_sum - parseFloat(all_service.filter(v => v.id_service == $(this).data('id'))[0].standard_sell_price)
 
-            $(".service_price").html(selected_sum)
+            $(".service_price ").html(selected_sum)
 
             if (selected_service.length == 0) {
-                $(".selected_services").addClass('hide')
+                $(".selected_services ").addClass('hide')
 
             }
 
-            $("#selected_services_tr").empty()
+            $("#selected_services_tr ").empty()
 
             var d2 = document.getElementById('selected_services_tr');
 
 
             for (var i = 0; i < selected_service_array.length; i++) {
 
-                d2.insertAdjacentHTML('beforeend', '<tr class="tr--select2-' + selected_service_array[i].id_service + '"><td>' + selected_service_array[i].name + '<br><p class="emp_name">Employee: Indifferente</p></td><td>' + parseFloat(selected_service_array[i].standard_sell_price).toFixed(2) + '</td></tr>');
+                d2.insertAdjacentHTML('beforeend', '<tr class="tr--select2- ' + selected_service_array[i].id_service + ' "><td>' + selected_service_array[i].name + '<br><p class="emp_name ">Employee: Indifferente</p></td><td>' + parseFloat(selected_service_array[i].standard_sell_price).toFixed(2) + '</td></tr>');
 
             }
 
@@ -502,17 +505,17 @@
 
             if (selected_service_array.filter(v => v.id_service == id).length == 1) {
 
-                $(".tr--" + select_id + " .emp_name").empty()
+                $(".tr-- " + select_id + " .emp_name ").empty()
 
-                // $(".tr--" + select_id + " p").empty()
+                // $(".tr-- " + select_id + " p ").empty()
 
-                $(".tr--" + select_id + " .emp_name").html("Employee: " + $("#" + select_id).find(":selected").text())
+                $(".tr-- " + select_id + " .emp_name ").html("Employee: " + $("# " + select_id).find(":selected ").text())
 
-                console.log("hererhere")
+                console.log("hererhere ")
                 console.log(i)
                     // console.log(selected_service_array[i])
 
-                // d2.insertAdjacentHTML('beforeend', '<tr class="tr--select2-' + b.id_service + '"><td>' + b.name + '<br><p class="emp_name">Employee: ' + $("#" + select_id).find(":selected").text() + '</p></td><td>' + parseFloat(b.standard_sell_price).toFixed(2) + '</td></tr>');
+                // d2.insertAdjacentHTML('beforeend', '<tr class="tr--select2- ' + b.id_service + ' "><td>' + b.name + '<br><p class="emp_name ">Employee: ' + $("# " + select_id).find(":selected ").text() + '</p></td><td>' + parseFloat(b.standard_sell_price).toFixed(2) + '</td></tr>');
 
                 break;
 
@@ -532,7 +535,7 @@
 
             if (arr[i].service_dependence.length != 0) {
 
-                dep = arr[i].service_dependence.replace(/ /g, '').split(",")
+                dep = arr[i].service_dependence.replace(/ /g, '').split(", ")
 
 
                 for (j = 0; j < dep.length; j++) {
@@ -540,7 +543,7 @@
 
                     if (all_service.filter(v => v.id_service == dep[j]).length != 0) {
                         var b = all_service.filter(v => v.id_service == dep[j])[0]
-                        console.log("b")
+                        console.log("b ")
                         console.log(b)
                         b['emp'] = arr[i].emp
 
@@ -550,7 +553,7 @@
 
                     } else {
                         console.log(arr[i].service_dependence)
-                        alert("Dependent Service not found. Please check if the id_service has the correct value")
+                        alert("Dependent Service not found. Please check if the id_service has the correct value ")
                             // break;
 
                     }
@@ -565,43 +568,43 @@
 
         }
 
-        console.log("returned")
+        console.log("returned ")
         return a;
 
     }
 
-    $(".next_page").click(function() {
+    $(".next_page ").click(function() {
 
-        // console.log($("#select2-" + $.cookie('service')).val())
+        // console.log($("#select2- " + $.cookie('service')).val())
 
         var arr = []
 
         if (selected_service.length != 0) {
 
-            console.log("selected_service")
+            console.log("selected_service ")
             console.log(selected_service)
 
             for (i = 0; i < selected_service.length; i++) {
 
                 var temp = {}
-                console.log($("#accordion-" + selected_service[i]))
-                console.log($("#accordion-" + selected_service[i]).data('name'))
-                temp['emp'] = $("#accordion-" + selected_service[i]).children('.e1').val()
+                console.log($("#accordion- " + selected_service[i]))
+                console.log($("#accordion- " + selected_service[i]).data('name'))
+                temp['emp'] = $("#accordion- " + selected_service[i]).children('.e1').val()
 
-                console.log("temp")
+                console.log("temp ")
                 console.log(temp)
 
                 console.log(arr)
                 if (arr.filter(v => v.emp == temp['emp']).length == 0 || arr.filter(v => v.emp == temp['emp'] == 0)) {
 
-                    temp['name'] = $("#accordion-" + selected_service[i]).data('name')
-                    temp['id_service'] = $("#accordion-" + selected_service[i]).data('id')
-                    temp['worker_duration'] = $("#accordion-" + selected_service[i]).data('duration')
-                    temp['service_dependence'] = $("#accordion-" + selected_service[i]).data('dependency')
+                    temp['name'] = $("#accordion- " + selected_service[i]).data('name')
+                    temp['id_service'] = $("#accordion- " + selected_service[i]).data('id')
+                    temp['worker_duration'] = $("#accordion- " + selected_service[i]).data('duration')
+                    temp['service_dependence'] = $("#accordion- " + selected_service[i]).data('dependency')
 
                     arr.push(temp)
 
-                    console.log("arrattt")
+                    console.log("arrattt ")
                     console.log(arr)
 
                 }
@@ -619,7 +622,7 @@
             console.log(arr)
             $.cookie('emp', JSON.stringify(arr))
 
-            window.location.href = "appointment.html"
+            window.location.href = "appointment.html "
 
 
         }

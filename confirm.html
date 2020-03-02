@@ -8,8 +8,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
     <title>Document</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
     <style>
         p {
             font-size: 13px;
@@ -75,7 +75,7 @@
         .checkmark__circle {
             stroke-dasharray: 166;
             stroke-dashoffset: 166;
-            stroke-width: 2;
+            stroke-width: 50px;
             stroke-miterlimit: 10;
             stroke: #7ac142;
             fill: none;
@@ -83,8 +83,8 @@
         }
         
         .checkmark {
-            width: 56px;
-            height: 56px;
+            width: 115px;
+            height: 115px;
             border-radius: 50%;
             display: block;
             stroke-width: 2;
@@ -164,19 +164,24 @@
 
 
             <div class="container section" v-if="isComplete">
+                <h4 class="text-center">Perfetto !! Grazie per aver prenotato</h4>
                 <svg class="checkmark" id="this" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                   <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
                   <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
                 </svg>
-                <p class="pt-3" style="text-align: center;">
-                    Your Order has been Confirmed.
-                    <br />It is being processed by the seller
+                <p class="pt-3" style="text-align: center;font-size: 20px;">
+                    La tua prenotazione e andata a buon fine
+                    <br />Ci vediamo il {{date}} alle {{time}}
                 </p>
 
                 <button type="button" v-on:click="goBack">Go Back</button>
             </div>
 
-            <div class="d-flex justify-content-around" v-if="!isComplete">
+            <div class="d-flex justify-content-around" style="flex-direction: column;" v-if="!isComplete">
+                <!-- <h4>Riepilogo delle tue scelte:</h4>
+                <div v-for="p in summary">
+                    <p>{{p.name}}</p>
+                </div> -->
                 <form style="width:100%;text-align: center;">
                     <h4 class="center">Qualcosa su di te</h4>
                     <p>Ti chiediamo i tuoi dati per inviarti la conferma dell'appuntamento</p>
@@ -211,9 +216,9 @@
 
 </html>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="js/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -224,15 +229,24 @@
         data: {
             message: 'Hello Vue!',
             services: [],
-            isComplete: false,
+            isComplete: true,
             isVisible1: true,
             homepageInfo: [],
             booking_url: $.cookie('init_db'),
-            slider_image: []
+            slider_image: [],
+            summary: [],
+            date: "",
+            time: ""
         },
         mounted() {
 
             this.getHomepageInfo()
+
+            this.summary = JSON.parse($.cookie('selected_service_array'))
+
+            this.time = $.cookie('app_time')
+
+            this.date = $.cookie('app_date')
 
 
         },
