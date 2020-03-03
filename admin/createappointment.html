@@ -28,13 +28,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css" rel="stylesheet" />
 
 
-    <script>
-        if (localStorage.getItem('random') == undefined || localStorage.getItem('random') == null) {
-
-            window.location.href = "index.html"
-
-        }
-    </script>
 
     <style>
         .fa {
@@ -403,6 +396,18 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+
+    <script>
+        if ($.cookie('random') == undefined || $.cookie('random') == null) {
+
+            window.location.href = "index.html"
+
+        }
+    </script>
+
 
 </body>
 
@@ -426,17 +431,19 @@
             this.getLanguage()
 
             if ("lang" in localStorage) {
-                this.lang = localStorage.getItem('lang')
+                this.lang = $.cookie('lang')
             } else {
-                localStorage.setItem('lang', 'it')
+                $.cookie('lang', 'it')
             }
 
             this.getLanguage()
         },
         methods: {
             logout: function() {
-                localStorage.clear();
-                window.location.href = ""
+                document.cookie.split(";").forEach(function(c) {
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+                window.location.href = "index.html"
             },
             getLanguage: function() {
 
@@ -463,9 +470,9 @@
 
                 if (this.lang == 'en') {
                     this.lang = 'it'
-                    localStorage.setItem('lang', 'it')
+                    $.cookie('lang', 'it')
                 } else {
-                    localStorage.setItem('lang', 'it')
+                    $.cookie('lang', 'it')
                     this.lang = 'en'
                 }
 
@@ -559,8 +566,8 @@
                     console.log('select2-' + section_id)
                     var d1 = document.getElementById('select2-' + section_id);
 
-                    localStorage.setItem('service', section_id)
-                    localStorage.setItem('service_name', section_name)
+                    $.cookie('service', section_id)
+                    $.cookie('service_name', section_name)
 
 
                     if (app.homepageInfo.mostra_seleziona_lavorante == 1) {
@@ -765,7 +772,7 @@
 
     $(".next_page").click(function() {
 
-        // console.log($("#select2-" + localStorage.getItem('service')).val())
+        // console.log($("#select2-" + $.cookie('service')).val())
 
         var arr = []
 
@@ -810,7 +817,7 @@
             arr = dependency_reorder(arr)
 
             console.log(arr)
-            localStorage.setItem('emp', JSON.stringify(arr))
+            $.cookie('emp', JSON.stringify(arr))
 
             window.location.href = "adminappointments.html"
 

@@ -358,8 +358,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script>
-    if (localStorage.getItem('emp') == null) {
+    if ($.cookie('emp') == null) {
 
         window.location.href = "index.html"
 
@@ -376,14 +377,14 @@
 
 
 
-        var a = JSON.parse(localStorage.getItem('m_emp'))
+        var a = JSON.parse($.cookie('m_emp'))
 
 
         console.log(a)
 
         console.log(a)
 
-        var b = localStorage.getItem('app_date') + " " + localStorage.getItem('app_time')
+        var b = $.cookie('app_date') + " " + $.cookie('app_time')
 
         console.log(b)
 
@@ -400,9 +401,12 @@
 
         payload.append('emp', JSON.stringify(a))
         payload.append('customer_name', $("#name").val())
-        payload.append('appointment_date', localStorage.getItem('app_date') + " " + localStorage.getItem('app_time'))
+        payload.append('appointment_date', $.cookie('app_date') + " " + $.cookie('app_time'))
         payload.append('notes', "Tel:" + $("#phone").val() + " Email: " + $("#email").val())
-        payload.append('service_name', localStorage.getItem('service_name'))
+        payload.append('service_name', $.cookie('service_name'))
+        payload.append('id_customer', "P0-" + parseInt(Date.now() / 1000))
+        payload.append('appointment_state', "booked")
+        payload.append('appointment_source', "application")
 
         $.ajax({
             type: "POST",

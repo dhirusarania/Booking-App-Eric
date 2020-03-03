@@ -30,9 +30,6 @@ $ADMIN_DATABASE = "new3";
 
 
 
-
-
-
 // /*Variables */
 
 
@@ -819,11 +816,11 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     $data['appointment_state'] = array(
         '0' => array(
             'name' => 'Attivi',
-            'state' => 'active,checked_out,checked_in',
+            'state' => 'active,checked_out,checked_in,booked',
         ),
         '1' => array(
             'name' => 'Da Internet',
-            'state' => 'internet',
+            'state' => 'internet,application',
         ),
         '2' => array(
             'name' => 'Eliminati',
@@ -1090,7 +1087,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
         }
     }
 
-    // $data['users'] = $temp;
+    $data['users'] = $temp;
     $res = json_encode($data);
     echo $res;
     exit;
@@ -1103,7 +1100,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
     $data['ssssss'] = "SELECT * FROM `booking_online_info` WHERE id_booking_diary = " . $_SESSION['id_booking_diary'];
 
-    $query = mysqli_query($con, "SELECT `id_booking_diary`, `enabled`, `path`, `title`, `address1`, `address2`, `address3`, `address4`, `address5`, `salon_tag`, `salon_lang`, `salon_pay`, `facebook_address`, `istagram_address`, `telegram_address`, `telegram_address_callback`, `mostra_prezzo_finale`, `mostra_prezzi_listino`, `mostra_seleziona_lavorante`, `mostra_dove_siamo`, `mostra_recensioni`, `mostra_altre_recensioni`, `map_link`  FROM booking_online_info WHERE id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
+    $query = mysqli_query($con, "SELECT *  FROM booking_online_info WHERE id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
 
     if (mysqli_num_rows($query) > 0) {
         while ($row = mysqli_fetch_assoc($query)) {
@@ -1891,6 +1888,15 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     }
 
 
+    $query = mysqli_query($con, "SELECT minutes FROM booking_online_info WHERE `id_booking_diary` = " .  $_SESSION['id_booking_diary'] . " ") or die(mysqli_error($con));
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $data['minutes'] = $row['minutes'];
+        }
+    }
+
+
     $data['emp_appointment_today'] = $data1;
     $data['new_time'] = $new_time;
     // $data['availale_time'] = $timeslot;
@@ -1919,7 +1925,8 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
         // $data['zdcdzz'] = $info[$i];
         $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
-        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $info[$i]['emp'] . "' , 'P0-" . time()  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $info[$i]['app_time'] . "' , '" . $info[$i]['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+        $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state, is_requested , is_suggested, experince_feedback , color, id_cabin, created_at, created_from, modified_at, modified_from ) VALUES
+         ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $info[$i]['emp'] . "' , '" . $_POST['id_customer']  . "', '" .  $info[$i]['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $info[$i]['name'] . "' , '" . $info[$i]['app_time'] . "' , '" . $info[$i]['worker_duration'] . "' , 'booked', 'application', '0' , '" . $_POST['notes'] . "' , 'active' , 0 , 0, '', '#FFFFF59D' , 0 , '" . date('Y-m-d H:i:s') ."' , 'bot' , '" . date('Y-m-d H:i:s') ."' , 'bot'  )";
 
         if (mysqli_query($con, $sql)) {
 
@@ -1947,7 +1954,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
 
     $data['xxx'][] = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
 
-    $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , 'P0-" . time()  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active')";
+    $sql = "INSERT INTO booking_appointments (id_appointment, id_booking_diary, id_employee, id_customer, id_service, customer_name, service_name, appointment_date, duration, appointment_state, appointment_source, is_new_customer, notes, state, is_requested , is_suggested, experince_feedback , color, id_cabin, created_at, created_from, modified_at, modified_from  ) VALUES ('P0-" . time() . "-" . ($i + 1) . "','" . $_SESSION['id_booking_diary'] . "', '" . $_POST['id_employee'] . "' , '" . $_POST['id_customer']  . "', '" .   $_POST['id_service'] . "' , '" . $_POST['customer_name'] . "'  , '" .  $_POST['service_name'] . "' , '" . $_POST['appointment_date'] . "' , '" . $_POST['worker_duration'] . "' , 'active', 'internet', '0' , '" . $_POST['notes'] . "' , 'active' , 0 , 0, '', '#FFFFF59D' , 0 , '" . date('Y-m-d H:i:s') ."' , 'P001-0000000001' , '" . date('Y-m-d H:i:s') ."' , 'P001-0000000001'  )";
 
     if (mysqli_query($con, $sql)) {
 
@@ -1985,6 +1992,25 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     $res = json_encode($data);
     echo $res;
     exit;
+} else if (isset($_REQUEST['getPrivacy']) && $_REQUEST['getPrivacy'] == "getPrivacy") {
+
+    $data = array();
+
+    $query = mysqli_query($con, "SELECT privacy_text FROM booking_online_info WHERE id_booking_diary = " . $_SESSION['id_booking_diary']) or die(mysqli_error($con));
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $data['privacy'] = $row['privacy_text'];
+        }
+    }
+
+
+    $res = json_encode($data);
+    echo $res;
+    exit;
+
+
+
 } else if (isset($_REQUEST['createPersonalAppointment']) && $_REQUEST['createPersonalAppointment'] == "createPersonalAppointment") {
 
     $data = array();

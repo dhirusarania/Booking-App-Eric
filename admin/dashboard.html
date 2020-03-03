@@ -26,13 +26,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.min.css" rel="stylesheet" />
 
 
-    <script>
-        if (localStorage.getItem('random') == undefined || localStorage.getItem('random') == null) {
-
-            window.location.href = "index.html"
-
-        }
-    </script>
 
     <style>
         .fa {
@@ -968,10 +961,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/i18n/datepicker.en.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="../js/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 </body>
 
 </html>
+
+
+<script>
+    if ($.cookie('random') == undefined || $.cookie('random') == null) {
+
+        window.location.href = "index.html"
+
+    }
+</script>
 
 <script>
     var $sked
@@ -1021,7 +1024,8 @@
             customer_duration: 0,
             lang: "it",
             allgetCustomers: [],
-            queryCustomers: ""
+            queryCustomers: "",
+            queryCustomersID: 0
         },
         mounted() {
 
@@ -1035,15 +1039,16 @@
 
 
             if ("lang" in localStorage) {
-                this.lang = localStorage.getItem('lang')
+                this.lang = $.cookie('lang')
             } else {
-                localStorage.setItem('lang', 'it')
+                $.cookie('lang', 'it')
             }
 
             this.getLanguage()
             this.dp2 = $(".datepicker-here1")
                 .datepicker({
                     autoClose: true,
+                    firstDay: 1,
                     minDate: new Date(),
                     onSelect: function onSelect(fd, date) {
                         console.log("fd");
@@ -1100,8 +1105,11 @@
             },
 
             logout: function() {
-                localStorage.clear();
-                window.location.href = ""
+                // localStorage.clear();
+                document.cookie.split(";").forEach(function(c) {
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+                window.location.href = "index.html"
             },
             changeLanguage: function() {
 
@@ -1110,9 +1118,9 @@
 
                 if (this.lang == 'en') {
                     this.lang = 'it'
-                    localStorage.setItem('lang', 'it')
+                    $.cookie('lang', 'it')
                 } else {
-                    localStorage.setItem('lang', 'it')
+                    $.cookie('lang', 'it')
                     this.lang = 'en'
                 }
 
@@ -1145,7 +1153,8 @@
 
 
                 var payload = new FormData()
-                payload.append('customer_name', app.selected_appointment_data['customer_name'])
+                payload.append('customer_name', app.queryCustomers)
+                payload.append('id_customer', app.queryCustomersID)
                 payload.append('appointment_date', appointment_date)
                 payload.append('id_employee', this.selected_appointment_data['id_employee'])
                 payload.append('id_service', this.selected_appointment_data['id_service'])
@@ -1214,6 +1223,8 @@
                 var a = this.allgetCustomers.filter(v => v.customer_id == id)[0]
 
                 this.queryCustomers = a.first_name + " " + a.last_name
+
+                this.queryCustomersID = id
 
                 $(".search-suggestions").hide()
 
@@ -1287,6 +1298,7 @@
                         var dp1 = $(".datepicker-here")
                             .datepicker({
                                 autoClose: true,
+                                firstDay: 1,
                                 onSelect: function onSelect(fd, date) {
                                     console.log("fd");
                                     console.log(fd);
@@ -1644,7 +1656,8 @@
 
                 var payload = {
                     id_appointment: app.selected_appointment_data['id_appointment'],
-                    customer_name: app.selected_appointment_data['customer_name'],
+                    customer_name: app.queryCustomers,
+                    id_customer: app.queryCustomersID,
                     appointment_date: appointment_date,
                     id_employee: app.selected_appointment_data['id_employee'],
                     id_service: app.selected_appointment_data['id_service'],
@@ -1918,6 +1931,7 @@
                             .datepicker({
                                 autoClose: true,
                                 hoursStep: 1,
+                                firstDay: 1,
                                 minutesStep: 15,
                                 minHours: 8,
                                 dateFormat: 'yyyy-mm-dd',

@@ -407,8 +407,8 @@
                     console.log('select2-' + section_id)
                     var d1 = document.getElementById('select2-' + section_id);
 
-                    localStorage.setItem('service', section_id)
-                    localStorage.setItem('service_name', section_name)
+                    $.cookie('service', section_id)
+                    $.cookie('service_name', section_name)
 
                     for (var i = 0; i < response.length; i++) {
 
@@ -572,7 +572,7 @@
 
     $(".next_page").click(function() {
 
-        // console.log($("#select2-" + localStorage.getItem('service')).val())
+        // console.log($("#select2-" + $.cookie('service')).val())
 
         var arr = []
 
@@ -617,7 +617,7 @@
             arr = dependency_reorder(arr)
 
             console.log(arr)
-            localStorage.setItem('emp', JSON.stringify(arr))
+            $.cookie('emp', JSON.stringify(arr))
 
             window.location.href = "appointment.html"
 

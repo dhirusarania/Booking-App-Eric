@@ -10,6 +10,9 @@ $password = "";
 $servername = "localhost";
 $database = "";
 
+
+// print_r($_SESSION);
+
 if(isset($_SESSION['db_name']) && $_SESSION['db_name']){
     
     $database = $_SESSION['db_name'];

@@ -71,6 +71,58 @@
             text-align: center;
             cursor: pointer;
         }
+        
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #7ac142;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        
+        .checkmark {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: #fff;
+            stroke-miterlimit: 10;
+            margin: auto;
+            box-shadow: inset 0px 0px 0px #7ac142;
+            animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+        }
+        
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes scale {
+            0%,
+            100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+        
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 30px #7ac142;
+            }
+        }
     </style>
 </head>
 
@@ -110,27 +162,42 @@
 
         <div class="container" style="margin-top: 130px">
 
-            <div class="d-flex justify-content-around">
+
+            <div class="container section" v-if="isComplete">
+                <svg class="checkmark" id="this" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                  <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                  <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                </svg>
+                <p class="pt-3" style="text-align: center;">
+                    Your Order has been Confirmed.
+                    <br />It is being processed by the seller
+                </p>
+
+                <button type="button" v-on:click="goBack">Go Back</button>
+            </div>
+
+            <div class="d-flex justify-content-around" v-if="!isComplete">
                 <form style="width:100%;text-align: center;">
-                    <h4 class="center">Fill Up contact Form</h4>
+                    <h4 class="center">Qualcosa su di te</h4>
+                    <p>Ti chiediamo i tuoi dati per inviarti la conferma dell'appuntamento</p>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Name</label>
+                        <label for="exampleInputEmail1">Nome e Cognome</label>
                         <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter Name">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Phone Number</label>
+                        <label for="exampleInputPassword1">Numero di cellulare</label>
                         <input type="text" class="form-control" id="phone" placeholder="Password">
                     </div>
                     <div class="form-group">
 
-                        <label for="exampleInputEmail1">Email address</label>
+                        <label for="exampleInputEmail1">Email</label>
                         <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
                     </div>
                     <div class="form-check mb-3">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Accetto Privacy 196/2006 <a href="#">www.privacy.com</a></label>
+                        <label class="form-check-label" for="exampleCheck1">Accetto Privacy 196/2006 <a href="privacy.html" target="_blank">View Privacy</a></label>
                     </div>
-                    <div type="button" class="btn btn-primary" onclick="submit()">Confirm</div>
+                    <div type="button" class="btn btn-primary" onclick="submit()">Conferma</div>
                 </form>
 
             </div>
@@ -150,16 +217,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script>
     var app = new Vue({
         el: '#app',
         data: {
             message: 'Hello Vue!',
             services: [],
-            isVisible: true,
+            isComplete: false,
             isVisible1: true,
             homepageInfo: [],
-            booking_url: localStorage.getItem('init_db'),
+            booking_url: $.cookie('init_db'),
             slider_image: []
         },
         mounted() {
@@ -171,6 +239,11 @@
         methods: {
 
 
+            goBack: function() {
+
+                window.location.href = "index.html?id=" + $.cookie('init_db')
+
+            },
             getHomepageInfo: function() {
 
                 $.ajax({
@@ -193,7 +266,7 @@
         }
     })
 
-    if (localStorage.getItem('emp') == null) {
+    if ($.cookie('emp') == null) {
 
         window.location.href = "index.html"
 
@@ -212,14 +285,14 @@
 
 
 
-            var a = JSON.parse(localStorage.getItem('m_emp'))
+            var a = JSON.parse($.cookie('m_emp'))
 
 
             console.log(a)
 
             console.log(a)
 
-            var b = localStorage.getItem('app_date') + " " + localStorage.getItem('app_time')
+            var b = $.cookie('app_date') + " " + $.cookie('app_time')
 
             console.log(b)
 
@@ -236,9 +309,11 @@
 
             payload.append('emp', JSON.stringify(a))
             payload.append('customer_name', $("#name").val())
-            payload.append('appointment_date', localStorage.getItem('app_date') + " " + localStorage.getItem('app_time'))
+            payload.append('appointment_date', $.cookie('app_date') + " " + $.cookie('app_time'))
             payload.append('notes', "Tel:" + $("#phone").val() + " Email: " + $("#email").val())
-            payload.append('service_name', localStorage.getItem('service_name'))
+            payload.append('service_name', $.cookie('service_name'))
+            payload.append('appointment_state', "booked")
+            payload.append('appointment_source', "application")
 
             $.ajax({
                 type: "POST",
@@ -255,7 +330,8 @@
                     if (response.status == 200) {
 
                         // alert("Successfully Added")
-                        window.location.href = "index.html?id=" + localStorage.getItem('init_db')
+                        app.isComplete = true
+                            // window.location.href = "index.html?id=" + $.cookie('init_db')
 
                     } else {
 

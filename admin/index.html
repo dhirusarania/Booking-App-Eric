@@ -286,6 +286,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 <script>
     var app = new Vue({
@@ -321,9 +322,9 @@
 
                 if (this.lang == 'en') {
                     this.lang = 'it'
-                    localStorage.setItem('lang', 'it')
+                    $.cookie('lang', 'it')
                 } else {
-                    localStorage.setItem('lang', 'it')
+                    $.cookie('lang', 'it')
                     this.lang = 'en'
                 }
 
@@ -377,8 +378,8 @@
                         console.log("res", res.data);
 
                         if (res.data.code == 200) {
-                            localStorage.setItem("random", res.data.token);
-                            localStorage.setItem("admin_id", this.booking_url);
+                            $.cookie("random", res.data.token);
+                            $.cookie("admin_id", this.booking_url);
 
                             // this.$router.push('/admin')
 
@@ -388,7 +389,7 @@
                         }
                     })
                     .catch(err => {
-                        console.log("error in request1", err.response.data.message);
+                        console.log("error in request1", err);
                     });
             },
             changePass: function() {

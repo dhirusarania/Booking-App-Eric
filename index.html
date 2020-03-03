@@ -79,21 +79,21 @@
             <nav class="container navbar navbar-expand-md navbar-dark">
                 <a class="navbar-brand" href="#"><img :src="'img/landing/' + booking_url + '/' + 'logo1.png'"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Home</a>
+                            <a class="nav-link" href="#home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Prenota</a>
+                            <a class="nav-link" href="#prenota">Prenota</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Chi siamo</a>
+                            <a class="nav-link" href="#chi">Chi siamo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Dove siamo</a>
+                            <a class="nav-link" href="#dove">Dove siamo</a>
                         </li>
                     </ul>
                     <div id="htk" class="header_tk  ml-auto" style="float: right; color: #FFFFFF;">
@@ -105,7 +105,7 @@
             </nav>
         </header>
 
-        <main role="main">
+        <main role="main" id="home">
 
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
@@ -135,7 +135,7 @@
 
 
 
-            <div class="container">
+            <div class="container" id="prenota" style="padding-top: 100px;">
                 <div class="row" style="margin-top: 50px;">
                     <div class="col-md-12 text-center">
                         <h1 class="text-center">PRENOTA APPUNTAMENTO</h1>
@@ -156,20 +156,20 @@
                                                 <p v-if="homepageInfo.mostra_prezzi_listino == 1" style="font-size:13px">Prezzo da: {{ parseFloat(q.standard_sell_price).toFixed() }} €</p>
                                             </td>
                                             <td><label class="switch"><input type="checkbox"
-                                                       data-toggle="collapse"
-                                                       v-model="q.toggle"
-                                                       @change="!q.toggle"
-                                                       v-bind:data-type="index"
-                                                       v-bind:data-name="q.name"
-                                                       v-bind:data-id="q.id_service"
-                                                       v-bind:data-target="'#accordion-' + q.id_service"
-                                                       class="clickable"><span class="slider round"></span></label></td>
+                                                           data-toggle="collapse"
+                                                           v-model="q.toggle"
+                                                           @change="!q.toggle"
+                                                           v-bind:data-type="index"
+                                                           v-bind:data-name="q.name"
+                                                           v-bind:data-id="q.id_service"
+                                                           v-bind:data-target="'#accordion-' + q.id_service"
+                                                           class="clickable"><span class="slider round"></span></label></td>
                                         </tr>
                                         <tr v-if="q.toggle == true" style="background-color: #e7e7e7;">
                                             <td colspan="6">
                                                 <div style="padding: 30px" v-bind:id="'accordion-' + q.id_service" v-bind:data-name="q.name" v-bind:data-id="q.id_service" v-bind:data-duration="q.worker_duration" v-bind:data-dependency="q.service_dependence" class="drop"><select class="e1" style="width: 100%" v-bind:data-pd="q.id_service" v-bind:id="'select2-' + q.id_service">
-                                                    <option value="0">Indifferente</option>
-                                                </select></div>
+                                                        <option value="0">Indifferente</option>
+                                                    </select></div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -186,11 +186,11 @@
                 <div class="container">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h5>Con una spesa di circa</h5>
+                            <h5>Riepilogo</h5>
                             <!-- <p> </p> -->
                         </div>
                         <div class="d-flex">
-                            <h3 class="service_price"></h3>€
+                            <h3 class="service_price"></h3>
                         </div>
                     </div>
                     <div style="display: inline-block;
@@ -209,7 +209,7 @@
             </div>
 
 
-            <section class="pt-5 pb-5">
+            <section class=" pb-5" id="chi" style="padding-top: 100px;">
 
 
 
@@ -218,7 +218,7 @@
                         <div class="ibox-content">
                             <div class="default-line"></div>
                             <h1 style="font-size: 30px;">GLAMOUR, ALL'ULTIMA MODA E UNICI...<br>UNICI COME TE!</h1>
-                            <p style="padding: 10px 0 40px;">Prenota subito il tuo servizio esclusivo, appuntamento in salone !</p>
+                            <p style="padding: 10px 0 40px;">{{homepageInfo.description2}}</p>
                         </div>
                     </div>
 
@@ -241,7 +241,7 @@
 
             </section>
 
-            <section class="pt-5 pb-5">
+            <section class="pb-5" id="dove" style="padding-top: 100px;">
 
 
 
@@ -251,7 +251,7 @@
                             <div class="default-line"></div>
                             <h1 style="font-size: 60px;"><img style="height: 60px;object-fit: contain;" :src="'img/landing/' + booking_url + '/' + 'logo2.png'"></h1>
                             <p style="padding: 10px 0 40px;">
-                                Glamour, all'ultima Moda e Unici... unici come Te!. Scopri tutti i Look firmati Louis, da oggi potrai regalarti un momento beauty semplicemente con un click. Prenota subito il tuo servizio esclusivo, appuntamento in salone!</p>
+                                {{homepageInfo.description}}</p>
                         </div>
                     </div>
 
@@ -276,7 +276,7 @@
                         <div class="col-lg-4 text-center">
                             <h2 class="ng-binding">
                                 <i class="fa fa-map-marker"> </i><br><br>
-                                <font style="font-family: Verdana, Georgia, Serif  , Courier, monospace;"><b>{{homepageInfo.address1}}</b></font><br> {{homepageInfo.address3}}
+                                <font style="font-family: Verdana, Georgia, Serif  , Courier, monospace;"><b>Indirizzo</b></font><br> {{homepageInfo.address3}}
                             </h2>
                         </div>
                         <div class="col-lg-4 text-center">
@@ -293,7 +293,7 @@
                     <div class="row">
                         <div class="col-12 text-center">
                             <iframe style="width: 100%" width="600" height="450" frameborder="0" style="border:0" :src="homepageInfo.map_link" allowfullscreen>
-                        </iframe>
+                            </iframe>
                         </div>
                     </div>
                 </div>
@@ -324,11 +324,21 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
 </body>
 
 </html>
 
 <script>
+    $(document).on('click', '.nav-link', function() {
+        $(".nav-item").removeClass('active')
+        $(this).parent('.nav-item').addClass('active')
+
+    })
+
+
+
     var app = new Vue({
         el: '#app',
         data: {
@@ -386,7 +396,7 @@
                     url: 'api.php?init_db=init_db&booking_url=' + this.booking_url,
                     success: function(response) {
                         console.log(response)
-                        localStorage.setItem('init_db', app.booking_url)
+                        $.cookie('init_db', app.booking_url)
                         app.slider_image = response['files']
                         app.getHomepageInfo()
 
@@ -431,7 +441,10 @@
 
 
 
-    window.localStorage.clear();
+    // window.localStorage.clear();
+    // document.cookie.split(";").forEach(function(c) {
+    //     document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    // });
     var section_id = 0
     var all_service = []
     var selected_service = []
@@ -471,8 +484,8 @@
                     console.log('select2-' + section_id)
                     var d1 = document.getElementById('select2-' + section_id);
 
-                    localStorage.setItem('service', section_id)
-                    localStorage.setItem('service_name', section_name)
+                    $.cookie('service', section_id)
+                    $.cookie('service_name', section_name)
 
 
                     if (app.homepageInfo.mostra_seleziona_lavorante == 1) {
@@ -497,7 +510,10 @@
 
                     selected_service_array.push(temp)
 
-                    $(".service_price").html(selected_sum)
+                    if (app.homepageInfo.mostra_prezzo_finale == 1) {
+                        $(".service_price").html(selected_sum + " €")
+                    }
+
 
 
                     $(".selected_services").removeClass('hide')
@@ -509,7 +525,15 @@
 
                     for (var i = 0; i < selected_service_array.length; i++) {
 
-                        d2.insertAdjacentHTML('beforeend', '<tr class="tr--select2-' + selected_service_array[i].id_service + '"><td>' + selected_service_array[i].name + '<br><p class="emp_name">Employee: Indifferente</p></td><td>' + parseFloat(selected_service_array[i].standard_sell_price).toFixed(2) + '</td><td class="closeButton" onclick="deleteSelected(' + selected_service_array[i].id_service + ')">X</td></tr>');
+                        if (app.homepageInfo.mostra_prezzi_listino == 0) {
+
+                            d2.insertAdjacentHTML('beforeend', '<tr class="tr--select2-' + selected_service_array[i].id_service + '"><td>' + selected_service_array[i].name + '<br><p class="emp_name">Employee: Indifferente</p></td><td></td><td class="closeButton" onclick="deleteSelected(' + selected_service_array[i].id_service + ')">X</td></tr>');
+
+                        } else {
+
+                            d2.insertAdjacentHTML('beforeend', '<tr class="tr--select2-' + selected_service_array[i].id_service + '"><td>' + selected_service_array[i].name + '<br><p class="emp_name">Employee: Indifferente</p></td><td>' + parseFloat(selected_service_array[i].standard_sell_price).toFixed(2) + '</td><td class="closeButton" onclick="deleteSelected(' + selected_service_array[i].id_service + ')">X</td></tr>');
+                        }
+
 
                     }
 
@@ -540,7 +564,9 @@
 
             selected_sum = selected_sum - parseFloat(all_service[type].filter(v => v.id_service == $(this).data('id'))[0].standard_sell_price)
 
-            $(".service_price").html(selected_sum)
+            if (app.homepageInfo.mostra_prezzo_finale == 1) {
+                $(".service_price").html(selected_sum + " €")
+            }
 
             if (selected_service.length == 0) {
                 $(".selected_services").addClass('hide')
@@ -641,6 +667,9 @@
 
                     for (j = 0; j < dep.length; j++) {
 
+                        console.log("all_service")
+                        console.log(all_service)
+
 
                         if (all_service.filter(v => v.id_service == dep[j]).length != 0) {
                             var b = all_service.filter(v => v.id_service == dep[j])[0]
@@ -677,7 +706,7 @@
 
     $(".next_page").click(function() {
 
-        // console.log($("#select2-" + localStorage.getItem('service')).val())
+        // console.log($("#select2-" + $.cookie('service')).val())
 
         var arr = []
 
@@ -722,7 +751,7 @@
             arr = dependency_reorder(arr)
 
             console.log(arr)
-            localStorage.setItem('emp', JSON.stringify(arr))
+            $.cookie('emp', JSON.stringify(arr))
 
             window.location.href = "appointment.html"
 
@@ -732,5 +761,4 @@
 
 
     })
-</script>
 </script>

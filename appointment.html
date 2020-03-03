@@ -167,7 +167,9 @@
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/moment.min.js"></script>
+<script src="js/moment-with-locales.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script>
     var app = new Vue({
         el: '#app',
@@ -177,7 +179,7 @@
             isVisible: true,
             isVisible1: true,
             homepageInfo: [],
-            booking_url: localStorage.getItem('init_db'),
+            booking_url: $.cookie('init_db'),
             slider_image: []
         },
         mounted() {
@@ -217,9 +219,9 @@
     var selected_date = moment().format('YYYY-MM-DD')
     var modified_emp_list = []
 
-    if (localStorage.getItem('emp') == null) {
+    if ($.cookie('emp') == null) {
 
-        window.location.href = "index.html"
+        window.location.href = "index.html?id=" + $.cookie('init_db')
 
 
     }
@@ -263,10 +265,10 @@
         // console.log(e, s)
         // console.log(moment(s, 'HH:mm:ss').add(900, 'seconds').format('hh:mm'))
         // console.log(end_time_minute - start_time_minute)
-        console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+        console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
 
-        console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+        console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
         var emps = []
         var duration = 0
@@ -274,7 +276,7 @@
 
         var id_service = []
 
-        var parsed = JSON.parse(localStorage.getItem('emp'))
+        var parsed = JSON.parse($.cookie('emp'))
 
 
         var array = []
@@ -373,7 +375,7 @@
                 if (date_line == 0) {
 
                     response.final_slot = response.final_slot.filter(function(e) {
-                        return +e.replace(':', '') > moment().add(date_line, 'days').format('HH:mm').replace(':', '');
+                        return +e.replace(':', '') > moment().add(response.minutes, 'minutes').format('HH:mm').replace(':', '');
                     });
 
                 }
@@ -389,7 +391,7 @@
                             for (var i = 0; i < response['final_slot'].length; i++) {
 
 
-                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + response['final_slot'][i] + '</div>');
+                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")>' + response['final_slot'][i] + ' <i class="fa fa-clock-o" aria-hidden="true"></i></div>');
 
 
                             }
@@ -468,16 +470,16 @@
     //     // console.log(e, s)
     //     // console.log(moment(s, 'HH:mm:ss').add(900, 'seconds').format('hh:mm'))
     //     // console.log(end_time_minute - start_time_minute)
-    //     console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+    //     console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
 
-    //     console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+    //     console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
     //     var emps = []
     //     var duration = 0
     //     var duration_array = []
 
-    //     var parsed = JSON.parse(localStorage.getItem('emp'))
+    //     var parsed = JSON.parse($.cookie('emp'))
 
 
     //     var array = []
@@ -632,11 +634,11 @@
 
             if (i < 0) {
 
-                d1.insertAdjacentHTML('beforeend', '<div class="date deactive" id="date-' + i + '"><p style="margin: auto;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().add(i, 'days').format('MMM') + '<br>' + moment().add(i, 'days').format('DD') + ' ' + moment().add(i, 'days').format('ddd') + '</p></div>');
+                d1.insertAdjacentHTML('beforeend', '<div class="date deactive" id="date-' + i + '"><p style="margin: auto;text-transform: capitalize;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().locale('it').add(i, 'days').format('MMM') + '<br>' + moment().locale('it').add(i, 'days').format('DD') + ' ' + moment().locale('it').add(i, 'days').format('ddd') + '</p></div>');
 
             } else {
 
-                d1.insertAdjacentHTML('beforeend', '<div class="date" id="date-' + i + '" onclick=getTimeSlot("' + i + '")><p style="margin: auto;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().add(i, 'days').format('MMM') + '<br>' + moment().add(i, 'days').format('DD') + ' ' + moment().add(i, 'days').format('ddd') + '</p></div>');
+                d1.insertAdjacentHTML('beforeend', '<div class="date" id="date-' + i + '" onclick=getTimeSlot("' + i + '")><p style="margin: auto;text-transform: capitalize;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().locale('it').add(i, 'days').format('MMM') + '<br>' + moment().locale('it').add(i, 'days').format('DD') + ' ' + moment().locale('it').add(i, 'days').format('ddd') + '</p></div>');
 
 
             }
@@ -660,7 +662,7 @@
         console.log(a)
         console.log(b)
 
-        var old_data = JSON.parse(localStorage.getItem('emp'))
+        var old_data = JSON.parse($.cookie('emp'))
         var new_data = modified_emp_list
 
         if (old_data.length == new_data.length) {
@@ -675,9 +677,9 @@
 
 
 
-            localStorage.setItem('app_date', a)
-            localStorage.setItem('m_emp', JSON.stringify(old_data))
-            localStorage.setItem('app_time', b)
+            $.cookie('app_date', a)
+            $.cookie('m_emp', JSON.stringify(old_data))
+            $.cookie('app_time', b)
 
             window.location.href = "confirm.html"
 
@@ -712,14 +714,14 @@
 
     function init() {
 
-        console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+        console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
         var emps = []
         var duration = 0
         var duration_array = []
         var id_service = []
 
-        var parsed = JSON.parse(localStorage.getItem('emp'))
+        var parsed = JSON.parse($.cookie('emp'))
 
 
         var array = []
@@ -810,8 +812,9 @@
                     if (date_line == 0) {
 
                         response.final_slot = response.final_slot.filter(function(e) {
-                            return +e.replace(':', '') > moment().add(date_line, 'days').format('HH:mm').replace(':', '');
+                            return +e.replace(':', '') > moment().add(response.minutes, 'minutes').format('HH:mm').replace(':', '');
                         });
+
 
                     }
 
@@ -824,7 +827,7 @@
                             for (var i = 0; i < response['final_slot'].length; i++) {
 
 
-                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + response['final_slot'][i] + '</div>');
+                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")>' + response['final_slot'][i] + '<i class="fa fa-clock-o" aria-hidden="true"></i></div>');
 
 
                             }
@@ -863,13 +866,13 @@
 
     // function init() {
 
-    //     console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+    //     console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
     //     var emps = []
     //     var duration = 0
     //     var duration_array = []
 
-    //     var parsed = JSON.parse(localStorage.getItem('emp'))
+    //     var parsed = JSON.parse($.cookie('emp'))
 
 
     //     var array = []

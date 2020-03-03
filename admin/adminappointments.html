@@ -345,12 +345,13 @@
 <script src="../js/popper.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script>
     var opening_time = []
     var selected_date = moment().format('YYYY-MM-DD')
     var modified_emp_list = []
 
-    if (localStorage.getItem('emp') == null) {
+    if ($.cookie('emp') == null) {
 
         window.location.href = "index.html"
 
@@ -396,10 +397,10 @@
         // console.log(e, s)
         // console.log(moment(s, 'HH:mm:ss').add(900, 'seconds').format('hh:mm'))
         // console.log(end_time_minute - start_time_minute)
-        console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+        console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
 
-        console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+        console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
         var emps = []
         var duration = 0
@@ -407,7 +408,7 @@
 
         var id_service = []
 
-        var parsed = JSON.parse(localStorage.getItem('emp'))
+        var parsed = JSON.parse($.cookie('emp'))
 
 
         var array = []
@@ -601,16 +602,16 @@
     //     // console.log(e, s)
     //     // console.log(moment(s, 'HH:mm:ss').add(900, 'seconds').format('hh:mm'))
     //     // console.log(end_time_minute - start_time_minute)
-    //     console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+    //     console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
 
-    //     console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+    //     console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
     //     var emps = []
     //     var duration = 0
     //     var duration_array = []
 
-    //     var parsed = JSON.parse(localStorage.getItem('emp'))
+    //     var parsed = JSON.parse($.cookie('emp'))
 
 
     //     var array = []
@@ -793,7 +794,7 @@
         console.log(a)
         console.log(b)
 
-        var old_data = JSON.parse(localStorage.getItem('emp'))
+        var old_data = JSON.parse($.cookie('emp'))
         var new_data = modified_emp_list
 
         if (old_data.length == new_data.length) {
@@ -808,9 +809,9 @@
 
 
 
-            localStorage.setItem('app_date', a)
-            localStorage.setItem('m_emp', JSON.stringify(old_data))
-            localStorage.setItem('app_time', b)
+            $.cookie('app_date', a)
+            $.cookie('m_emp', JSON.stringify(old_data))
+            $.cookie('app_time', b)
 
             window.location.href = "adminconfirm.html"
 
@@ -845,14 +846,14 @@
 
     function init() {
 
-        console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+        console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
         var emps = []
         var duration = 0
         var duration_array = []
         var id_service = []
 
-        var parsed = JSON.parse(localStorage.getItem('emp'))
+        var parsed = JSON.parse($.cookie('emp'))
 
 
         var array = []
@@ -996,13 +997,13 @@
 
     // function init() {
 
-    //     console.log(JSON.parse(localStorage.getItem('emp')).filter(v => v.emp))
+    //     console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
 
     //     var emps = []
     //     var duration = 0
     //     var duration_array = []
 
-    //     var parsed = JSON.parse(localStorage.getItem('emp'))
+    //     var parsed = JSON.parse($.cookie('emp'))
 
 
     //     var array = []
