@@ -1305,10 +1305,11 @@
 
                                     var a = fd.split("/")
 
-                                    var date = a[1] + "-" + a[0] + "-" + a[2]
+                                    // var date = a[1] + "-" + a[0] + "-" + a[2]
 
 
                                     console.log(date)
+                                    console.log(a)
 
 
                                     var dateObj = new Date(a[2], a[1] - 1, a[0]);
@@ -1794,6 +1795,8 @@
             },
             restartSchedule: function() {
 
+                console.log(this.calendar_start)
+
 
                 $sked = $('#sked').skedTape({
                     caption: 'Staff',
@@ -1962,7 +1965,7 @@
             getAppointments: function(momentObj1) {
 
 
-                console.trace()
+                // console.trace()
 
 
                 console.log("getAppointment")
@@ -2012,6 +2015,9 @@
                             that.calendar_end = endDate
 
                             for (var i = 0; i < app.appointments.length; i++) {
+
+                                console.log("Appoi")
+                                console.log(app.appointments[i].start)
 
                                 app.appointments[i].start = today(app.appointments[i].start)
                                 app.appointments[i].end = today(app.appointments[i].end)
