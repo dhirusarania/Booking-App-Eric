@@ -130,23 +130,23 @@
     <div id="app">
         <header class="bg-black  fixed-top">
             <nav class="container navbar navbar-expand-md navbar-dark">
-                <a class="navbar-brand" href="#"><img :src="'img/landing/' + booking_url + '/' + 'logo1.png'"></a>
+                <a class="navbar-brand" :href="'index.html?id=' + booking_url + '#home'"><img :src="'img/landing/' + booking_url + '/' + 'logo1.png'"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse" style="flex-direction: column;">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Home</a>
+                            <a class="nav-link" :href="'index.html?id=' + booking_url + '#home'">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Prenota</a>
+                            <a class="nav-link" :href="'index.html?id=' + booking_url + '#prenota'">Prenota</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Chi siamo</a>
+                            <a class="nav-link" :href="'index.html?id=' + booking_url + '#chi'">Chi siamo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Dove siamo</a>
+                            <a class="nav-link" :href="'index.html?id=' + booking_url + '#dove'">Dove siamo</a>
                         </li>
                     </ul>
                     <div id="htk" class="header_tk  ml-auto" style="float: right; color: #FFFFFF;">
@@ -174,7 +174,7 @@
                     <br />Ci vediamo il {{date}} alle {{time}}
                 </p>
 
-                <button class="btn btn-info" type="button" v-on:click="goBack">Go Back</button>
+                <button class="btn btn-info" type="button" v-on:click="goBack">Torna indietro</button>
             </div>
 
             <div class="d-flex justify-content-around align-items-center" style="flex-direction: column;" v-if="!isComplete">
@@ -189,11 +189,11 @@
                     <p>Ti chiediamo i tuoi dati per inviarti la conferma dell'appuntamento</p>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nome e Cognome</label>
-                        <input required type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter Name">
+                        <input required type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome e Cognome">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Numero di cellulare</label>
-                        <input required type="text" class="form-control" id="phone" placeholder="Password">
+                        <input required type="text" class="form-control" id="phone" placeholder="Numero di cellulare">
                     </div>
                     <div class="form-group">
 
@@ -251,7 +251,7 @@
 
             this.time = $.cookie('app_time')
 
-            this.date = $.cookie('app_date')
+            this.date = $.cookie('confirm_display')
 
 
         },

@@ -345,6 +345,7 @@
 <script src="../js/popper.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/moment.min.js"></script>
+<script src="../js/moment-with-locales.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script>
     var opening_time = []
@@ -507,7 +508,7 @@
                 if (date_line == 0) {
 
                     response.final_slot = response.final_slot.filter(function(e) {
-                        return +e.replace(':', '') > moment().add(date_line, 'days').format('HH:mm').replace(':', '');
+                        return +e.replace(':', '') > moment().add(response.minutes, 'minutes').format('HH:mm').replace(':', '');
                     });
 
                 }
@@ -538,7 +539,7 @@
                     } else {
 
 
-                        d1.insertAdjacentHTML('beforeend', ' <div class="time">Store Closed</div>');
+                        d1.insertAdjacentHTML('beforeend', ' <div class="time">Giorno di chiusura</div>');
 
                     }
                 } else {
@@ -718,7 +719,7 @@
     //             } else {
 
 
-    //                 d1.insertAdjacentHTML('beforeend', ' <div class="time">Store Closed</div>');
+    //                 d1.insertAdjacentHTML('beforeend', ' <div class="time">Giorno di chiusura</div>');
 
     //             }
 
@@ -748,7 +749,6 @@
     // }
 
 
-
     function render_date(center_date) {
 
         $("#calendar").empty()
@@ -766,11 +766,11 @@
 
             if (i < 0) {
 
-                d1.insertAdjacentHTML('beforeend', '<div class="date deactive" id="date-' + i + '"><p style="margin: auto;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().add(i, 'days').format('MMM') + '<br>' + moment().add(i, 'days').format('DD') + ' ' + moment().add(i, 'days').format('ddd') + '</p></div>');
+                d1.insertAdjacentHTML('beforeend', '<div class="date deactive" id="date-' + i + '"><p style="margin: auto;text-transform: capitalize;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().locale('it').add(i, 'days').format('MMM') + '<br>' + moment().locale('it').add(i, 'days').format('DD') + ' ' + moment().locale('it').add(i, 'days').format('ddd') + '</p></div>');
 
             } else {
 
-                d1.insertAdjacentHTML('beforeend', '<div class="date" id="date-' + i + '" onclick=getTimeSlot("' + i + '")><p style="margin: auto;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().add(i, 'days').format('MMM') + '<br>' + moment().add(i, 'days').format('DD') + ' ' + moment().add(i, 'days').format('ddd') + '</p></div>');
+                d1.insertAdjacentHTML('beforeend', '<div class="date" id="date-' + i + '" onclick=getTimeSlot("' + i + '")><p style="margin: auto;text-transform: capitalize;"> <i class="fa fa-calendar"aria-hidden="true"></i> ' + moment().locale('it').add(i, 'days').format('MMM') + '<br>' + moment().locale('it').add(i, 'days').format('DD') + ' ' + moment().locale('it').add(i, 'days').format('ddd') + '</p></div>');
 
 
             }
@@ -785,6 +785,7 @@
         getTimeSlot(center_date)
 
     }
+
 
 
 
@@ -944,7 +945,7 @@
                     if (date_line == 0) {
 
                         response.final_slot = response.final_slot.filter(function(e) {
-                            return +e.replace(':', '') > moment().add(date_line, 'days').format('HH:mm').replace(':', '');
+                            return +e.replace(':', '') > moment().add(response.minutes, 'minutes').format('HH:mm').replace(':', '');
                         });
 
                     }
@@ -972,7 +973,7 @@
                     } else {
 
 
-                        d1.insertAdjacentHTML('beforeend', ' <div class="time">Store Closed</div>');
+                        d1.insertAdjacentHTML('beforeend', ' <div class="time">Giorno di chiusura</div>');
 
                     }
                 } else {
@@ -1104,7 +1105,7 @@
     //             } else {
 
 
-    //                 d1.insertAdjacentHTML('beforeend', ' <div class="time">Store Closed</div>');
+    //                 d1.insertAdjacentHTML('beforeend', ' <div class="time">Giorno di chiusura</div>');
 
     //             }
 

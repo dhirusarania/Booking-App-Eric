@@ -998,6 +998,10 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     // $date = str_replace('/', '-', $origDate );
     // $newDate = date("Y-m-d", strtotime($date));
 
+    $data['date_selected'] = $newDate;
+
+    $data['date_selected_php'] = date('D, M j, Y \a\t g:ia', strtotime($newDate));
+
     $filter_needed = in_array("Appuntamenti", explode(",", $_REQUEST['filters']));
 
     $not_deleted = in_array("1", explode(",", $_REQUEST['filters_state']));
@@ -1254,7 +1258,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     if ($data['diff'] == 0) {
 
         $data['final_date'] = [];
-        $data['msg'] = "Store Closed";
+        $data['msg'] = "Giorno di chiusura";
         $res = json_encode($data);
         echo $res;
         exit;
@@ -1351,7 +1355,7 @@ if (isset($_REQUEST['init_db']) && $_REQUEST['init_db'] == "init_db") {
     if ($data['diff'] == 0) {
 
         $data['final_date'] = [];
-        $data['msg'] = "Store Closed";
+        $data['msg'] = "Giorno di chiusura";
         $res = json_encode($data);
         echo $res;
         exit;
