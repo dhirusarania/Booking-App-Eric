@@ -566,8 +566,8 @@
                     console.log('select2-' + section_id)
                     var d1 = document.getElementById('select2-' + section_id);
 
-                    $.cookie('service', section_id)
-                    $.cookie('service_name', section_name)
+                    $.cookie('admin_service', section_id)
+                    $.cookie('admin_service_name', section_name)
 
 
                     if (app.homepageInfo.mostra_seleziona_lavorante == 1) {
@@ -817,7 +817,8 @@
             arr = dependency_reorder(arr)
 
             console.log(arr)
-            $.cookie('emp', JSON.stringify(arr))
+            $.cookie('admin_emp', JSON.stringify(arr))
+            $.cookie('admin_selected_service_array', JSON.stringify(selected_service_array))
 
             window.location.href = "adminappointments.html"
 

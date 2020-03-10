@@ -352,7 +352,7 @@
     var selected_date = moment().format('YYYY-MM-DD')
     var modified_emp_list = []
 
-    if ($.cookie('emp') == null) {
+    if ($.cookie('admin_emp') == null) {
 
         window.location.href = "index.html"
 
@@ -398,10 +398,10 @@
         // console.log(e, s)
         // console.log(moment(s, 'HH:mm:ss').add(900, 'seconds').format('hh:mm'))
         // console.log(end_time_minute - start_time_minute)
-        console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
+        console.log(JSON.parse($.cookie('admin_emp')).filter(v => v.emp))
 
 
-        console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
+        console.log(JSON.parse($.cookie('admin_emp')).filter(v => v.emp))
 
         var emps = []
         var duration = 0
@@ -409,7 +409,7 @@
 
         var id_service = []
 
-        var parsed = JSON.parse($.cookie('emp'))
+        var parsed = JSON.parse($.cookie('admin_emp'))
 
 
         var array = []
@@ -524,7 +524,7 @@
                             for (var i = 0; i < response['final_slot'].length; i++) {
 
 
-                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + response['final_slot'][i] + '</div>');
+                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '","' + moment().add(date_line, 'days').format('DD-MM-YYYY') + '")>' + response['final_slot'][i] + ' <i class="fa fa-clock-o" aria-hidden="true"></i></div>');
 
 
                             }
@@ -790,12 +790,12 @@
 
 
 
-    function setTime(a, b) {
+    function setTime(a, b, c) {
 
         console.log(a)
         console.log(b)
 
-        var old_data = JSON.parse($.cookie('emp'))
+        var old_data = JSON.parse($.cookie('admin_emp'))
         var new_data = modified_emp_list
 
         if (old_data.length == new_data.length) {
@@ -810,9 +810,10 @@
 
 
 
-            $.cookie('app_date', a)
-            $.cookie('m_emp', JSON.stringify(old_data))
-            $.cookie('app_time', b)
+            $.cookie('admin_app_date', a)
+            $.cookie('admin_confirm_display', c)
+            $.cookie('admin_m_emp', JSON.stringify(old_data))
+            $.cookie('admin_app_time', b)
 
             window.location.href = "adminconfirm.html"
 
@@ -847,14 +848,14 @@
 
     function init() {
 
-        console.log(JSON.parse($.cookie('emp')).filter(v => v.emp))
+        console.log(JSON.parse($.cookie('admin_emp')).filter(v => v.emp))
 
         var emps = []
         var duration = 0
         var duration_array = []
         var id_service = []
 
-        var parsed = JSON.parse($.cookie('emp'))
+        var parsed = JSON.parse($.cookie('admin_emp'))
 
 
         var array = []
@@ -959,7 +960,7 @@
                             for (var i = 0; i < response['final_slot'].length; i++) {
 
 
-                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '")><i class="fa fa-clock-o" aria-hidden="true"></i>' + response['final_slot'][i] + '</div>');
+                                d1.insertAdjacentHTML('beforeend', ' <div class="time" onclick=setTime("' + moment().add(date_line, 'days').format('YYYY-MM-DD') + '","' + response['final_slot'][i] + '","' + moment().add(date_line, 'days').format('DD-MM-YYYY') + '")>' + response['final_slot'][i] + '<i class="fa fa-clock-o" aria-hidden="true"></i></div>');
 
 
                             }
